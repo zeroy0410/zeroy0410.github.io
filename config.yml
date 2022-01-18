@@ -1,0 +1,65 @@
+baseURL: https://zeroy0410.github.io/
+languageCode: zh-cn
+title: zeroy's blog
+theme: "PaperMod"
+
+params:
+    # defaultTheme: light
+    # defaultTheme: dark
+    author: zeroy
+    defaultTheme: auto # to switch between dark or light according to browser theme
+    ShowShareButtons: false
+    ShowReadingTime: false
+    # disableSpecial1stPost: true
+    displayFullLangName: true
+    ShowPostNavLinks: true
+    ShowBreadCrumbs: true
+    ShowCodeCopyButtons: true
+    ShowToc: true
+    comments: false
+    enableEmoji: true
+    homeInfoParams:
+        Title: Hi I'm zeroy
+        Content: Welcome to my blog!
+
+    socialIcons: # optional
+      - name: github
+        url: "https://github.com/zeroy0410"
+    
+
+menu:
+    main:
+        - identifier: home
+          name: 首页
+          url: /
+          weight: 10
+        - identifier: archives
+          name: 归档
+          url: /archives/
+          weight: 20
+        - identifier: categories
+          name: 分类
+          url: /categories/
+          weight: 30
+        - identifier: about
+          name: 关于
+          url: /about/
+          weight: 50
+        - identifier: search
+          name: 搜索
+          url: /search/
+          weight: 60
+        - identifier: links
+          name: 友链
+          url: /links/
+          weight: 70
+
+    
+outputs:
+    home:
+        - HTML
+        - RSS
+        - JSON # is necessary
+
+taxonomies:
+    category: categories

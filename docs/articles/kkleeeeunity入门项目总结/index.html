@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>KKLEEEE（Unity入门项目总结） | zeroy&#39;s blog</title>
+<meta name="keywords" content="" />
+<meta name="description" content="项目构思与简介 套壳飞机大战加上模拟网络条件不佳的情况下产生的延迟（XDU校园网直呼内行）。
+把飞机大战的壳换成了可莉发射蹦蹦炸弹打丘丘人（?
+因为担心太简单所以另外开了个极限模式把延迟调到了1000ms，给喜欢操作的人留了很高的操作空间。
+项目说明 W：向上移动 A：向左移动 S：向下移动 D：向右移动 按下鼠标：丢出炸弹
+游戏实机截图 项目技术路线 一个正常的Unity入门项目，运用到了一些Unity的基本知识。
+物体之间的碰撞需要用到刚体的技术，在此项目中为Rigidbody 2D和Box Collider 2D元件。
+刚体碰撞的代码的具体实现如下：
+private void OnTriggerEnter2D(Collider2D collision) { if (collision.tag.Equals(&#34;Monster&#34;)) { Destroy(collision.gameObject); Destroy(this.gameObject); GameObject Fa = GameObject.Find(&#34;Empty&#34;); Fa.SendMessage(&#34;AddScore&#34;, 1); } } 总结 总而言之是个非常基础的项目，了解了一下Unity2D的基本工作流。
+链接：https://pan.baidu.com/s/18Is4HDqZL97i-scP0-b-Xg 提取码：yliq &ndash;来自百度网盘超级会员V3的分享
+链接：https://pan.baidu.com/s/1GXPYW85KffQoRN20MWjCtg 提取码：xqra &ndash;来自百度网盘超级会员V3的分享">
+<meta name="author" content="zeroy">
+<link rel="canonical" href="https://zeroy0410.github.io/articles/kkleeeeunity%E5%85%A5%E9%97%A8%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://zeroy0410.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://zeroy0410.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://zeroy0410.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://zeroy0410.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://zeroy0410.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.91.2" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="KKLEEEE（Unity入门项目总结）" />
+<meta property="og:description" content="项目构思与简介 套壳飞机大战加上模拟网络条件不佳的情况下产生的延迟（XDU校园网直呼内行）。
+把飞机大战的壳换成了可莉发射蹦蹦炸弹打丘丘人（?
+因为担心太简单所以另外开了个极限模式把延迟调到了1000ms，给喜欢操作的人留了很高的操作空间。
+项目说明 W：向上移动 A：向左移动 S：向下移动 D：向右移动 按下鼠标：丢出炸弹
+游戏实机截图 项目技术路线 一个正常的Unity入门项目，运用到了一些Unity的基本知识。
+物体之间的碰撞需要用到刚体的技术，在此项目中为Rigidbody 2D和Box Collider 2D元件。
+刚体碰撞的代码的具体实现如下：
+private void OnTriggerEnter2D(Collider2D collision) { if (collision.tag.Equals(&#34;Monster&#34;)) { Destroy(collision.gameObject); Destroy(this.gameObject); GameObject Fa = GameObject.Find(&#34;Empty&#34;); Fa.SendMessage(&#34;AddScore&#34;, 1); } } 总结 总而言之是个非常基础的项目，了解了一下Unity2D的基本工作流。
+链接：https://pan.baidu.com/s/18Is4HDqZL97i-scP0-b-Xg 提取码：yliq &ndash;来自百度网盘超级会员V3的分享
+链接：https://pan.baidu.com/s/1GXPYW85KffQoRN20MWjCtg 提取码：xqra &ndash;来自百度网盘超级会员V3的分享" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zeroy0410.github.io/articles/kkleeeeunity%E5%85%A5%E9%97%A8%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" /><meta property="article:section" content="articles" />
+<meta property="article:published_time" content="2022-01-18T12:27:17&#43;08:00" />
+<meta property="article:modified_time" content="2022-01-18T12:27:17&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="KKLEEEE（Unity入门项目总结）"/>
+<meta name="twitter:description" content="项目构思与简介 套壳飞机大战加上模拟网络条件不佳的情况下产生的延迟（XDU校园网直呼内行）。
+把飞机大战的壳换成了可莉发射蹦蹦炸弹打丘丘人（?
+因为担心太简单所以另外开了个极限模式把延迟调到了1000ms，给喜欢操作的人留了很高的操作空间。
+项目说明 W：向上移动 A：向左移动 S：向下移动 D：向右移动 按下鼠标：丢出炸弹
+游戏实机截图 项目技术路线 一个正常的Unity入门项目，运用到了一些Unity的基本知识。
+物体之间的碰撞需要用到刚体的技术，在此项目中为Rigidbody 2D和Box Collider 2D元件。
+刚体碰撞的代码的具体实现如下：
+private void OnTriggerEnter2D(Collider2D collision) { if (collision.tag.Equals(&#34;Monster&#34;)) { Destroy(collision.gameObject); Destroy(this.gameObject); GameObject Fa = GameObject.Find(&#34;Empty&#34;); Fa.SendMessage(&#34;AddScore&#34;, 1); } } 总结 总而言之是个非常基础的项目，了解了一下Unity2D的基本工作流。
+链接：https://pan.baidu.com/s/18Is4HDqZL97i-scP0-b-Xg 提取码：yliq &ndash;来自百度网盘超级会员V3的分享
+链接：https://pan.baidu.com/s/1GXPYW85KffQoRN20MWjCtg 提取码：xqra &ndash;来自百度网盘超级会员V3的分享"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Articles",
+      "item": "https://zeroy0410.github.io/articles/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "KKLEEEE（Unity入门项目总结）",
+      "item": "https://zeroy0410.github.io/articles/kkleeeeunity%E5%85%A5%E9%97%A8%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "KKLEEEE（Unity入门项目总结）",
+  "name": "KKLEEEE（Unity入门项目总结）",
+  "description": "项目构思与简介 套壳飞机大战加上模拟网络条件不佳的情况下产生的延迟（XDU校园网直呼内行）。\n把飞机大战的壳换成了可莉发射蹦蹦炸弹打丘丘人（?\n因为担心太简单所以另外开了个极限模式把延迟调到了1000ms，给喜欢操作的人留了很高的操作空间。\n项目说明 W：向上移动 A：向左移动 S：向下移动 D：向右移动 按下鼠标：丢出炸弹\n游戏实机截图 项目技术路线 一个正常的Unity入门项目，运用到了一些Unity的基本知识。\n物体之间的碰撞需要用到刚体的技术，在此项目中为Rigidbody 2D和Box Collider 2D元件。\n刚体碰撞的代码的具体实现如下：\nprivate void OnTriggerEnter2D(Collider2D collision) { if (collision.tag.Equals(\u0026#34;Monster\u0026#34;)) { Destroy(collision.gameObject); Destroy(this.gameObject); GameObject Fa = GameObject.Find(\u0026#34;Empty\u0026#34;); Fa.SendMessage(\u0026#34;AddScore\u0026#34;, 1); } } 总结 总而言之是个非常基础的项目，了解了一下Unity2D的基本工作流。\n链接：https://pan.baidu.com/s/18Is4HDqZL97i-scP0-b-Xg 提取码：yliq \u0026ndash;来自百度网盘超级会员V3的分享\n链接：https://pan.baidu.com/s/1GXPYW85KffQoRN20MWjCtg 提取码：xqra \u0026ndash;来自百度网盘超级会员V3的分享",
+  "keywords": [
+    
+  ],
+  "articleBody": "项目构思与简介 套壳飞机大战加上模拟网络条件不佳的情况下产生的延迟（XDU校园网直呼内行）。\n把飞机大战的壳换成了可莉发射蹦蹦炸弹打丘丘人（?\n因为担心太简单所以另外开了个极限模式把延迟调到了1000ms，给喜欢操作的人留了很高的操作空间。\n项目说明 W：向上移动 A：向左移动 S：向下移动 D：向右移动 按下鼠标：丢出炸弹\n游戏实机截图 项目技术路线 一个正常的Unity入门项目，运用到了一些Unity的基本知识。\n物体之间的碰撞需要用到刚体的技术，在此项目中为Rigidbody 2D和Box Collider 2D元件。\n刚体碰撞的代码的具体实现如下：\nprivate void OnTriggerEnter2D(Collider2D collision) { if (collision.tag.Equals(\"Monster\")) { Destroy(collision.gameObject); Destroy(this.gameObject); GameObject Fa = GameObject.Find(\"Empty\"); Fa.SendMessage(\"AddScore\", 1); } } 总结 总而言之是个非常基础的项目，了解了一下Unity2D的基本工作流。\n链接：https://pan.baidu.com/s/18Is4HDqZL97i-scP0-b-Xg 提取码：yliq –来自百度网盘超级会员V3的分享\n链接：https://pan.baidu.com/s/1GXPYW85KffQoRN20MWjCtg 提取码：xqra –来自百度网盘超级会员V3的分享\n",
+  "wordCount" : "44",
+  "inLanguage": "en",
+  "datePublished": "2022-01-18T12:27:17+08:00",
+  "dateModified": "2022-01-18T12:27:17+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "zeroy"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://zeroy0410.github.io/articles/kkleeeeunity%E5%85%A5%E9%97%A8%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "zeroy's blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://zeroy0410.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://zeroy0410.github.io/" accesskey="h" title="zeroy&#39;s blog (Alt + H)">zeroy&#39;s blog</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://zeroy0410.github.io/" title="首页">
+                    <span>首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://zeroy0410.github.io/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://zeroy0410.github.io/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://zeroy0410.github.io/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://zeroy0410.github.io/search/" title="搜索 (Alt &#43; /)" accesskey=/>
+                    <span>搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://zeroy0410.github.io/links/" title="友链">
+                    <span>友链</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://zeroy0410.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://zeroy0410.github.io/articles/">Articles</a></div>
+    <h1 class="post-title">
+      KKLEEEE（Unity入门项目总结）
+    </h1>
+    <div class="post-meta"><span title='2022-01-18 12:27:17 +0800 CST'>January 18, 2022</span>&nbsp;·&nbsp;zeroy
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#%e9%a1%b9%e7%9b%ae%e6%9e%84%e6%80%9d%e4%b8%8e%e7%ae%80%e4%bb%8b" aria-label="项目构思与简介">项目构思与简介</a></li>
+                <li>
+                    <a href="#%e9%a1%b9%e7%9b%ae%e8%af%b4%e6%98%8e" aria-label="项目说明">项目说明</a></li>
+                <li>
+                    <a href="#%e6%b8%b8%e6%88%8f%e5%ae%9e%e6%9c%ba%e6%88%aa%e5%9b%be" aria-label="游戏实机截图">游戏实机截图</a></li>
+                <li>
+                    <a href="#%e9%a1%b9%e7%9b%ae%e6%8a%80%e6%9c%af%e8%b7%af%e7%ba%bf" aria-label="项目技术路线">项目技术路线</a></li>
+                <li>
+                    <a href="#%e6%80%bb%e7%bb%93" aria-label="总结">总结</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h4 id="项目构思与简介">项目构思与简介<a hidden class="anchor" aria-hidden="true" href="#项目构思与简介">#</a></h4>
+<p>套壳飞机大战加上模拟网络条件不佳的情况下产生的延迟（XDU校园网直呼内行）。</p>
+<p>把飞机大战的壳换成了可莉发射蹦蹦炸弹打丘丘人（?</p>
+<p>因为担心太简单所以另外开了个极限模式把延迟调到了1000ms，给喜欢操作的人留了很高的操作空间。</p>
+<h4 id="项目说明">项目说明<a hidden class="anchor" aria-hidden="true" href="#项目说明">#</a></h4>
+<p>W：向上移动
+A：向左移动
+S：向下移动
+D：向右移动
+按下鼠标：丢出炸弹</p>
+<h4 id="游戏实机截图">游戏实机截图<a hidden class="anchor" aria-hidden="true" href="#游戏实机截图">#</a></h4>
+<p><img loading="lazy" src="/klee1.png" alt="1"  />
+</p>
+<p><img loading="lazy" src="/klee2.png" alt="2"  />
+</p>
+<p><img loading="lazy" src="/klee3.png" alt="3"  />
+</p>
+<h4 id="项目技术路线">项目技术路线<a hidden class="anchor" aria-hidden="true" href="#项目技术路线">#</a></h4>
+<p>一个正常的Unity入门项目，运用到了一些Unity的基本知识。</p>
+<p><img loading="lazy" src="/klee4.png" alt=""  />
+</p>
+<p>物体之间的碰撞需要用到刚体的技术，在此项目中为Rigidbody 2D和Box Collider 2D元件。</p>
+<p>刚体碰撞的代码的具体实现如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c#" data-lang="c#"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> OnTriggerEnter2D(Collider2D collision)
+{
+    <span style="color:#66d9ef">if</span> (collision.tag.Equals(<span style="color:#e6db74">&#34;Monster&#34;</span>))
+    {
+        Destroy(collision.gameObject);
+        Destroy(<span style="color:#66d9ef">this</span>.gameObject);
+        GameObject Fa = GameObject.Find(<span style="color:#e6db74">&#34;Empty&#34;</span>);
+        Fa.SendMessage(<span style="color:#e6db74">&#34;AddScore&#34;</span>, <span style="color:#ae81ff">1</span>);
+    }
+}
+</code></pre></div><h4 id="总结">总结<a hidden class="anchor" aria-hidden="true" href="#总结">#</a></h4>
+<p>总而言之是个非常基础的项目，了解了一下Unity2D的基本工作流。</p>
+<p>链接：https://pan.baidu.com/s/18Is4HDqZL97i-scP0-b-Xg
+提取码：yliq
+&ndash;来自百度网盘超级会员V3的分享</p>
+<p>链接：https://pan.baidu.com/s/1GXPYW85KffQoRN20MWjCtg
+提取码：xqra
+&ndash;来自百度网盘超级会员V3的分享</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://zeroy0410.github.io/articles/%E5%88%86%E4%BA%AB%E4%B8%80%E4%BA%9B%E7%9C%8B%E8%BF%87%E7%9A%84%E4%B9%A6/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>分享一些看过的书</span>
+  </a>
+  <a class="next" href="https://zeroy0410.github.io/articles/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8Cweb%E5%89%8D11%E9%A2%98wp/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>攻防世界web前11题WP</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://zeroy0410.github.io/">zeroy&#39;s blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script></body>
+
+</html>
