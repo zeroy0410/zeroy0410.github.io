@@ -2,7 +2,7 @@
 title: "KKLEEEE（Unity入门项目总结）"
 date: 2022-01-18T12:27:17+08:00
 draft: false
-url: "KKLEEEE"
+url: "articles/KKLEEEE"
 categories: ["Unity"]
 ---
 

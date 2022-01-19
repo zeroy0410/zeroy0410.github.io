@@ -156,7 +156,7 @@ warmup 进去之后发现一个滑稽表情，用burpsuite截获数据包后发�
 &lt;?php highlight_file(__FILE__); class emmm { public static function checkFile(&amp;$page) { $whitelist = [&#34;source&#34;=&gt;&#34;source.php&#34;,&#34;hint&#34;=&gt;&#34;hint.php&#34;]; if (! isset($page) || !is_string($page)) {//page必须被设置且page必须是字符串，否则将被过滤  echo &#34;you can&#39;t see it&#34;; return false; } if (in_array($page, $whitelist)) {//如果page在白名单内则合法  return true; } $_page = mb_substr(//mb_substr(str,start,length)截取字符串中的一段  $page, 0, mb_strpos($page . &#39;?&#39;, &#39;?&#39;)//查找&#39;?&#39;在page中首次出现的位置  );//将page问号之后的内容截掉  if (in_array($_page, $whitelist)) {//若此时的page在白名单内则合法  return true; } $_page = urldecode($page); $_page = mb_substr( $_page, 0, mb_strpos($_page ....</p>
   </section>
   <footer class="entry-footer"><span title='2022-01-18 11:26:31 +0800 CST'>January 18, 2022</span>&nbsp;·&nbsp;zeroy</footer>
-  <a class="entry-link" aria-label="post link to 攻防世界web前11题WP" href="https://zeroy.site/XCTF-WEB-1/"></a>
+  <a class="entry-link" aria-label="post link to 攻防世界web前11题WP" href="https://zeroy.site/articles/XCTF-WEB-1/"></a>
 </article>
     </main>
     

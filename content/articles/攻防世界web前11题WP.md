@@ -2,7 +2,7 @@
 title: "攻防世界web前11题WP"
 date: 2022-01-18T11:26:31+08:00
 draft: false
-url: "XCTF-WEB-1"
+url: "articles/XCTF-WEB-1"
 categories: ["CTF-WEB"]
 ---
 

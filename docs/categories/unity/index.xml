@@ -9,10 +9,10 @@
     <lastBuildDate>Tue, 18 Jan 2022 12:27:17 +0800</lastBuildDate><atom:link href="https://zeroy.site/categories/unity/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>KKLEEEE（Unity入门项目总结）</title>
-      <link>https://zeroy.site/KKLEEEE/</link>
+      <link>https://zeroy.site/articles/KKLEEEE/</link>
       <pubDate>Tue, 18 Jan 2022 12:27:17 +0800</pubDate>
       
-      <guid>https://zeroy.site/KKLEEEE/</guid>
+      <guid>https://zeroy.site/articles/KKLEEEE/</guid>
       <description>项目构思与简介 套壳飞机大战加上模拟网络条件不佳的情况下产生的延迟（XDU校园网直呼内行）。
 把飞机大战的壳换成了可莉发射蹦蹦炸弹打丘丘人（?
 因为担心太简单所以另外开了个极限模式把延迟调到了1000ms，给喜欢操作的人留了很高的操作空间。
