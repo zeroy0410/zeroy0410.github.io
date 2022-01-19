@@ -2,53 +2,53 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Categories on zeroy&#39;s blog</title>
-    <link>https://zeroy0410.github.io/categories/</link>
+    <link>https://zeroy.site/categories/</link>
     <description>Recent content in Categories on zeroy&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 18 Jan 2022 15:32:48 +0800</lastBuildDate><atom:link href="https://zeroy0410.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 18 Jan 2022 15:32:48 +0800</lastBuildDate><atom:link href="https://zeroy.site/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>python</title>
-      <link>https://zeroy0410.github.io/categories/python/</link>
+      <link>https://zeroy.site/categories/python/</link>
       <pubDate>Tue, 18 Jan 2022 15:32:48 +0800</pubDate>
       
-      <guid>https://zeroy0410.github.io/categories/python/</guid>
+      <guid>https://zeroy.site/categories/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>文学</title>
-      <link>https://zeroy0410.github.io/categories/%E6%96%87%E5%AD%A6/</link>
+      <link>https://zeroy.site/categories/%E6%96%87%E5%AD%A6/</link>
       <pubDate>Tue, 18 Jan 2022 12:32:52 +0800</pubDate>
       
-      <guid>https://zeroy0410.github.io/categories/%E6%96%87%E5%AD%A6/</guid>
+      <guid>https://zeroy.site/categories/%E6%96%87%E5%AD%A6/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Unity</title>
-      <link>https://zeroy0410.github.io/categories/unity/</link>
+      <link>https://zeroy.site/categories/unity/</link>
       <pubDate>Tue, 18 Jan 2022 12:27:17 +0800</pubDate>
       
-      <guid>https://zeroy0410.github.io/categories/unity/</guid>
+      <guid>https://zeroy.site/categories/unity/</guid>
       <description></description>
     </item>
     
     <item>
       <title>CTF-WEB</title>
-      <link>https://zeroy0410.github.io/categories/ctf-web/</link>
+      <link>https://zeroy.site/categories/ctf-web/</link>
       <pubDate>Tue, 18 Jan 2022 11:26:31 +0800</pubDate>
       
-      <guid>https://zeroy0410.github.io/categories/ctf-web/</guid>
+      <guid>https://zeroy.site/categories/ctf-web/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Hello World</title>
-      <link>https://zeroy0410.github.io/categories/hello-world/</link>
+      <link>https://zeroy.site/categories/hello-world/</link>
       <pubDate>Tue, 18 Jan 2022 11:24:21 +0800</pubDate>
       
-      <guid>https://zeroy0410.github.io/categories/hello-world/</guid>
+      <guid>https://zeroy.site/categories/hello-world/</guid>
       <description></description>
     </item>
     

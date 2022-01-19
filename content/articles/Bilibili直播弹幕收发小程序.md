@@ -2,6 +2,7 @@
 title: "Bilibili直播弹幕收发小程序"
 date: 2022-01-18T15:32:48+08:00
 draft: false
+url: "Bilibili-send-and-receive"
 categories: ["python"]
 ---
 
