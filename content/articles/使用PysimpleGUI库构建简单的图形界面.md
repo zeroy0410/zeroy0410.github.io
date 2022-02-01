@@ -2,7 +2,7 @@
 title: "使用PySimpleGUI库构建简单的图形界面"
 date: 2022-01-26T16:49:18+08:00
 draft: false
-url: articles/PySimpleGUI
+url: "articles/PySimpleGUI"
 categories: ["python"]
 ---
 

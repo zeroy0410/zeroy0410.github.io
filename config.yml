@@ -1,11 +1,12 @@
 baseURL: https://zeroy.site/
-languageCode: zh-CN
+defaultContentLanguage: zh-cn
 title: zeroy's blog
 theme: "PaperMod"
 
 params:
     # defaultTheme: light
     # defaultTheme: dark
+    languageCode: zh-cn
     author: zeroy
     defaultTheme: auto # to switch between dark or light according to browser theme
     ShowShareButtons: false
