@@ -3,15 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://zeroy.site/articles/</loc>
-    <lastmod>2022-01-26T16:49:18+08:00</lastmod>
+    <lastmod>2022-02-01T19:35:39+08:00</lastmod>
   </url><url>
     <loc>https://zeroy.site/categories/</loc>
-    <lastmod>2022-01-26T16:49:18+08:00</lastmod>
+    <lastmod>2022-02-01T19:35:39+08:00</lastmod>
   </url><url>
-    <loc>https://zeroy.site/categories/python/</loc>
-    <lastmod>2022-01-26T16:49:18+08:00</lastmod>
+    <loc>https://zeroy.site/articles/tallyapp1/</loc>
+    <lastmod>2022-02-01T19:35:39+08:00</lastmod>
+  </url><url>
+    <loc>https://zeroy.site/categories/python-flask/</loc>
+    <lastmod>2022-02-01T19:35:39+08:00</lastmod>
   </url><url>
     <loc>https://zeroy.site/</loc>
+    <lastmod>2022-02-01T19:35:39+08:00</lastmod>
+  </url><url>
+    <loc>https://zeroy.site/categories/python/</loc>
     <lastmod>2022-01-26T16:49:18+08:00</lastmod>
   </url><url>
     <loc>https://zeroy.site/articles/PySimpleGUI/</loc>
