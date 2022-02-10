@@ -162,6 +162,24 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>数据库基础|JDBC入门|Druid连接池的简单配置
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>数据库基础 增 新建数据库
+CREATE DATABASE {{name}} 新建数据表
+CREATE TABLE {{name}}( {{列名}} {{数据类型}} {{约束}}, ..... ); EXAMPLE: CREATE TABLE Users( id int primary key, name varchar(30) NOT NULL, birthday date, score int NOT NULL ); 添加外键约束
+建表时添加
+CONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 建表后添加
+alter table {{表名}} add CONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 插入元素
+EXAMPLE: 向一张名为users的数据表中插入元素： INSERT INTO users(id,name,birthday,score) VALUES (1,&#39;zeroy&#39;,&#39;2003-4-10&#39;,100) , (2,&#39;admin&#39;,&#39;2003-4-10&#39;,99) 查 SELECT {{列名}} FROM {{表名}} WHERE {{条件}} GROUP BY {{分组字段}} HAVING {{分组后条件}} ORDER BY {{排序字段}} LIMIT {{分页限定}} 改 UPDATE {{表名}} set {{程序语句}} WHERE {{条件}} 事务 事务能实现多条命令捆绑，一旦失败，会回滚所有操作。...</p>
+  </section>
+  <footer class="entry-footer"><span title='2022-02-07 22:36:05 +0800 CST'>February 7, 2022</span>&nbsp;·&nbsp;zeroy</footer>
+  <a class="entry-link" aria-label="post link to 数据库基础|JDBC入门|Druid连接池的简单配置" href="https://zeroy.site/articles/database-for-beginner/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>正则表达式 For Beginner
     </h2>
   </header>
