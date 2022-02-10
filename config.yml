@@ -17,7 +17,7 @@ params:
     ShowBreadCrumbs: true
     ShowCodeCopyButtons: true
     ShowToc: true
-    comments: false
+    comments: true
     enableEmoji: true
     homeInfoParams:
         Title: Hi I'm zeroy
