@@ -162,6 +162,28 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>Golang|Gin Web development for Beginners
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>自带的net/http库的使用 http库提供了HTTP服务的用户端和服务端的实现。
+官方文档
+Go语言基础之net/http | 李文周的博客 (liwenzhou.com)
+示例代码
+监听本地端口，在浏览器输出Hello World字符串。
+func sayHello(w http.ResponseWriter,r *http.Request){ //ResponseWriter为服务端返回的内容 	fmt.Fprintln(w, &#34;Hello World!&#34;) } func main(){ http.HandleFunc(&#34;/&#34;,sayHello) http.ListenAndServe(&#34;:8080&#34;,nil) } Gin框架 简介 Gin 是一个用 Go (Golang) 编写的 HTTP web 框架。 它是一个类似于 martini 但拥有更好性能的 API 框架, 优于 httprouter，速度提高了近 40 倍。如果你需要极好的性能，使用 Gin 吧。
+官方中文文档
+Gin框架介绍及使用 | 李文周的博客 (liwenzhou.com)
+特性
+Gin v1 稳定的特性:  零分配路由。 仍然是最快的 http 路由器和框架。 完整的单元测试支持。 实战考验。 API 冻结，新版本的发布不会破坏你的代码。  框架初识 使用Gin框架返回一个json文件
+func sayHello(c *gin.Context/*gin框架中的临时变量，便于后续响应请求*/){ c....</p>
+  </section>
+  <footer class="entry-footer"><span title='2022-02-11 16:31:25 +0800 CST'>February 11, 2022</span>&nbsp;·&nbsp;zeroy</footer>
+  <a class="entry-link" aria-label="post link to Golang|Gin Web development for Beginners" href="https://zeroy.site/articles/Golang-web1/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>数据库基础|JDBC入门|Druid连接池的简单配置
     </h2>
   </header>
@@ -387,18 +409,11 @@ warmup 进去之后发现一个滑稽表情，用burpsuite截获数据包后发�
   <footer class="entry-footer"><span title='2022-01-18 11:26:31 +0800 CST'>January 18, 2022</span>&nbsp;·&nbsp;zeroy</footer>
   <a class="entry-link" aria-label="post link to 攻防世界web前11题WP" href="https://zeroy.site/articles/XCTF-WEB-1/"></a>
 </article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>HelloWorld
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>$$ Hello World! $$</p>
-  </section>
-  <footer class="entry-footer"><span title='2022-01-18 11:24:21 +0800 CST'>January 18, 2022</span>&nbsp;·&nbsp;zeroy</footer>
-  <a class="entry-link" aria-label="post link to HelloWorld" href="https://zeroy.site/articles/hello-world/"></a>
-</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="https://zeroy.site/articles/page/2/"> »</a>
+  </nav>
+</footer>
     </main>
     
 <footer class="footer">

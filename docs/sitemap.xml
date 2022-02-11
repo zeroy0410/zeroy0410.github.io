@@ -3,18 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://zeroy.site/articles/</loc>
-    <lastmod>2022-02-07T22:36:05+08:00</lastmod>
+    <lastmod>2022-02-11T16:31:25+08:00</lastmod>
+  </url><url>
+    <loc>https://zeroy.site/categories/</loc>
+    <lastmod>2022-02-11T16:31:25+08:00</lastmod>
+  </url><url>
+    <loc>https://zeroy.site/categories/golang-web/</loc>
+    <lastmod>2022-02-11T16:31:25+08:00</lastmod>
+  </url><url>
+    <loc>https://zeroy.site/articles/Golang-web1/</loc>
+    <lastmod>2022-02-11T16:31:25+08:00</lastmod>
   </url><url>
     <loc>https://zeroy.site/</loc>
+    <lastmod>2022-02-11T16:31:25+08:00</lastmod>
+  </url><url>
+    <loc>https://zeroy.site/categories/database/</loc>
     <lastmod>2022-02-07T22:36:05+08:00</lastmod>
   </url><url>
     <loc>https://zeroy.site/articles/database-for-beginner/</loc>
     <lastmod>2022-02-07T22:36:05+08:00</lastmod>
   </url><url>
     <loc>https://zeroy.site/categories/basic-tools/</loc>
-    <lastmod>2022-02-03T16:00:45+08:00</lastmod>
-  </url><url>
-    <loc>https://zeroy.site/categories/</loc>
     <lastmod>2022-02-03T16:00:45+08:00</lastmod>
   </url><url>
     <loc>https://zeroy.site/articles/regular-expression/</loc>
