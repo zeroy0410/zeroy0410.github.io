@@ -179,15 +179,27 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>高等数学（下） 定积分 总结
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p></p>
+  </section>
+  <footer class="entry-footer"><span title='2022-02-17 12:18:48 +0800 CST'>February 17, 2022</span>&nbsp;·&nbsp;zeroy</footer>
+  <a class="entry-link" aria-label="post link to 高等数学（下） 定积分 总结" href="https://zeroy.site/articles/math2/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>高等数学（上） 不定积分 总结
     </h2>
   </header>
   <section class="entry-content">
     <p>高等数学上册(微积分)必背公式总结 - 知乎 (zhihu.com)
-重难点公式： $$ \int\frac{1}{a^2&#43;x^2}dx=\frac{1}{a}arctan\frac{x}{a}&#43;C\\ \int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a&#43;x}{a-x}|&#43;C\\ \int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}&#43;C\\ \int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x&#43;\sqrt{x^2\pm a^2}|&#43;C\\ \int{tan\ x}dx=-ln|cos\ x|&#43;C\\ \int{cot\ x}dx=ln|sin\ x|&#43;C\\ \int{csc\ x}dx=ln|csc\ x-cot\ x|&#43;C\\ \int{sec\ x}dx=ln|sec\ x&#43;tan\ x|&#43;C\\ \int{sec^2\ x}dx=tan\ x&#43;C\\ \int{csc^2\ x}dx=-cot\ x&#43;C\\ \int{sec\ x*tan\ x}dx=sec\ x&#43;C\\ \int{csc\ x*cot\ x}dx=-csc\ x&#43;C\\ $$
+导数： $$ \begin{align} &amp;[\cos(\omega x&#43;\varphi)]^{(n)}=\omega^n\cos(\omega x&#43;\frac{n\pi}{2}&#43;\varphi)\\ &amp;[\sin(\omega x&#43;\varphi)]^{(n)}=\omega^n\sin(\omega x&#43;\frac{n\pi}{2}&#43;\varphi)\\ \end{align} $$
+重难点公式： $$ \begin{align} &amp;\int\frac{1}{a^2&#43;x^2}dx=\frac{1}{a}arctan\frac{x}{a}&#43;C\\ &amp;\int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a&#43;x}{a-x}|&#43;C\\ &amp;\int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}&#43;C\\ &amp;\int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x&#43;\sqrt{x^2\pm a^2}|&#43;C\\ &amp;\int{tan\ x}dx=-ln|cos\ x|&#43;C\\ &amp;\int{cot\ x}dx=ln|sin\ x|&#43;C\\ &amp;\int{csc\ x}dx=ln|csc\ x-cot\ x|&#43;C\\ &amp;\int{sec\ x}dx=ln|sec\ x&#43;tan\ x|&#43;C\\ &amp;\int{sec^2\ x}dx=tan\ x&#43;C\\ &amp;\int{csc^2\ x}dx=-cot\ x&#43;C\\ &amp;\int{sec\ x*tan\ x}dx=sec\ x&#43;C\\ &amp;\int{csc\ x*cot\ x}dx=-csc\ x&#43;C\\ \end{align} $$
 凑系数，拆项： $$ \int{\frac{x}{(2x&#43;3)^2}}dx=\frac{1}{2}\int{\frac{2x&#43;3-3}{(2x&#43;3)^2}}dx=\frac{1}{2}\int{\frac{2x&#43;3}{(2x&#43;3)^2}}dx-\frac{1}{2}\int\frac{3}{(2x&#43;3)^2}dx\ … $$ 分子包含多项的，直接无法求解可以拆项求。
-常见的配凑： $$ xe^x:\\ \int\frac{1&#43;x}{x(xe^x&#43;1)}dx=\int\frac{(1&#43;x)e^x}{xe^x(xe^x&#43;1)}dx=\int\frac{1}{xe^x(xe^x&#43;1)}d(xe^x)\overset{t=xe^x}=\int\frac{1}{t(t&#43;1)}dt\\ xlnx:\\ \int\frac{(1&#43;lnx)dx}{1&#43;x^2ln^2x}=\int\frac{1}{1&#43;(xlnx)^2}d(xlnx)\\ \frac{1}{\sqrt{x}}:\\ \int\frac{1}{\sqrt{x(x&#43;4)}}dx=2\int\frac{1}{2\sqrt{x}\sqrt{x&#43;4}}dx=2\int\frac{1}{\sqrt{4&#43;\sqrt{x}^2}}d{\sqrt{x}}\\ $$ 奇怪的配凑： $$ \int\frac{1}{\sqrt{e^{2x}-1}}dx=\int\frac{1}{\sqrt{e^{2x}(1-e^{-2x})}}dx=\int\frac{e^{-x}}{\sqrt{1-e^{-2x}}} $$ 有理函数积分： $$ \int\frac{x-2}{x^2&#43;x&#43;1}dx=\int\frac{A(x^2&#43;x&#43;1)&#39;&#43;B}{x^2&#43;x&#43;1}dx\\ A(2x&#43;1)&#43;B=x-2=&gt;A=\frac{1}{2},B=-\frac{5}{2}\\ =\frac{1}{2}\int\frac{1}{x^2&#43;x&#43;1}d(x^2&#43;x&#43;1)-\frac{5}{2}\int\frac{1}{x^2&#43;x&#43;1}dx\\ =\frac{1}{2}\int\frac{1}{x^2&#43;x&#43;1}d(x^2&#43;x&#43;1)-\frac{5}{2}\int\frac{1}{(x&#43;\frac{1}{2})^2&#43;\frac{3}{4}}\\ \text{ps:当分母}\triangle&lt;0\text{时才可以使用,否则直接裂项即可} $$ 表格法求积分：
-不定积分表格法的本质(推导) - 知乎 (zhihu....</p>
+常见的配凑： $$ \begin{align} &amp;xe^x:\\ &amp;\int\frac{1&#43;x}{x(xe^x&#43;1)}dx=\int\frac{(1&#43;x)e^x}{xe^x(xe^x&#43;1)}dx=\int\frac{1}{xe^x(xe^x&#43;1)}d(xe^x)\overset{t=xe^x}=\int\frac{1}{t(t&#43;1)}dt\\ &amp;xlnx:\\ &amp;\int\frac{(1&#43;lnx)dx}{1&#43;x^2ln^2x}=\int\frac{1}{1&#43;(xlnx)^2}d(xlnx)\\ &amp;\frac{1}{\sqrt{x}}:\\ &amp;\int\frac{1}{\sqrt{x(x&#43;4)}}dx=2\int\frac{1}{2\sqrt{x}\sqrt{x&#43;4}}dx=2\int\frac{1}{\sqrt{4&#43;\sqrt{x}^2}}d{\sqrt{x}}\\ &amp;e^x:\\ &amp;\int f(e^x){\rm dx}=\int\frac{f(e^x)}{e^x}{\rm de^x}=\int\frac{f(t)}{t}{\rm dt} \end{align} $$...</p>
   </section>
   <footer class="entry-footer"><span title='2022-02-16 15:38:32 +0800 CST'>February 16, 2022</span>&nbsp;·&nbsp;zeroy</footer>
   <a class="entry-link" aria-label="post link to 高等数学（上） 不定积分 总结" href="https://zeroy.site/articles/math-integrate/"></a>
@@ -406,27 +418,6 @@ import PySimpleGUI as sg 元素 PySimpleGUI有着丰富的控件支持。
   </section>
   <footer class="entry-footer"><span title='2022-01-18 12:30:40 +0800 CST'>January 18, 2022</span>&nbsp;·&nbsp;zeroy</footer>
   <a class="entry-link" aria-label="post link to 分享一些看过的书" href="https://zeroy.site/articles/share-books/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>KKLEEEE（Unity入门项目总结）
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>项目构思与简介 套壳飞机大战加上模拟网络条件不佳的情况下产生的延迟（XDU校园网直呼内行）。
-把飞机大战的壳换成了可莉发射蹦蹦炸弹打丘丘人（?
-因为担心太简单所以另外开了个极限模式把延迟调到了1000ms，给喜欢操作的人留了很高的操作空间。
-项目说明 W：向上移动 A：向左移动 S：向下移动 D：向右移动 按下鼠标：丢出炸弹
-游戏实机截图 项目技术路线 一个正常的Unity入门项目，运用到了一些Unity的基本知识。
-物体之间的碰撞需要用到刚体的技术，在此项目中为Rigidbody 2D和Box Collider 2D元件。
-刚体碰撞的代码的具体实现如下：
-private void OnTriggerEnter2D(Collider2D collision) { if (collision.tag.Equals(&#34;Monster&#34;)) { Destroy(collision.gameObject); Destroy(this.gameObject); GameObject Fa = GameObject.Find(&#34;Empty&#34;); Fa.SendMessage(&#34;AddScore&#34;, 1); } } 总结 总而言之是个非常基础的项目，了解了一下Unity2D的基本工作流。
-链接：https://pan.baidu.com/s/18Is4HDqZL97i-scP0-b-Xg 提取码：yliq –来自百度网盘超级会员V3的分享
-链接：https://pan.baidu.com/s/1GXPYW85KffQoRN20MWjCtg 提取码：xqra –来自百度网盘超级会员V3的分享</p>
-  </section>
-  <footer class="entry-footer"><span title='2022-01-18 12:27:17 +0800 CST'>January 18, 2022</span>&nbsp;·&nbsp;zeroy</footer>
-  <a class="entry-link" aria-label="post link to KKLEEEE（Unity入门项目总结）" href="https://zeroy.site/articles/KKLEEEE/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

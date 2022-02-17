@@ -8,10 +8,10 @@
 <title>高等数学（上） 不定积分 总结 | zeroy&#39;s blog</title>
 <meta name="keywords" content="" />
 <meta name="description" content="高等数学上册(微积分)必背公式总结 - 知乎 (zhihu.com)
-重难点公式： $$ \int\frac{1}{a^2&#43;x^2}dx=\frac{1}{a}arctan\frac{x}{a}&#43;C\\ \int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a&#43;x}{a-x}|&#43;C\\ \int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}&#43;C\\ \int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x&#43;\sqrt{x^2\pm a^2}|&#43;C\\ \int{tan\ x}dx=-ln|cos\ x|&#43;C\\ \int{cot\ x}dx=ln|sin\ x|&#43;C\\ \int{csc\ x}dx=ln|csc\ x-cot\ x|&#43;C\\ \int{sec\ x}dx=ln|sec\ x&#43;tan\ x|&#43;C\\ \int{sec^2\ x}dx=tan\ x&#43;C\\ \int{csc^2\ x}dx=-cot\ x&#43;C\\ \int{sec\ x*tan\ x}dx=sec\ x&#43;C\\ \int{csc\ x*cot\ x}dx=-csc\ x&#43;C\\ $$
+导数： $$ \begin{align} &amp;[\cos(\omega x&#43;\varphi)]^{(n)}=\omega^n\cos(\omega x&#43;\frac{n\pi}{2}&#43;\varphi)\\ &amp;[\sin(\omega x&#43;\varphi)]^{(n)}=\omega^n\sin(\omega x&#43;\frac{n\pi}{2}&#43;\varphi)\\ \end{align} $$
+重难点公式： $$ \begin{align} &amp;\int\frac{1}{a^2&#43;x^2}dx=\frac{1}{a}arctan\frac{x}{a}&#43;C\\ &amp;\int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a&#43;x}{a-x}|&#43;C\\ &amp;\int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}&#43;C\\ &amp;\int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x&#43;\sqrt{x^2\pm a^2}|&#43;C\\ &amp;\int{tan\ x}dx=-ln|cos\ x|&#43;C\\ &amp;\int{cot\ x}dx=ln|sin\ x|&#43;C\\ &amp;\int{csc\ x}dx=ln|csc\ x-cot\ x|&#43;C\\ &amp;\int{sec\ x}dx=ln|sec\ x&#43;tan\ x|&#43;C\\ &amp;\int{sec^2\ x}dx=tan\ x&#43;C\\ &amp;\int{csc^2\ x}dx=-cot\ x&#43;C\\ &amp;\int{sec\ x*tan\ x}dx=sec\ x&#43;C\\ &amp;\int{csc\ x*cot\ x}dx=-csc\ x&#43;C\\ \end{align} $$
 凑系数，拆项： $$ \int{\frac{x}{(2x&#43;3)^2}}dx=\frac{1}{2}\int{\frac{2x&#43;3-3}{(2x&#43;3)^2}}dx=\frac{1}{2}\int{\frac{2x&#43;3}{(2x&#43;3)^2}}dx-\frac{1}{2}\int\frac{3}{(2x&#43;3)^2}dx\ &hellip; $$ 分子包含多项的，直接无法求解可以拆项求。
-常见的配凑： $$ xe^x:\\ \int\frac{1&#43;x}{x(xe^x&#43;1)}dx=\int\frac{(1&#43;x)e^x}{xe^x(xe^x&#43;1)}dx=\int\frac{1}{xe^x(xe^x&#43;1)}d(xe^x)\overset{t=xe^x}=\int\frac{1}{t(t&#43;1)}dt\\ xlnx:\\ \int\frac{(1&#43;lnx)dx}{1&#43;x^2ln^2x}=\int\frac{1}{1&#43;(xlnx)^2}d(xlnx)\\ \frac{1}{\sqrt{x}}:\\ \int\frac{1}{\sqrt{x(x&#43;4)}}dx=2\int\frac{1}{2\sqrt{x}\sqrt{x&#43;4}}dx=2\int\frac{1}{\sqrt{4&#43;\sqrt{x}^2}}d{\sqrt{x}}\\ $$ 奇怪的配凑： $$ \int\frac{1}{\sqrt{e^{2x}-1}}dx=\int\frac{1}{\sqrt{e^{2x}(1-e^{-2x})}}dx=\int\frac{e^{-x}}{\sqrt{1-e^{-2x}}} $$ 有理函数积分： $$ \int\frac{x-2}{x^2&#43;x&#43;1}dx=\int\frac{A(x^2&#43;x&#43;1)&#39;&#43;B}{x^2&#43;x&#43;1}dx\\ A(2x&#43;1)&#43;B=x-2=&gt;A=\frac{1}{2},B=-\frac{5}{2}\\ =\frac{1}{2}\int\frac{1}{x^2&#43;x&#43;1}d(x^2&#43;x&#43;1)-\frac{5}{2}\int\frac{1}{x^2&#43;x&#43;1}dx\\ =\frac{1}{2}\int\frac{1}{x^2&#43;x&#43;1}d(x^2&#43;x&#43;1)-\frac{5}{2}\int\frac{1}{(x&#43;\frac{1}{2})^2&#43;\frac{3}{4}}\\ \text{ps:当分母}\triangle&lt;0\text{时才可以使用,否则直接裂项即可} $$ 表格法求积分：
-不定积分表格法的本质(推导) - 知乎 (zhihu.">
+常见的配凑： $$ \begin{align} &amp;xe^x:\\ &amp;\int\frac{1&#43;x}{x(xe^x&#43;1)}dx=\int\frac{(1&#43;x)e^x}{xe^x(xe^x&#43;1)}dx=\int\frac{1}{xe^x(xe^x&#43;1)}d(xe^x)\overset{t=xe^x}=\int\frac{1}{t(t&#43;1)}dt\\ &amp;xlnx:\\ &amp;\int\frac{(1&#43;lnx)dx}{1&#43;x^2ln^2x}=\int\frac{1}{1&#43;(xlnx)^2}d(xlnx)\\ &amp;\frac{1}{\sqrt{x}}:\\ &amp;\int\frac{1}{\sqrt{x(x&#43;4)}}dx=2\int\frac{1}{2\sqrt{x}\sqrt{x&#43;4}}dx=2\int\frac{1}{\sqrt{4&#43;\sqrt{x}^2}}d{\sqrt{x}}\\ &amp;e^x:\\ &amp;\int f(e^x){\rm dx}=\int\frac{f(e^x)}{e^x}{\rm de^x}=\int\frac{f(t)}{t}{\rm dt} \end{align} $$">
 <meta name="author" content="zeroy">
 <link rel="canonical" href="https://zeroy.site/articles/math-integrate/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
@@ -63,10 +63,10 @@
     </style>
 </noscript><meta property="og:title" content="高等数学（上） 不定积分 总结" />
 <meta property="og:description" content="高等数学上册(微积分)必背公式总结 - 知乎 (zhihu.com)
-重难点公式： $$ \int\frac{1}{a^2&#43;x^2}dx=\frac{1}{a}arctan\frac{x}{a}&#43;C\\ \int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a&#43;x}{a-x}|&#43;C\\ \int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}&#43;C\\ \int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x&#43;\sqrt{x^2\pm a^2}|&#43;C\\ \int{tan\ x}dx=-ln|cos\ x|&#43;C\\ \int{cot\ x}dx=ln|sin\ x|&#43;C\\ \int{csc\ x}dx=ln|csc\ x-cot\ x|&#43;C\\ \int{sec\ x}dx=ln|sec\ x&#43;tan\ x|&#43;C\\ \int{sec^2\ x}dx=tan\ x&#43;C\\ \int{csc^2\ x}dx=-cot\ x&#43;C\\ \int{sec\ x*tan\ x}dx=sec\ x&#43;C\\ \int{csc\ x*cot\ x}dx=-csc\ x&#43;C\\ $$
+导数： $$ \begin{align} &amp;[\cos(\omega x&#43;\varphi)]^{(n)}=\omega^n\cos(\omega x&#43;\frac{n\pi}{2}&#43;\varphi)\\ &amp;[\sin(\omega x&#43;\varphi)]^{(n)}=\omega^n\sin(\omega x&#43;\frac{n\pi}{2}&#43;\varphi)\\ \end{align} $$
+重难点公式： $$ \begin{align} &amp;\int\frac{1}{a^2&#43;x^2}dx=\frac{1}{a}arctan\frac{x}{a}&#43;C\\ &amp;\int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a&#43;x}{a-x}|&#43;C\\ &amp;\int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}&#43;C\\ &amp;\int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x&#43;\sqrt{x^2\pm a^2}|&#43;C\\ &amp;\int{tan\ x}dx=-ln|cos\ x|&#43;C\\ &amp;\int{cot\ x}dx=ln|sin\ x|&#43;C\\ &amp;\int{csc\ x}dx=ln|csc\ x-cot\ x|&#43;C\\ &amp;\int{sec\ x}dx=ln|sec\ x&#43;tan\ x|&#43;C\\ &amp;\int{sec^2\ x}dx=tan\ x&#43;C\\ &amp;\int{csc^2\ x}dx=-cot\ x&#43;C\\ &amp;\int{sec\ x*tan\ x}dx=sec\ x&#43;C\\ &amp;\int{csc\ x*cot\ x}dx=-csc\ x&#43;C\\ \end{align} $$
 凑系数，拆项： $$ \int{\frac{x}{(2x&#43;3)^2}}dx=\frac{1}{2}\int{\frac{2x&#43;3-3}{(2x&#43;3)^2}}dx=\frac{1}{2}\int{\frac{2x&#43;3}{(2x&#43;3)^2}}dx-\frac{1}{2}\int\frac{3}{(2x&#43;3)^2}dx\ &hellip; $$ 分子包含多项的，直接无法求解可以拆项求。
-常见的配凑： $$ xe^x:\\ \int\frac{1&#43;x}{x(xe^x&#43;1)}dx=\int\frac{(1&#43;x)e^x}{xe^x(xe^x&#43;1)}dx=\int\frac{1}{xe^x(xe^x&#43;1)}d(xe^x)\overset{t=xe^x}=\int\frac{1}{t(t&#43;1)}dt\\ xlnx:\\ \int\frac{(1&#43;lnx)dx}{1&#43;x^2ln^2x}=\int\frac{1}{1&#43;(xlnx)^2}d(xlnx)\\ \frac{1}{\sqrt{x}}:\\ \int\frac{1}{\sqrt{x(x&#43;4)}}dx=2\int\frac{1}{2\sqrt{x}\sqrt{x&#43;4}}dx=2\int\frac{1}{\sqrt{4&#43;\sqrt{x}^2}}d{\sqrt{x}}\\ $$ 奇怪的配凑： $$ \int\frac{1}{\sqrt{e^{2x}-1}}dx=\int\frac{1}{\sqrt{e^{2x}(1-e^{-2x})}}dx=\int\frac{e^{-x}}{\sqrt{1-e^{-2x}}} $$ 有理函数积分： $$ \int\frac{x-2}{x^2&#43;x&#43;1}dx=\int\frac{A(x^2&#43;x&#43;1)&#39;&#43;B}{x^2&#43;x&#43;1}dx\\ A(2x&#43;1)&#43;B=x-2=&gt;A=\frac{1}{2},B=-\frac{5}{2}\\ =\frac{1}{2}\int\frac{1}{x^2&#43;x&#43;1}d(x^2&#43;x&#43;1)-\frac{5}{2}\int\frac{1}{x^2&#43;x&#43;1}dx\\ =\frac{1}{2}\int\frac{1}{x^2&#43;x&#43;1}d(x^2&#43;x&#43;1)-\frac{5}{2}\int\frac{1}{(x&#43;\frac{1}{2})^2&#43;\frac{3}{4}}\\ \text{ps:当分母}\triangle&lt;0\text{时才可以使用,否则直接裂项即可} $$ 表格法求积分：
-不定积分表格法的本质(推导) - 知乎 (zhihu." />
+常见的配凑： $$ \begin{align} &amp;xe^x:\\ &amp;\int\frac{1&#43;x}{x(xe^x&#43;1)}dx=\int\frac{(1&#43;x)e^x}{xe^x(xe^x&#43;1)}dx=\int\frac{1}{xe^x(xe^x&#43;1)}d(xe^x)\overset{t=xe^x}=\int\frac{1}{t(t&#43;1)}dt\\ &amp;xlnx:\\ &amp;\int\frac{(1&#43;lnx)dx}{1&#43;x^2ln^2x}=\int\frac{1}{1&#43;(xlnx)^2}d(xlnx)\\ &amp;\frac{1}{\sqrt{x}}:\\ &amp;\int\frac{1}{\sqrt{x(x&#43;4)}}dx=2\int\frac{1}{2\sqrt{x}\sqrt{x&#43;4}}dx=2\int\frac{1}{\sqrt{4&#43;\sqrt{x}^2}}d{\sqrt{x}}\\ &amp;e^x:\\ &amp;\int f(e^x){\rm dx}=\int\frac{f(e^x)}{e^x}{\rm de^x}=\int\frac{f(t)}{t}{\rm dt} \end{align} $$" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://zeroy.site/articles/math-integrate/" /><meta property="article:section" content="articles" />
 <meta property="article:published_time" content="2022-02-16T15:38:32&#43;08:00" />
@@ -75,10 +75,10 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="高等数学（上） 不定积分 总结"/>
 <meta name="twitter:description" content="高等数学上册(微积分)必背公式总结 - 知乎 (zhihu.com)
-重难点公式： $$ \int\frac{1}{a^2&#43;x^2}dx=\frac{1}{a}arctan\frac{x}{a}&#43;C\\ \int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a&#43;x}{a-x}|&#43;C\\ \int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}&#43;C\\ \int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x&#43;\sqrt{x^2\pm a^2}|&#43;C\\ \int{tan\ x}dx=-ln|cos\ x|&#43;C\\ \int{cot\ x}dx=ln|sin\ x|&#43;C\\ \int{csc\ x}dx=ln|csc\ x-cot\ x|&#43;C\\ \int{sec\ x}dx=ln|sec\ x&#43;tan\ x|&#43;C\\ \int{sec^2\ x}dx=tan\ x&#43;C\\ \int{csc^2\ x}dx=-cot\ x&#43;C\\ \int{sec\ x*tan\ x}dx=sec\ x&#43;C\\ \int{csc\ x*cot\ x}dx=-csc\ x&#43;C\\ $$
+导数： $$ \begin{align} &amp;[\cos(\omega x&#43;\varphi)]^{(n)}=\omega^n\cos(\omega x&#43;\frac{n\pi}{2}&#43;\varphi)\\ &amp;[\sin(\omega x&#43;\varphi)]^{(n)}=\omega^n\sin(\omega x&#43;\frac{n\pi}{2}&#43;\varphi)\\ \end{align} $$
+重难点公式： $$ \begin{align} &amp;\int\frac{1}{a^2&#43;x^2}dx=\frac{1}{a}arctan\frac{x}{a}&#43;C\\ &amp;\int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a&#43;x}{a-x}|&#43;C\\ &amp;\int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}&#43;C\\ &amp;\int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x&#43;\sqrt{x^2\pm a^2}|&#43;C\\ &amp;\int{tan\ x}dx=-ln|cos\ x|&#43;C\\ &amp;\int{cot\ x}dx=ln|sin\ x|&#43;C\\ &amp;\int{csc\ x}dx=ln|csc\ x-cot\ x|&#43;C\\ &amp;\int{sec\ x}dx=ln|sec\ x&#43;tan\ x|&#43;C\\ &amp;\int{sec^2\ x}dx=tan\ x&#43;C\\ &amp;\int{csc^2\ x}dx=-cot\ x&#43;C\\ &amp;\int{sec\ x*tan\ x}dx=sec\ x&#43;C\\ &amp;\int{csc\ x*cot\ x}dx=-csc\ x&#43;C\\ \end{align} $$
 凑系数，拆项： $$ \int{\frac{x}{(2x&#43;3)^2}}dx=\frac{1}{2}\int{\frac{2x&#43;3-3}{(2x&#43;3)^2}}dx=\frac{1}{2}\int{\frac{2x&#43;3}{(2x&#43;3)^2}}dx-\frac{1}{2}\int\frac{3}{(2x&#43;3)^2}dx\ &hellip; $$ 分子包含多项的，直接无法求解可以拆项求。
-常见的配凑： $$ xe^x:\\ \int\frac{1&#43;x}{x(xe^x&#43;1)}dx=\int\frac{(1&#43;x)e^x}{xe^x(xe^x&#43;1)}dx=\int\frac{1}{xe^x(xe^x&#43;1)}d(xe^x)\overset{t=xe^x}=\int\frac{1}{t(t&#43;1)}dt\\ xlnx:\\ \int\frac{(1&#43;lnx)dx}{1&#43;x^2ln^2x}=\int\frac{1}{1&#43;(xlnx)^2}d(xlnx)\\ \frac{1}{\sqrt{x}}:\\ \int\frac{1}{\sqrt{x(x&#43;4)}}dx=2\int\frac{1}{2\sqrt{x}\sqrt{x&#43;4}}dx=2\int\frac{1}{\sqrt{4&#43;\sqrt{x}^2}}d{\sqrt{x}}\\ $$ 奇怪的配凑： $$ \int\frac{1}{\sqrt{e^{2x}-1}}dx=\int\frac{1}{\sqrt{e^{2x}(1-e^{-2x})}}dx=\int\frac{e^{-x}}{\sqrt{1-e^{-2x}}} $$ 有理函数积分： $$ \int\frac{x-2}{x^2&#43;x&#43;1}dx=\int\frac{A(x^2&#43;x&#43;1)&#39;&#43;B}{x^2&#43;x&#43;1}dx\\ A(2x&#43;1)&#43;B=x-2=&gt;A=\frac{1}{2},B=-\frac{5}{2}\\ =\frac{1}{2}\int\frac{1}{x^2&#43;x&#43;1}d(x^2&#43;x&#43;1)-\frac{5}{2}\int\frac{1}{x^2&#43;x&#43;1}dx\\ =\frac{1}{2}\int\frac{1}{x^2&#43;x&#43;1}d(x^2&#43;x&#43;1)-\frac{5}{2}\int\frac{1}{(x&#43;\frac{1}{2})^2&#43;\frac{3}{4}}\\ \text{ps:当分母}\triangle&lt;0\text{时才可以使用,否则直接裂项即可} $$ 表格法求积分：
-不定积分表格法的本质(推导) - 知乎 (zhihu."/>
+常见的配凑： $$ \begin{align} &amp;xe^x:\\ &amp;\int\frac{1&#43;x}{x(xe^x&#43;1)}dx=\int\frac{(1&#43;x)e^x}{xe^x(xe^x&#43;1)}dx=\int\frac{1}{xe^x(xe^x&#43;1)}d(xe^x)\overset{t=xe^x}=\int\frac{1}{t(t&#43;1)}dt\\ &amp;xlnx:\\ &amp;\int\frac{(1&#43;lnx)dx}{1&#43;x^2ln^2x}=\int\frac{1}{1&#43;(xlnx)^2}d(xlnx)\\ &amp;\frac{1}{\sqrt{x}}:\\ &amp;\int\frac{1}{\sqrt{x(x&#43;4)}}dx=2\int\frac{1}{2\sqrt{x}\sqrt{x&#43;4}}dx=2\int\frac{1}{\sqrt{4&#43;\sqrt{x}^2}}d{\sqrt{x}}\\ &amp;e^x:\\ &amp;\int f(e^x){\rm dx}=\int\frac{f(e^x)}{e^x}{\rm de^x}=\int\frac{f(t)}{t}{\rm dt} \end{align} $$"/>
 
 
 <script type="application/ld+json">
@@ -107,12 +107,12 @@
   "@type": "BlogPosting",
   "headline": "高等数学（上） 不定积分 总结",
   "name": "高等数学（上） 不定积分 总结",
-  "description": "高等数学上册(微积分)必背公式总结 - 知乎 (zhihu.com)\n重难点公式： $$ \\int\\frac{1}{a^2+x^2}dx=\\frac{1}{a}arctan\\frac{x}{a}+C\\\\ \\int\\frac{1}{a^2-x^2}dx=\\frac{1}{2a}ln|\\frac{a+x}{a-x}|+C\\\\ \\int\\frac{1}{\\sqrt{a^2-x^2}}dx=arcsin\\frac{x}{a}+C\\\\ \\int\\frac{1}{\\sqrt{x^2\\pm a^2}}dx=ln|x+\\sqrt{x^2\\pm a^2}|+C\\\\ \\int{tan\\ x}dx=-ln|cos\\ x|+C\\\\ \\int{cot\\ x}dx=ln|sin\\ x|+C\\\\ \\int{csc\\ x}dx=ln|csc\\ x-cot\\ x|+C\\\\ \\int{sec\\ x}dx=ln|sec\\ x+tan\\ x|+C\\\\ \\int{sec^2\\ x}dx=tan\\ x+C\\\\ \\int{csc^2\\ x}dx=-cot\\ x+C\\\\ \\int{sec\\ x*tan\\ x}dx=sec\\ x+C\\\\ \\int{csc\\ x*cot\\ x}dx=-csc\\ x+C\\\\ $$\n凑系数，拆项： $$ \\int{\\frac{x}{(2x+3)^2}}dx=\\frac{1}{2}\\int{\\frac{2x+3-3}{(2x+3)^2}}dx=\\frac{1}{2}\\int{\\frac{2x+3}{(2x+3)^2}}dx-\\frac{1}{2}\\int\\frac{3}{(2x+3)^2}dx\\ \u0026hellip; $$ 分子包含多项的，直接无法求解可以拆项求。\n常见的配凑： $$ xe^x:\\\\ \\int\\frac{1+x}{x(xe^x+1)}dx=\\int\\frac{(1+x)e^x}{xe^x(xe^x+1)}dx=\\int\\frac{1}{xe^x(xe^x+1)}d(xe^x)\\overset{t=xe^x}=\\int\\frac{1}{t(t+1)}dt\\\\ xlnx:\\\\ \\int\\frac{(1+lnx)dx}{1+x^2ln^2x}=\\int\\frac{1}{1+(xlnx)^2}d(xlnx)\\\\ \\frac{1}{\\sqrt{x}}:\\\\ \\int\\frac{1}{\\sqrt{x(x+4)}}dx=2\\int\\frac{1}{2\\sqrt{x}\\sqrt{x+4}}dx=2\\int\\frac{1}{\\sqrt{4+\\sqrt{x}^2}}d{\\sqrt{x}}\\\\ $$ 奇怪的配凑： $$ \\int\\frac{1}{\\sqrt{e^{2x}-1}}dx=\\int\\frac{1}{\\sqrt{e^{2x}(1-e^{-2x})}}dx=\\int\\frac{e^{-x}}{\\sqrt{1-e^{-2x}}} $$ 有理函数积分： $$ \\int\\frac{x-2}{x^2+x+1}dx=\\int\\frac{A(x^2+x+1)'+B}{x^2+x+1}dx\\\\ A(2x+1)+B=x-2=\u0026gt;A=\\frac{1}{2},B=-\\frac{5}{2}\\\\ =\\frac{1}{2}\\int\\frac{1}{x^2+x+1}d(x^2+x+1)-\\frac{5}{2}\\int\\frac{1}{x^2+x+1}dx\\\\ =\\frac{1}{2}\\int\\frac{1}{x^2+x+1}d(x^2+x+1)-\\frac{5}{2}\\int\\frac{1}{(x+\\frac{1}{2})^2+\\frac{3}{4}}\\\\ \\text{ps:当分母}\\triangle\u0026lt;0\\text{时才可以使用,否则直接裂项即可} $$ 表格法求积分：\n不定积分表格法的本质(推导) - 知乎 (zhihu.",
+  "description": "高等数学上册(微积分)必背公式总结 - 知乎 (zhihu.com)\n导数： $$ \\begin{align} \u0026amp;[\\cos(\\omega x+\\varphi)]^{(n)}=\\omega^n\\cos(\\omega x+\\frac{n\\pi}{2}+\\varphi)\\\\ \u0026amp;[\\sin(\\omega x+\\varphi)]^{(n)}=\\omega^n\\sin(\\omega x+\\frac{n\\pi}{2}+\\varphi)\\\\ \\end{align} $$\n重难点公式： $$ \\begin{align} \u0026amp;\\int\\frac{1}{a^2+x^2}dx=\\frac{1}{a}arctan\\frac{x}{a}+C\\\\ \u0026amp;\\int\\frac{1}{a^2-x^2}dx=\\frac{1}{2a}ln|\\frac{a+x}{a-x}|+C\\\\ \u0026amp;\\int\\frac{1}{\\sqrt{a^2-x^2}}dx=arcsin\\frac{x}{a}+C\\\\ \u0026amp;\\int\\frac{1}{\\sqrt{x^2\\pm a^2}}dx=ln|x+\\sqrt{x^2\\pm a^2}|+C\\\\ \u0026amp;\\int{tan\\ x}dx=-ln|cos\\ x|+C\\\\ \u0026amp;\\int{cot\\ x}dx=ln|sin\\ x|+C\\\\ \u0026amp;\\int{csc\\ x}dx=ln|csc\\ x-cot\\ x|+C\\\\ \u0026amp;\\int{sec\\ x}dx=ln|sec\\ x+tan\\ x|+C\\\\ \u0026amp;\\int{sec^2\\ x}dx=tan\\ x+C\\\\ \u0026amp;\\int{csc^2\\ x}dx=-cot\\ x+C\\\\ \u0026amp;\\int{sec\\ x*tan\\ x}dx=sec\\ x+C\\\\ \u0026amp;\\int{csc\\ x*cot\\ x}dx=-csc\\ x+C\\\\ \\end{align} $$\n凑系数，拆项： $$ \\int{\\frac{x}{(2x+3)^2}}dx=\\frac{1}{2}\\int{\\frac{2x+3-3}{(2x+3)^2}}dx=\\frac{1}{2}\\int{\\frac{2x+3}{(2x+3)^2}}dx-\\frac{1}{2}\\int\\frac{3}{(2x+3)^2}dx\\ \u0026hellip; $$ 分子包含多项的，直接无法求解可以拆项求。\n常见的配凑： $$ \\begin{align} \u0026amp;xe^x:\\\\ \u0026amp;\\int\\frac{1+x}{x(xe^x+1)}dx=\\int\\frac{(1+x)e^x}{xe^x(xe^x+1)}dx=\\int\\frac{1}{xe^x(xe^x+1)}d(xe^x)\\overset{t=xe^x}=\\int\\frac{1}{t(t+1)}dt\\\\ \u0026amp;xlnx:\\\\ \u0026amp;\\int\\frac{(1+lnx)dx}{1+x^2ln^2x}=\\int\\frac{1}{1+(xlnx)^2}d(xlnx)\\\\ \u0026amp;\\frac{1}{\\sqrt{x}}:\\\\ \u0026amp;\\int\\frac{1}{\\sqrt{x(x+4)}}dx=2\\int\\frac{1}{2\\sqrt{x}\\sqrt{x+4}}dx=2\\int\\frac{1}{\\sqrt{4+\\sqrt{x}^2}}d{\\sqrt{x}}\\\\ \u0026amp;e^x:\\\\ \u0026amp;\\int f(e^x){\\rm dx}=\\int\\frac{f(e^x)}{e^x}{\\rm de^x}=\\int\\frac{f(t)}{t}{\\rm dt} \\end{align} $$",
   "keywords": [
     
   ],
-  "articleBody": "高等数学上册(微积分)必背公式总结 - 知乎 (zhihu.com)\n重难点公式： $$ \\int\\frac{1}{a^2+x^2}dx=\\frac{1}{a}arctan\\frac{x}{a}+C\\\\ \\int\\frac{1}{a^2-x^2}dx=\\frac{1}{2a}ln|\\frac{a+x}{a-x}|+C\\\\ \\int\\frac{1}{\\sqrt{a^2-x^2}}dx=arcsin\\frac{x}{a}+C\\\\ \\int\\frac{1}{\\sqrt{x^2\\pm a^2}}dx=ln|x+\\sqrt{x^2\\pm a^2}|+C\\\\ \\int{tan\\ x}dx=-ln|cos\\ x|+C\\\\ \\int{cot\\ x}dx=ln|sin\\ x|+C\\\\ \\int{csc\\ x}dx=ln|csc\\ x-cot\\ x|+C\\\\ \\int{sec\\ x}dx=ln|sec\\ x+tan\\ x|+C\\\\ \\int{sec^2\\ x}dx=tan\\ x+C\\\\ \\int{csc^2\\ x}dx=-cot\\ x+C\\\\ \\int{sec\\ x*tan\\ x}dx=sec\\ x+C\\\\ \\int{csc\\ x*cot\\ x}dx=-csc\\ x+C\\\\ $$\n凑系数，拆项： $$ \\int{\\frac{x}{(2x+3)^2}}dx=\\frac{1}{2}\\int{\\frac{2x+3-3}{(2x+3)^2}}dx=\\frac{1}{2}\\int{\\frac{2x+3}{(2x+3)^2}}dx-\\frac{1}{2}\\int\\frac{3}{(2x+3)^2}dx\\ … $$ 分子包含多项的，直接无法求解可以拆项求。\n常见的配凑： $$ xe^x:\\\\ \\int\\frac{1+x}{x(xe^x+1)}dx=\\int\\frac{(1+x)e^x}{xe^x(xe^x+1)}dx=\\int\\frac{1}{xe^x(xe^x+1)}d(xe^x)\\overset{t=xe^x}=\\int\\frac{1}{t(t+1)}dt\\\\ xlnx:\\\\ \\int\\frac{(1+lnx)dx}{1+x^2ln^2x}=\\int\\frac{1}{1+(xlnx)^2}d(xlnx)\\\\ \\frac{1}{\\sqrt{x}}:\\\\ \\int\\frac{1}{\\sqrt{x(x+4)}}dx=2\\int\\frac{1}{2\\sqrt{x}\\sqrt{x+4}}dx=2\\int\\frac{1}{\\sqrt{4+\\sqrt{x}^2}}d{\\sqrt{x}}\\\\ $$ 奇怪的配凑： $$ \\int\\frac{1}{\\sqrt{e^{2x}-1}}dx=\\int\\frac{1}{\\sqrt{e^{2x}(1-e^{-2x})}}dx=\\int\\frac{e^{-x}}{\\sqrt{1-e^{-2x}}} $$ 有理函数积分： $$ \\int\\frac{x-2}{x^2+x+1}dx=\\int\\frac{A(x^2+x+1)'+B}{x^2+x+1}dx\\\\ A(2x+1)+B=x-2=A=\\frac{1}{2},B=-\\frac{5}{2}\\\\ =\\frac{1}{2}\\int\\frac{1}{x^2+x+1}d(x^2+x+1)-\\frac{5}{2}\\int\\frac{1}{x^2+x+1}dx\\\\ =\\frac{1}{2}\\int\\frac{1}{x^2+x+1}d(x^2+x+1)-\\frac{5}{2}\\int\\frac{1}{(x+\\frac{1}{2})^2+\\frac{3}{4}}\\\\ \\text{ps:当分母}\\triangle表格法求积分：\n不定积分表格法的本质(推导) - 知乎 (zhihu.com) $$ \\int{x^2e^{2x}}dx=\\frac{1}{2}x^2e^{2x}-\\frac{1}{2}xe^{2x}+\\frac{1}{4}e^{2x}+C $$ 常见三角换元题： $$ \\int\\frac{x^2}{\\sqrt{1-x^2}}dx\\overset{x=sint}{=}\\int\\frac{sin^2t}{\\sqrt{1-sin^2t}}costdt=\\int{sintdt}\\\\ \\int{x^2{\\sqrt{4-x^2}}}dx\\overset{x=2sint}{=}16\\int{sin^2tcos^2t}dt=8\\int{(\\frac{1}{2}sin2t)^2}dt\\\\ $$ 凑微分： $$ \\int\\frac{1}{x\\sqrt{1+x^2}}dx=\\int{\\frac{x}{x^2\\sqrt{1+x^2}}}dx=\\frac{1}{2}\\int{\\frac{1}{x^2\\sqrt{1+x^2}}}dx^2\\overset{t=x^2}{=}\\frac{1}{2}\\int{\\frac{1}{t\\sqrt{1+t}}}dt\\\\ set\\ u=\\sqrt{1+t}\\\\ =\\frac{1}{2}\\int{\\frac{2u}{(u^2-1)u}}du=\\int{\\frac{1}{u^2-1}}du=-\\frac{1}{2}ln|\\frac{1+u}{1-u}|+C $$ 倒代换： $$ \\int{\\frac{1}{x\\sqrt{x^4+x^2+1}}}dx\\overset{t=\\frac{1}{x}}{=}-\\int{\\frac{1}{\\frac{1}{t}\\sqrt{\\frac{1}{t^4}+\\frac{1}{t^2}+1}}}dx=-\\frac{\\frac{1}{t}}{\\sqrt{\\frac{1}{t^4}+\\frac{1}{t^2}+1}}dt=-\\frac{1}{2}\\int{\\frac{1}{\\sqrt{(t^2+\\frac{1}{2})^2+(\\frac{\\sqrt{3}}{2})^2}}}d(t^2+\\frac{1}{2}) $$\n一些巧题： $$ \\int{\\frac{1}{x\\sqrt{x^2-1}}}dx=\\int{\\frac{1}{x\\sqrt{x^2(1-\\frac{1}{x^2})}}}dx=\\int{\\frac{1}{x^2\\sqrt{1-\\frac{1}{x^2}}}}=-\\int{\\frac{1}{\\sqrt{1-(\\frac{1}{x})^2}}}d(\\frac{1}{x})\\\\ \\int{\\frac{1-lnx}{(x-lnx)^2}}dx=\\int{\\frac{\\frac{1-lnx}{x^2}}{(1-\\frac{lnx}{x})^2}}dx=-\\int{\\frac{1}{(1-\\frac{lnx}{x})^2}}d(1-\\frac{lnx}{x})\\\\ \\int{\\frac{1+x^2}{1+x^4}}dx=\\int{\\frac{\\frac{1}{x^2}+1}{\\frac{1}{x^2}+x^2}}dx=\\int{\\frac{d(x-\\frac{1}{x})}{(x-\\frac{1}{x})^2+2}}\\\\ \\int{\\frac{1}{1+x^4}}dx=\\frac{1}{2}\\int{\\frac{1+x^2-(x^2-1)}{1+x^4}}dx\\\\ $$\n",
-  "wordCount" : "99",
+  "articleBody": "高等数学上册(微积分)必背公式总结 - 知乎 (zhihu.com)\n导数： $$ \\begin{align} \u0026[\\cos(\\omega x+\\varphi)]^{(n)}=\\omega^n\\cos(\\omega x+\\frac{n\\pi}{2}+\\varphi)\\\\ \u0026[\\sin(\\omega x+\\varphi)]^{(n)}=\\omega^n\\sin(\\omega x+\\frac{n\\pi}{2}+\\varphi)\\\\ \\end{align} $$\n重难点公式： $$ \\begin{align} \u0026\\int\\frac{1}{a^2+x^2}dx=\\frac{1}{a}arctan\\frac{x}{a}+C\\\\ \u0026\\int\\frac{1}{a^2-x^2}dx=\\frac{1}{2a}ln|\\frac{a+x}{a-x}|+C\\\\ \u0026\\int\\frac{1}{\\sqrt{a^2-x^2}}dx=arcsin\\frac{x}{a}+C\\\\ \u0026\\int\\frac{1}{\\sqrt{x^2\\pm a^2}}dx=ln|x+\\sqrt{x^2\\pm a^2}|+C\\\\ \u0026\\int{tan\\ x}dx=-ln|cos\\ x|+C\\\\ \u0026\\int{cot\\ x}dx=ln|sin\\ x|+C\\\\ \u0026\\int{csc\\ x}dx=ln|csc\\ x-cot\\ x|+C\\\\ \u0026\\int{sec\\ x}dx=ln|sec\\ x+tan\\ x|+C\\\\ \u0026\\int{sec^2\\ x}dx=tan\\ x+C\\\\ \u0026\\int{csc^2\\ x}dx=-cot\\ x+C\\\\ \u0026\\int{sec\\ x*tan\\ x}dx=sec\\ x+C\\\\ \u0026\\int{csc\\ x*cot\\ x}dx=-csc\\ x+C\\\\ \\end{align} $$\n凑系数，拆项： $$ \\int{\\frac{x}{(2x+3)^2}}dx=\\frac{1}{2}\\int{\\frac{2x+3-3}{(2x+3)^2}}dx=\\frac{1}{2}\\int{\\frac{2x+3}{(2x+3)^2}}dx-\\frac{1}{2}\\int\\frac{3}{(2x+3)^2}dx\\ … $$ 分子包含多项的，直接无法求解可以拆项求。\n常见的配凑： $$ \\begin{align} \u0026xe^x:\\\\ \u0026\\int\\frac{1+x}{x(xe^x+1)}dx=\\int\\frac{(1+x)e^x}{xe^x(xe^x+1)}dx=\\int\\frac{1}{xe^x(xe^x+1)}d(xe^x)\\overset{t=xe^x}=\\int\\frac{1}{t(t+1)}dt\\\\ \u0026xlnx:\\\\ \u0026\\int\\frac{(1+lnx)dx}{1+x^2ln^2x}=\\int\\frac{1}{1+(xlnx)^2}d(xlnx)\\\\ \u0026\\frac{1}{\\sqrt{x}}:\\\\ \u0026\\int\\frac{1}{\\sqrt{x(x+4)}}dx=2\\int\\frac{1}{2\\sqrt{x}\\sqrt{x+4}}dx=2\\int\\frac{1}{\\sqrt{4+\\sqrt{x}^2}}d{\\sqrt{x}}\\\\ \u0026e^x:\\\\ \u0026\\int f(e^x){\\rm dx}=\\int\\frac{f(e^x)}{e^x}{\\rm de^x}=\\int\\frac{f(t)}{t}{\\rm dt} \\end{align} $$\n一些题目： 1. $$ \\begin{align} (1):\\int\\frac{\\rm dx}{x\\sqrt{x^2-1}} \u0026=\\int\\frac{\\rm dx}{x^2\\sqrt{1-\\left(\\frac{1}{x}\\right)^2}}\\\\ \u0026=-\\int\\frac{\\rm d\\frac{1}{x}}{\\sqrt{1-\\left(\\frac{1}{x}\\right)^2}}\\\\ \u0026=-\\arcsin\\frac{1}{x}+C\\\\ \\end{align} $$ 2. $$ \\begin{align} (2):\\int\\frac{x{\\rm dx}}{x^2\\sqrt{x^2-1}}\u0026 =\\int\\frac{\\rm d\\sqrt{x^2-1}}{(\\sqrt{x^2-1})^2+1}\\\\ \u0026=\\arctan\\sqrt{x^2-1}+C \\end{align} $$ 3. $$ (3)令\\sqrt{x^2-1}=x-t,有x=\\frac{t^2+1}{2t}\\\\ \\begin{align} \\int\\frac{\\rm dx}{x\\sqrt{x^2-1}} \u0026=-2\\int\\frac{\\rm dt}{t^2+1}\\\\ \u0026=-2\\arctan t+C\\\\ \u0026=-2\\arctan(x-\\sqrt{x^2-1})+C \\end{align} $$ 4. $$ \\begin{align} (4)I=\\int\\sqrt{Ax^2+B}{\\rm dx} \u0026=x\\sqrt{Ax^2+B}-\\int\\frac{(Ax^2+B)-B}{\\sqrt{Ax^2+B}}{\\rm dx}\\\\ \u0026=x\\sqrt{Ax^2+B}-I+\\int\\frac{B}{\\sqrt{Ax^2+B}}{\\rm dx} \\end{align} $$\n奇怪的配凑： $$ \\int\\frac{1}{\\sqrt{e^{2x}-1}}dx=\\int\\frac{1}{\\sqrt{e^{2x}(1-e^{-2x})}}dx=\\int\\frac{e^{-x}}{\\sqrt{1-e^{-2x}}} $$ 有理函数积分： $$ \\begin{align} \u0026\\int\\frac{x-2}{x^2+x+1}dx=\\int\\frac{A(x^2+x+1)'+B}{x^2+x+1}dx\\\\ \u0026A(2x+1)+B=x-2=A=\\frac{1}{2},B=-\\frac{5}{2}\\\\ \u0026=\\frac{1}{2}\\int\\frac{1}{x^2+x+1}d(x^2+x+1)-\\frac{5}{2}\\int\\frac{1}{x^2+x+1}dx\\\\ \u0026=\\frac{1}{2}\\int\\frac{1}{x^2+x+1}d(x^2+x+1)-\\frac{5}{2}\\int\\frac{1}{(x+\\frac{1}{2})^2+\\frac{3}{4}}\\\\ \u0026\\text{ps:当分母}\\triangle表格法求积分：\n不定积分表格法的本质(推导) - 知乎 (zhihu.com) $$ \\int{x^2e^{2x}}dx=\\frac{1}{2}x^2e^{2x}-\\frac{1}{2}xe^{2x}+\\frac{1}{4}e^{2x}+C $$ 常见三角换元题： $$ \\begin{align} \u0026\\int\\frac{x^2}{\\sqrt{1-x^2}}dx\\overset{x=sint}{=}\\int\\frac{sin^2t}{\\sqrt{1-sin^2t}}costdt=\\int{sintdt}\\\\ \u0026\\int{x^2{\\sqrt{4-x^2}}}dx\\overset{x=2sint}{=}16\\int{sin^2tcos^2t}dt=8\\int{(\\frac{1}{2}sin2t)^2}dt\\\\ \\end{align} $$ 凑微分： $$ \\begin{align} \u0026\\int\\frac{1}{x\\sqrt{1+x^2}}dx=\\int{\\frac{x}{x^2\\sqrt{1+x^2}}}dx=\\frac{1}{2}\\int{\\frac{1}{x^2\\sqrt{1+x^2}}}dx^2\\overset{t=x^2}{=}\\frac{1}{2}\\int{\\frac{1}{t\\sqrt{1+t}}}dt\\\\ \u0026set\\ u=\\sqrt{1+t}\\\\ \u0026=\\frac{1}{2}\\int{\\frac{2u}{(u^2-1)u}}du=\\int{\\frac{1}{u^2-1}}du=-\\frac{1}{2}ln|\\frac{1+u}{1-u}|+C \\end{align} $$ 倒代换： $$ \\int{\\frac{1}{x\\sqrt{x^4+x^2+1}}}dx\\overset{t=\\frac{1}{x}}{=}-\\int{\\frac{1}{\\frac{1}{t}\\sqrt{\\frac{1}{t^4}+\\frac{1}{t^2}+1}}}dx=-\\frac{\\frac{1}{t}}{\\sqrt{\\frac{1}{t^4}+\\frac{1}{t^2}+1}}dt=-\\frac{1}{2}\\int{\\frac{1}{\\sqrt{(t^2+\\frac{1}{2})^2+(\\frac{\\sqrt{3}}{2})^2}}}d(t^2+\\frac{1}{2}) $$\n一些巧题： $$ \\begin{align} \u0026\\int{\\frac{1}{x\\sqrt{x^2-1}}}dx=\\int{\\frac{1}{x\\sqrt{x^2(1-\\frac{1}{x^2})}}}dx=\\int{\\frac{1}{x^2\\sqrt{1-\\frac{1}{x^2}}}}=-\\int{\\frac{1}{\\sqrt{1-(\\frac{1}{x})^2}}}d(\\frac{1}{x})\\\\ \u0026\\int{\\frac{1-lnx}{(x-lnx)^2}}dx=\\int{\\frac{\\frac{1-lnx}{x^2}}{(1-\\frac{lnx}{x})^2}}dx=-\\int{\\frac{1}{(1-\\frac{lnx}{x})^2}}d(1-\\frac{lnx}{x})\\\\ \u0026\\int{\\frac{1+x^2}{1+x^4}}dx=\\int{\\frac{\\frac{1}{x^2}+1}{\\frac{1}{x^2}+x^2}}dx=\\int{\\frac{d(x-\\frac{1}{x})}{(x-\\frac{1}{x})^2+2}}\\\\ \u0026\\int{\\frac{1}{1+x^4}}dx=\\frac{1}{2}\\int{\\frac{1+x^2-(x^2-1)}{1+x^4}}dx\\\\ \\end{align} $$\n",
+  "wordCount" : "175",
   "inLanguage": "zh-cn",
   "datePublished": "2022-02-16T15:38:32+08:00",
   "dateModified": "2022-02-16T15:38:32+08:00",
@@ -223,20 +223,29 @@
   </header> 
 
   <div class="post-content"><p><a href="https://zhuanlan.zhihu.com/p/106252437">高等数学上册(微积分)必背公式总结 - 知乎 (zhihu.com)</a></p>
+<p><strong>导数：</strong>
+$$
+\begin{align}
+&amp;[\cos(\omega x+\varphi)]^{(n)}=\omega^n\cos(\omega x+\frac{n\pi}{2}+\varphi)\\
+&amp;[\sin(\omega x+\varphi)]^{(n)}=\omega^n\sin(\omega x+\frac{n\pi}{2}+\varphi)\\
+\end{align}
+$$</p>
 <p><strong>重难点公式：</strong>
 $$
-\int\frac{1}{a^2+x^2}dx=\frac{1}{a}arctan\frac{x}{a}+C\\
-\int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a+x}{a-x}|+C\\
-\int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}+C\\
-\int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x+\sqrt{x^2\pm a^2}|+C\\
-\int{tan\ x}dx=-ln|cos\ x|+C\\
-\int{cot\ x}dx=ln|sin\ x|+C\\
-\int{csc\ x}dx=ln|csc\ x-cot\ x|+C\\
-\int{sec\ x}dx=ln|sec\ x+tan\ x|+C\\
-\int{sec^2\ x}dx=tan\ x+C\\
-\int{csc^2\ x}dx=-cot\ x+C\\
-\int{sec\ x*tan\ x}dx=sec\ x+C\\
-\int{csc\ x*cot\ x}dx=-csc\ x+C\\
+\begin{align}
+&amp;\int\frac{1}{a^2+x^2}dx=\frac{1}{a}arctan\frac{x}{a}+C\\
+&amp;\int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a+x}{a-x}|+C\\
+&amp;\int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}+C\\
+&amp;\int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x+\sqrt{x^2\pm a^2}|+C\\
+&amp;\int{tan\ x}dx=-ln|cos\ x|+C\\
+&amp;\int{cot\ x}dx=ln|sin\ x|+C\\
+&amp;\int{csc\ x}dx=ln|csc\ x-cot\ x|+C\\
+&amp;\int{sec\ x}dx=ln|sec\ x+tan\ x|+C\\
+&amp;\int{sec^2\ x}dx=tan\ x+C\\
+&amp;\int{csc^2\ x}dx=-cot\ x+C\\
+&amp;\int{sec\ x*tan\ x}dx=sec\ x+C\\
+&amp;\int{csc\ x*cot\ x}dx=-csc\ x+C\\
+\end{align}
 $$</p>
 <p><strong>凑系数，拆项：</strong>
 $$
@@ -246,24 +255,67 @@ $$
 分子包含多项的，直接无法求解可以拆项求。</p>
 <p><strong>常见的配凑：</strong>
 $$
-xe^x:\\
-\int\frac{1+x}{x(xe^x+1)}dx=\int\frac{(1+x)e^x}{xe^x(xe^x+1)}dx=\int\frac{1}{xe^x(xe^x+1)}d(xe^x)\overset{t=xe^x}=\int\frac{1}{t(t+1)}dt\\
-xlnx:\\
-\int\frac{(1+lnx)dx}{1+x^2ln^2x}=\int\frac{1}{1+(xlnx)^2}d(xlnx)\\
-\frac{1}{\sqrt{x}}:\\
-\int\frac{1}{\sqrt{x(x+4)}}dx=2\int\frac{1}{2\sqrt{x}\sqrt{x+4}}dx=2\int\frac{1}{\sqrt{4+\sqrt{x}^2}}d{\sqrt{x}}\\
+\begin{align}
+&amp;xe^x:\\
+&amp;\int\frac{1+x}{x(xe^x+1)}dx=\int\frac{(1+x)e^x}{xe^x(xe^x+1)}dx=\int\frac{1}{xe^x(xe^x+1)}d(xe^x)\overset{t=xe^x}=\int\frac{1}{t(t+1)}dt\\
+&amp;xlnx:\\
+&amp;\int\frac{(1+lnx)dx}{1+x^2ln^2x}=\int\frac{1}{1+(xlnx)^2}d(xlnx)\\
+&amp;\frac{1}{\sqrt{x}}:\\
+&amp;\int\frac{1}{\sqrt{x(x+4)}}dx=2\int\frac{1}{2\sqrt{x}\sqrt{x+4}}dx=2\int\frac{1}{\sqrt{4+\sqrt{x}^2}}d{\sqrt{x}}\\
+&amp;e^x:\\
+&amp;\int f(e^x){\rm dx}=\int\frac{f(e^x)}{e^x}{\rm de^x}=\int\frac{f(t)}{t}{\rm dt}
+\end{align}
+$$</p>
+<p><strong>一些题目：</strong>
+<br>
+1. 
 $$
-<strong>奇怪的配凑：</strong>
+\begin{align}
+(1):\int\frac{\rm dx}{x\sqrt{x^2-1}}
+&amp;=\int\frac{\rm dx}{x^2\sqrt{1-\left(\frac{1}{x}\right)^2}}\\
+&amp;=-\int\frac{\rm d\frac{1}{x}}{\sqrt{1-\left(\frac{1}{x}\right)^2}}\\
+&amp;=-\arcsin\frac{1}{x}+C\\
+\end{align}
+$$
+2. 
+$$
+\begin{align}
+(2):\int\frac{x{\rm dx}}{x^2\sqrt{x^2-1}}&amp;
+=\int\frac{\rm d\sqrt{x^2-1}}{(\sqrt{x^2-1})^2+1}\\
+&amp;=\arctan\sqrt{x^2-1}+C
+\end{align}
+$$
+3. 
+$$
+(3)令\sqrt{x^2-1}=x-t,有x=\frac{t^2+1}{2t}\\
+\begin{align}
+\int\frac{\rm dx}{x\sqrt{x^2-1}}
+&amp;=-2\int\frac{\rm dt}{t^2+1}\\
+&amp;=-2\arctan t+C\\
+&amp;=-2\arctan(x-\sqrt{x^2-1})+C
+\end{align}
+$$
+4. 
+$$
+\begin{align}
+(4)I=\int\sqrt{Ax^2+B}{\rm dx}
+&amp;=x\sqrt{Ax^2+B}-\int\frac{(Ax^2+B)-B}{\sqrt{Ax^2+B}}{\rm dx}\\
+&amp;=x\sqrt{Ax^2+B}-I+\int\frac{B}{\sqrt{Ax^2+B}}{\rm dx}
+\end{align}
+$$</p>
+<p><strong>奇怪的配凑：</strong>
 $$
 \int\frac{1}{\sqrt{e^{2x}-1}}dx=\int\frac{1}{\sqrt{e^{2x}(1-e^{-2x})}}dx=\int\frac{e^{-x}}{\sqrt{1-e^{-2x}}}
 $$
 <strong>有理函数积分：</strong>
 $$
-\int\frac{x-2}{x^2+x+1}dx=\int\frac{A(x^2+x+1)'+B}{x^2+x+1}dx\\
-A(2x+1)+B=x-2=&gt;A=\frac{1}{2},B=-\frac{5}{2}\\
-=\frac{1}{2}\int\frac{1}{x^2+x+1}d(x^2+x+1)-\frac{5}{2}\int\frac{1}{x^2+x+1}dx\\
-=\frac{1}{2}\int\frac{1}{x^2+x+1}d(x^2+x+1)-\frac{5}{2}\int\frac{1}{(x+\frac{1}{2})^2+\frac{3}{4}}\\
-\text{ps:当分母}\triangle&lt;0\text{时才可以使用,否则直接裂项即可}
+\begin{align}
+&amp;\int\frac{x-2}{x^2+x+1}dx=\int\frac{A(x^2+x+1)'+B}{x^2+x+1}dx\\
+&amp;A(2x+1)+B=x-2=&gt;A=\frac{1}{2},B=-\frac{5}{2}\\
+&amp;=\frac{1}{2}\int\frac{1}{x^2+x+1}d(x^2+x+1)-\frac{5}{2}\int\frac{1}{x^2+x+1}dx\\
+&amp;=\frac{1}{2}\int\frac{1}{x^2+x+1}d(x^2+x+1)-\frac{5}{2}\int\frac{1}{(x+\frac{1}{2})^2+\frac{3}{4}}\\
+&amp;\text{ps:当分母}\triangle&lt;0\text{时才可以使用,否则直接裂项即可}
+\end{align}
 $$
 <strong>表格法求积分：</strong></p>
 <p><a href="https://zhuanlan.zhihu.com/p/391888816">不定积分表格法的本质(推导) - 知乎 (zhihu.com)</a>
@@ -272,14 +324,18 @@ $$
 $$
 <strong>常见三角换元题：</strong>
 $$
-\int\frac{x^2}{\sqrt{1-x^2}}dx\overset{x=sint}{=}\int\frac{sin^2t}{\sqrt{1-sin^2t}}costdt=\int{sintdt}\\
-\int{x^2{\sqrt{4-x^2}}}dx\overset{x=2sint}{=}16\int{sin^2tcos^2t}dt=8\int{(\frac{1}{2}sin2t)^2}dt\\
+\begin{align}
+&amp;\int\frac{x^2}{\sqrt{1-x^2}}dx\overset{x=sint}{=}\int\frac{sin^2t}{\sqrt{1-sin^2t}}costdt=\int{sintdt}\\
+&amp;\int{x^2{\sqrt{4-x^2}}}dx\overset{x=2sint}{=}16\int{sin^2tcos^2t}dt=8\int{(\frac{1}{2}sin2t)^2}dt\\
+\end{align}
 $$
 <strong>凑微分：</strong>
 $$
-\int\frac{1}{x\sqrt{1+x^2}}dx=\int{\frac{x}{x^2\sqrt{1+x^2}}}dx=\frac{1}{2}\int{\frac{1}{x^2\sqrt{1+x^2}}}dx^2\overset{t=x^2}{=}\frac{1}{2}\int{\frac{1}{t\sqrt{1+t}}}dt\\
-set\ u=\sqrt{1+t}\\
-=\frac{1}{2}\int{\frac{2u}{(u^2-1)u}}du=\int{\frac{1}{u^2-1}}du=-\frac{1}{2}ln|\frac{1+u}{1-u}|+C
+\begin{align}
+&amp;\int\frac{1}{x\sqrt{1+x^2}}dx=\int{\frac{x}{x^2\sqrt{1+x^2}}}dx=\frac{1}{2}\int{\frac{1}{x^2\sqrt{1+x^2}}}dx^2\overset{t=x^2}{=}\frac{1}{2}\int{\frac{1}{t\sqrt{1+t}}}dt\\
+&amp;set\ u=\sqrt{1+t}\\
+&amp;=\frac{1}{2}\int{\frac{2u}{(u^2-1)u}}du=\int{\frac{1}{u^2-1}}du=-\frac{1}{2}ln|\frac{1+u}{1-u}|+C
+\end{align}
 $$
 <strong>倒代换：</strong>
 $$
@@ -287,10 +343,12 @@ $$
 $$</p>
 <p><strong>一些巧题：</strong>
 $$
-\int{\frac{1}{x\sqrt{x^2-1}}}dx=\int{\frac{1}{x\sqrt{x^2(1-\frac{1}{x^2})}}}dx=\int{\frac{1}{x^2\sqrt{1-\frac{1}{x^2}}}}=-\int{\frac{1}{\sqrt{1-(\frac{1}{x})^2}}}d(\frac{1}{x})\\
-\int{\frac{1-lnx}{(x-lnx)^2}}dx=\int{\frac{\frac{1-lnx}{x^2}}{(1-\frac{lnx}{x})^2}}dx=-\int{\frac{1}{(1-\frac{lnx}{x})^2}}d(1-\frac{lnx}{x})\\
-\int{\frac{1+x^2}{1+x^4}}dx=\int{\frac{\frac{1}{x^2}+1}{\frac{1}{x^2}+x^2}}dx=\int{\frac{d(x-\frac{1}{x})}{(x-\frac{1}{x})^2+2}}\\
-\int{\frac{1}{1+x^4}}dx=\frac{1}{2}\int{\frac{1+x^2-(x^2-1)}{1+x^4}}dx\\
+\begin{align}
+&amp;\int{\frac{1}{x\sqrt{x^2-1}}}dx=\int{\frac{1}{x\sqrt{x^2(1-\frac{1}{x^2})}}}dx=\int{\frac{1}{x^2\sqrt{1-\frac{1}{x^2}}}}=-\int{\frac{1}{\sqrt{1-(\frac{1}{x})^2}}}d(\frac{1}{x})\\
+&amp;\int{\frac{1-lnx}{(x-lnx)^2}}dx=\int{\frac{\frac{1-lnx}{x^2}}{(1-\frac{lnx}{x})^2}}dx=-\int{\frac{1}{(1-\frac{lnx}{x})^2}}d(1-\frac{lnx}{x})\\
+&amp;\int{\frac{1+x^2}{1+x^4}}dx=\int{\frac{\frac{1}{x^2}+1}{\frac{1}{x^2}+x^2}}dx=\int{\frac{d(x-\frac{1}{x})}{(x-\frac{1}{x})^2+2}}\\
+&amp;\int{\frac{1}{1+x^4}}dx=\frac{1}{2}\int{\frac{1+x^2-(x^2-1)}{1+x^4}}dx\\
+\end{align}
 $$</p>
 
 
@@ -298,6 +356,11 @@ $$</p>
 
   <footer class="post-footer">
 <nav class="paginav">
+  <a class="prev" href="https://zeroy.site/articles/math2/">
+    <span class="title">« </span>
+    <br>
+    <span>高等数学（下） 定积分 总结</span>
+  </a>
   <a class="next" href="https://zeroy.site/articles/Golang-web1/">
     <span class="title"> »</span>
     <br>
