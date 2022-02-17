@@ -179,6 +179,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>高等数学（上） 不定积分 总结
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>高等数学上册(微积分)必背公式总结 - 知乎 (zhihu.com)
+重难点公式： $$ \begin{align} &amp;\int\frac{1}{a^2&#43;x^2}dx=\frac{1}{a}arctan\frac{x}{a}&#43;C\ &amp;\int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a&#43;x}{a-x}|&#43;C\ &amp;\int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}&#43;C\ &amp;\int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x&#43;\sqrt{x^2\pm a^2}|&#43;C\ &amp;\int{tan\ x}dx=-ln|cos\ x|&#43;C\ &amp;\int{cot\ x}dx=ln|sin\ x|&#43;C\ &amp;\int{csc\ x}dx=ln|csc\ x-cot\ x|&#43;C\ &amp;\int{sec\ x}dx=ln|sec\ x&#43;tan\ x|&#43;C\ &amp;\int{sec^2\ x}dx=tan\ x&#43;C\ &amp;\int{csc^2\ x}dx=-cot\ x&#43;C\ &amp;\int{sec\ xtan\ x}dx=sec\ x&#43;C\ &amp;\int{csc\ xcot\ x}dx=-csc\ x&#43;C\ \end{align} $$ 凑系数，拆项： $$ \int{\frac{x}{(2x&#43;3)^2}}dx=\frac{1}{2}\int{\frac{2x&#43;3-3}{(2x&#43;3)^2}}dx=\frac{1}{2}\int{\frac{2x&#43;3}{(2x&#43;3)^2}}dx-\frac{1}{2}\int\frac{3}{(2x&#43;3)^2}dx\ … $$ 分子包含多项的，直接无法求解可以拆项求。
+常见的配凑： $$ \begin{align} &amp;xe^x:\ &amp;\int\frac{1&#43;x}{x(xe^x&#43;1)}dx=\int\frac{(1&#43;x)e^x}{xe^x(xe^x&#43;1)}dx=\int\frac{1}{xe^x(xe^x&#43;1)}d(xe^x)\overset{t=xe^x}=\int\frac{1}{t(t&#43;1)}dt\ &amp;xlnx:\ &amp;\int\frac{(1&#43;lnx)dx}{1&#43;x^2ln^2x}=\int\frac{1}{1&#43;(xlnx)^2}d(xlnx)\ &amp;\frac{1}{\sqrt{x}}:\ &amp;\int\frac{1}{\sqrt{x(x&#43;4)}}dx=2\int\frac{1}{2\sqrt{x}\sqrt{x&#43;4}}dx=2\int\frac{1}{\sqrt{4&#43;\sqrt{x}^2}}d{\sqrt{x}}\ \end{align} $$ 奇怪的配凑： $$ \begin{align} &amp; \int\frac{1}{\sqrt{e^{2x}-1}}dx=\int\frac{1}{\sqrt{e^{2x}(1-e^{-2x})}}dx=\int\frac{e^{-x}}{\sqrt{1-e^{-2x}}} \end{align} $$ 有理函数积分： $$ \begin{align} &amp;\int\frac{x-2}{x^2&#43;x&#43;1}dx=\int\frac{A(x^2&#43;x&#43;1)&#39;&#43;B}{x^2&#43;x&#43;1}dx\ &amp;A(2x&#43;1)&#43;B=x-2=&gt;A=\frac{1}{2},B=-\frac{5}{2}\ &amp;=\frac{1}{2}\int\frac{1}{x^2&#43;x&#43;1}d(x^2&#43;x&#43;1)-\frac{5}{2}\int\frac{1}{x^2&#43;x&#43;1}dx\ &amp;=\frac{1}{2}\int\frac{1}{x^2&#43;x&#43;1}d(x^2&#43;x&#43;1)-\frac{5}{2}\int\frac{1}{(x&#43;\frac{1}{2})^2&#43;\frac{3}{4}}\ &amp;\text{ps:当分母}\triangle&lt;0\text{时才可以使用,否则直接裂项即可} \end{align} $$ 表格法求积分：...</p>
+  </section>
+  <footer class="entry-footer"><span title='2022-02-16 15:38:32 +0800 CST'>February 16, 2022</span>&nbsp;·&nbsp;zeroy</footer>
+  <a class="entry-link" aria-label="post link to 高等数学（上） 不定积分 总结" href="https://zeroy.site/articles/math-integrate/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Golang|Gin Web development for Beginners
     </h2>
   </header>
@@ -411,20 +425,6 @@ private void OnTriggerEnter2D(Collider2D collision) { if (collision.tag.Equals(&
   </section>
   <footer class="entry-footer"><span title='2022-01-18 12:27:17 +0800 CST'>January 18, 2022</span>&nbsp;·&nbsp;zeroy</footer>
   <a class="entry-link" aria-label="post link to KKLEEEE（Unity入门项目总结）" href="https://zeroy.site/articles/KKLEEEE/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>攻防世界web前11题WP
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>baby_web 进去之后发现是/1.php,根据提示“初始页面”，用burpsuite截获index.php，获得flag。 知识点：网页初始页面的文件名一般为index。
-warmup 进去之后发现一个滑稽表情，用burpsuite截获数据包后发现有个source.php，打开之后发现页面源代码。
-&lt;?php highlight_file(__FILE__); class emmm { public static function checkFile(&amp;$page) { $whitelist = [&#34;source&#34;=&gt;&#34;source.php&#34;,&#34;hint&#34;=&gt;&#34;hint.php&#34;]; if (! isset($page) || !is_string($page)) {//page必须被设置且page必须是字符串，否则将被过滤  echo &#34;you can&#39;t see it&#34;; return false; } if (in_array($page, $whitelist)) {//如果page在白名单内则合法  return true; } $_page = mb_substr(//mb_substr(str,start,length)截取字符串中的一段  $page, 0, mb_strpos($page . &#39;?&#39;, &#39;?&#39;)//查找&#39;?&#39;在page中首次出现的位置  );//将page问号之后的内容截掉  if (in_array($_page, $whitelist)) {//若此时的page在白名单内则合法  return true; } $_page = urldecode($page); $_page = mb_substr( $_page, 0, mb_strpos($_page ....</p>
-  </section>
-  <footer class="entry-footer"><span title='2022-01-18 11:26:31 +0800 CST'>January 18, 2022</span>&nbsp;·&nbsp;zeroy</footer>
-  <a class="entry-link" aria-label="post link to 攻防世界web前11题WP" href="https://zeroy.site/articles/XCTF-WEB-1/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
