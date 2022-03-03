@@ -2,8 +2,8 @@
 title: "基于go-cqhttp的机器人NoyaBot"
 date: 2022-03-03T10:04:25+08:00
 draft: false
-categories: ["WEB"]
 url: "articles/noya"
+categories: ["WEB"]
 ---
 
 #### 前言
