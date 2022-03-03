@@ -32,4 +32,12 @@ $$
 
 #### 齐次微分方程
 
-只含有y/x，令y/x=u，y=ux。
+只含有y/x，令y/x=u，y=ux，将原方程化为可分离变量的微分方程。
+$$
+\begin{align}
+& x\frac{dy}{dx}-y=2\sqrt{xy}(x>0)\\
+& \frac{dy}{dx}-\frac{y}{x}=2\sqrt{\frac{y}{x}}\\
+& set\ u=\frac{y}{x}\\
+& x\frac{du}{dx}=2\sqrt{u}\\
+\end{align}
+$$
