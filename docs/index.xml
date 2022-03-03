@@ -5,7 +5,21 @@
     <link>https://zeroy.site/</link>
     <description>Recent content on zeroy&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 16 Feb 2022 15:38:32 +0800</lastBuildDate><atom:link href="https://zeroy.site/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 03 Mar 2022 10:04:25 +0800</lastBuildDate><atom:link href="https://zeroy.site/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>基于go-cqhttp的机器人NoyaBot</title>
+      <link>https://zeroy.site/articles/noya/</link>
+      <pubDate>Thu, 03 Mar 2022 10:04:25 +0800</pubDate>
+      
+      <guid>https://zeroy.site/articles/noya/</guid>
+      <description>前言 2月14情人节过于孤独，于是萌生了写个qqbot玩的想法。
+概述 项目地址：zeroy0410/NoyaBot (github.com)
+配置完go-cqhttp的基本信息之后，就可以用它的api来操纵bot的账号进行各种操作，同时go-cqhttp会转发接收到的信息到指定端口。只需要在本地搭建一个服务器对收到的信息进行一定规则的回复即可。
+我使用了Python-Flask作为项目的框架。
+机器人功能（截止2022/3/3）
+ 闲聊   回答指定的问题 设定回答问题的概率   数学计算   计算能用一行字符串表示的Sympy库格式的数据   一言 翻译  /teach A|B #当输入为A时以B来回答 /let talk_enable (True or False) #是否在群内开启闲聊 /let talk_probability 一个浮点数 #闲聊时接话的概率 /ask A #问话就会回答（无视上面两条指令的限制） /calc sympy库格式的一条算式 #不要尝试计算复杂度过高的式子，计算时间过长会阻塞进程 /hito 参数# 一言参数参考https://hitokoto.cn/ /trans 内容|from|to #如trans Hello World!|en|zh 英译中 注意事项 数学计算功能使用了eval函数让python能够解析输入的代码，我过滤掉了大部分常用的注入语句，但仍有被注入的风险。</description>
+    </item>
+    
     <item>
       <title>高等数学（上） 不定积分 总结</title>
       <link>https://zeroy.site/articles/math-integrate/</link>
@@ -62,9 +76,9 @@ EXAMPLE: 向一张名为users的数据表中插入元素： INSERT INTO users(id
       <description>简介 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称正则表示式、正则表示法、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。
 许多程序设计语言都支持利用正则表达式进行字符串操作。例如，在Perl中就内建了一个功能强大的正则表达式引擎。正则表达式这个概念最初是由Unix中的工具软件（例如sed和grep）普及开的。
 语法总结 需要转义的特殊字符：
-.[{()\^$|?*+就像在其它任何语言中那样，转义需要在符号前加上\。
+.[{()\^$|?*+ 就像在其它任何语言中那样，转义需要在符号前加上\。
 匹配规则：
-. - 除了新行外的任何字符\d - 数字 (0-9)\D - 非数字 (0-9)\w - 单词字母 (a-z, A-Z, 0-9, _)\W - 非单词字母\s - 空字符 (space, tab, newline)\S - 非空字符 (space, tab, newline)\b - 单词边界\B - 非单词边界^ - 字符串开头（默认将一行看作一整个字符串）$ - 字符串结尾（默认将一行看作一整个字符串）[] - 匹配字符集[^ ] - 匹配除了字符集外的字符| - 或者( ) - GroupQuantifiers:* - 0 or More+ - 1 or More?</description>
+. - 除了新行外的任何字符 \d - 数字 (0-9) \D - 非数字 (0-9) \w - 单词字母 (a-z, A-Z, 0-9, _) \W - 非单词字母 \s - 空字符 (space, tab, newline) \S - 非空字符 (space, tab, newline) \b - 单词边界 \B - 非单词边界 ^ - 字符串开头（默认将一行看作一整个字符串） $ - 字符串结尾（默认将一行看作一整个字符串） [] - 匹配字符集 [^ ] - 匹配除了字符集外的字符 | - 或者 ( ) - Group Quantifiers: * - 0 or More + - 1 or More ?</description>
     </item>
     
     <item>
@@ -92,7 +106,7 @@ docker run -d -p 8080:8080 -v /database:/soft/TallyApp/database {{images_id}} </
 于是我找到了PySimpleGUI这个库。
 A introduction to PySimpleGUI
 这个库提供了一种近乎傻瓜化的方式，采用List来描述一个GUI界面，同时支持一个简单程序需要的全部特性，并且支持Win/Mac/Linux三大平台，十分适合拿来封装代码。
-安装 pip install PySimpleGUI在文件开头加上库引用：
+安装 pip install PySimpleGUI 在文件开头加上库引用：
 import PySimpleGUI as sg 元素 PySimpleGUI有着丰富的控件支持。
  文本框（Text）  sg.Text(&amp;#39;文本框&amp;#39;,size=(12,1),key=&amp;#39;output&amp;#39;) &#39;文本框&#39;为框体显示的文字，size为框体的大小，key为框体标识，用于之后对文本框的定位。
 输入框（Input）  sg.Input(key=&amp;#39;input&amp;#39;) 按钮（Button）  sg.Button(&amp;#39;Go&amp;#39;) &#39;Go&#39;为按钮的名字。也可以另外设置key值。

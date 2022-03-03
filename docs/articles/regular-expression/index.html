@@ -10,9 +10,9 @@
 <meta name="description" content="简介 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称正则表示式、正则表示法、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。
 许多程序设计语言都支持利用正则表达式进行字符串操作。例如，在Perl中就内建了一个功能强大的正则表达式引擎。正则表达式这个概念最初是由Unix中的工具软件（例如sed和grep）普及开的。
 语法总结 需要转义的特殊字符：
-.[{()\^$|?*&#43;就像在其它任何语言中那样，转义需要在符号前加上\。
+.[{()\^$|?*&#43; 就像在其它任何语言中那样，转义需要在符号前加上\。
 匹配规则：
-. - 除了新行外的任何字符\d - 数字 (0-9)\D - 非数字 (0-9)\w - 单词字母 (a-z, A-Z, 0-9, _)\W - 非单词字母\s - 空字符 (space, tab, newline)\S - 非空字符 (space, tab, newline)\b - 单词边界\B - 非单词边界^ - 字符串开头（默认将一行看作一整个字符串）$ - 字符串结尾（默认将一行看作一整个字符串）[] - 匹配字符集[^ ] - 匹配除了字符集外的字符| - 或者( ) - GroupQuantifiers:* - 0 or More&#43; - 1 or More?">
+. - 除了新行外的任何字符 \d - 数字 (0-9) \D - 非数字 (0-9) \w - 单词字母 (a-z, A-Z, 0-9, _) \W - 非单词字母 \s - 空字符 (space, tab, newline) \S - 非空字符 (space, tab, newline) \b - 单词边界 \B - 非单词边界 ^ - 字符串开头（默认将一行看作一整个字符串） $ - 字符串结尾（默认将一行看作一整个字符串） [] - 匹配字符集 [^ ] - 匹配除了字符集外的字符 | - 或者 ( ) - Group Quantifiers: * - 0 or More &#43; - 1 or More ?">
 <meta name="author" content="zeroy">
 <link rel="canonical" href="https://zeroy.site/articles/regular-expression/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
@@ -25,7 +25,7 @@
 <link rel="mask-icon" href="https://zeroy.site/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.92.0" />
+<meta name="generator" content="Hugo 0.92.2" />
 <noscript>
     <style>
         #theme-toggle,
@@ -66,9 +66,9 @@
 <meta property="og:description" content="简介 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称正则表示式、正则表示法、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。
 许多程序设计语言都支持利用正则表达式进行字符串操作。例如，在Perl中就内建了一个功能强大的正则表达式引擎。正则表达式这个概念最初是由Unix中的工具软件（例如sed和grep）普及开的。
 语法总结 需要转义的特殊字符：
-.[{()\^$|?*&#43;就像在其它任何语言中那样，转义需要在符号前加上\。
+.[{()\^$|?*&#43; 就像在其它任何语言中那样，转义需要在符号前加上\。
 匹配规则：
-. - 除了新行外的任何字符\d - 数字 (0-9)\D - 非数字 (0-9)\w - 单词字母 (a-z, A-Z, 0-9, _)\W - 非单词字母\s - 空字符 (space, tab, newline)\S - 非空字符 (space, tab, newline)\b - 单词边界\B - 非单词边界^ - 字符串开头（默认将一行看作一整个字符串）$ - 字符串结尾（默认将一行看作一整个字符串）[] - 匹配字符集[^ ] - 匹配除了字符集外的字符| - 或者( ) - GroupQuantifiers:* - 0 or More&#43; - 1 or More?" />
+. - 除了新行外的任何字符 \d - 数字 (0-9) \D - 非数字 (0-9) \w - 单词字母 (a-z, A-Z, 0-9, _) \W - 非单词字母 \s - 空字符 (space, tab, newline) \S - 非空字符 (space, tab, newline) \b - 单词边界 \B - 非单词边界 ^ - 字符串开头（默认将一行看作一整个字符串） $ - 字符串结尾（默认将一行看作一整个字符串） [] - 匹配字符集 [^ ] - 匹配除了字符集外的字符 | - 或者 ( ) - Group Quantifiers: * - 0 or More &#43; - 1 or More ?" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://zeroy.site/articles/regular-expression/" /><meta property="article:section" content="articles" />
 <meta property="article:published_time" content="2022-02-03T16:00:45&#43;08:00" />
@@ -79,9 +79,9 @@
 <meta name="twitter:description" content="简介 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称正则表示式、正则表示法、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。
 许多程序设计语言都支持利用正则表达式进行字符串操作。例如，在Perl中就内建了一个功能强大的正则表达式引擎。正则表达式这个概念最初是由Unix中的工具软件（例如sed和grep）普及开的。
 语法总结 需要转义的特殊字符：
-.[{()\^$|?*&#43;就像在其它任何语言中那样，转义需要在符号前加上\。
+.[{()\^$|?*&#43; 就像在其它任何语言中那样，转义需要在符号前加上\。
 匹配规则：
-. - 除了新行外的任何字符\d - 数字 (0-9)\D - 非数字 (0-9)\w - 单词字母 (a-z, A-Z, 0-9, _)\W - 非单词字母\s - 空字符 (space, tab, newline)\S - 非空字符 (space, tab, newline)\b - 单词边界\B - 非单词边界^ - 字符串开头（默认将一行看作一整个字符串）$ - 字符串结尾（默认将一行看作一整个字符串）[] - 匹配字符集[^ ] - 匹配除了字符集外的字符| - 或者( ) - GroupQuantifiers:* - 0 or More&#43; - 1 or More?"/>
+. - 除了新行外的任何字符 \d - 数字 (0-9) \D - 非数字 (0-9) \w - 单词字母 (a-z, A-Z, 0-9, _) \W - 非单词字母 \s - 空字符 (space, tab, newline) \S - 非空字符 (space, tab, newline) \b - 单词边界 \B - 非单词边界 ^ - 字符串开头（默认将一行看作一整个字符串） $ - 字符串结尾（默认将一行看作一整个字符串） [] - 匹配字符集 [^ ] - 匹配除了字符集外的字符 | - 或者 ( ) - Group Quantifiers: * - 0 or More &#43; - 1 or More ?"/>
 
 
 <script type="application/ld+json">
@@ -110,11 +110,11 @@
   "@type": "BlogPosting",
   "headline": "正则表达式 For Beginner",
   "name": "正则表达式 For Beginner",
-  "description": "简介 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称正则表示式、正则表示法、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。\n许多程序设计语言都支持利用正则表达式进行字符串操作。例如，在Perl中就内建了一个功能强大的正则表达式引擎。正则表达式这个概念最初是由Unix中的工具软件（例如sed和grep）普及开的。\n语法总结 需要转义的特殊字符：\n.[{()\\^$|?*+\r就像在其它任何语言中那样，转义需要在符号前加上\\。\n匹配规则：\n. - 除了新行外的任何字符\r\\d - 数字 (0-9)\r\\D - 非数字 (0-9)\r\\w - 单词字母 (a-z, A-Z, 0-9, _)\r\\W - 非单词字母\r\\s - 空字符 (space, tab, newline)\r\\S - 非空字符 (space, tab, newline)\r\\b - 单词边界\r\\B - 非单词边界\r^ - 字符串开头（默认将一行看作一整个字符串）\r$ - 字符串结尾（默认将一行看作一整个字符串）\r[] - 匹配字符集\r[^ ] - 匹配除了字符集外的字符\r| - 或者\r( ) - Group\rQuantifiers:\r* - 0 or More\r+ - 1 or More\r?",
+  "description": "简介 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称正则表示式、正则表示法、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。\n许多程序设计语言都支持利用正则表达式进行字符串操作。例如，在Perl中就内建了一个功能强大的正则表达式引擎。正则表达式这个概念最初是由Unix中的工具软件（例如sed和grep）普及开的。\n语法总结 需要转义的特殊字符：\n.[{()\\^$|?*+ 就像在其它任何语言中那样，转义需要在符号前加上\\。\n匹配规则：\n. - 除了新行外的任何字符 \\d - 数字 (0-9) \\D - 非数字 (0-9) \\w - 单词字母 (a-z, A-Z, 0-9, _) \\W - 非单词字母 \\s - 空字符 (space, tab, newline) \\S - 非空字符 (space, tab, newline) \\b - 单词边界 \\B - 非单词边界 ^ - 字符串开头（默认将一行看作一整个字符串） $ - 字符串结尾（默认将一行看作一整个字符串） [] - 匹配字符集 [^ ] - 匹配除了字符集外的字符 | - 或者 ( ) - Group Quantifiers: * - 0 or More + - 1 or More ?",
   "keywords": [
     
   ],
-  "articleBody": "简介 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称正则表示式、正则表示法、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。\n许多程序设计语言都支持利用正则表达式进行字符串操作。例如，在Perl中就内建了一个功能强大的正则表达式引擎。正则表达式这个概念最初是由Unix中的工具软件（例如sed和grep）普及开的。\n语法总结 需要转义的特殊字符：\n.[{()\\^$|?*+\r就像在其它任何语言中那样，转义需要在符号前加上\\。\n匹配规则：\n. - 除了新行外的任何字符\r\\d - 数字 (0-9)\r\\D - 非数字 (0-9)\r\\w - 单词字母 (a-z, A-Z, 0-9, _)\r\\W - 非单词字母\r\\s - 空字符 (space, tab, newline)\r\\S - 非空字符 (space, tab, newline)\r\\b - 单词边界\r\\B - 非单词边界\r^ - 字符串开头（默认将一行看作一整个字符串）\r$ - 字符串结尾（默认将一行看作一整个字符串）\r[] - 匹配字符集\r[^ ] - 匹配除了字符集外的字符\r| - 或者\r( ) - Group\rQuantifiers:\r* - 0 or More\r+ - 1 or More\r? - 0 or One\r{3} - Exact Number\r{3,4} - Range of Numbers (Minimum, Maximum)\r[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[0-9a-zA-Z.-]+\r一些例子：\n匹配人名：\nMr. Schafer\rMr Smith\rMs Davis\rMrs. Robinson\rMr. T\rM(r|s|rs)\\.?\\s[A-Z]\\w*\r匹配两种格式的电话号码：\n123.555.1234\r800-555-4321\r900-555-4321\r\\d{3}[.-]\\d{3}[.-]\\d{4}\r匹配三种格式的电子邮件：\nCoreyMSchafer@gmail.com\rcorey.schafer@university.edu\rcorey-321-schafer@my-work.net\r[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[0-9a-zA-Z.-]+\r按Group引用 提取文件中的url，并截取出其中的顶级域名：\nhttps://www.google.com\rhttp://coreyms.com\rhttps://youtube.com\rhttps://www.nasa.gov\r匹配https?://(www\\.)?(\\w+)(\\.\\w+)\r引用：$2$3\r结果：\rgoogle.com\rcoreyms.com\ryoutube.com\rnasa.gov\r",
+  "articleBody": "简介 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称正则表示式、正则表示法、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。\n许多程序设计语言都支持利用正则表达式进行字符串操作。例如，在Perl中就内建了一个功能强大的正则表达式引擎。正则表达式这个概念最初是由Unix中的工具软件（例如sed和grep）普及开的。\n语法总结 需要转义的特殊字符：\n.[{()\\^$|?*+ 就像在其它任何语言中那样，转义需要在符号前加上\\。\n匹配规则：\n. - 除了新行外的任何字符 \\d - 数字 (0-9) \\D - 非数字 (0-9) \\w - 单词字母 (a-z, A-Z, 0-9, _) \\W - 非单词字母 \\s - 空字符 (space, tab, newline) \\S - 非空字符 (space, tab, newline) \\b - 单词边界 \\B - 非单词边界 ^ - 字符串开头（默认将一行看作一整个字符串） $ - 字符串结尾（默认将一行看作一整个字符串） [] - 匹配字符集 [^ ] - 匹配除了字符集外的字符 | - 或者 ( ) - Group Quantifiers: * - 0 or More + - 1 or More ? - 0 or One {3} - Exact Number {3,4} - Range of Numbers (Minimum, Maximum) [a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[0-9a-zA-Z.-]+ 一些例子：\n匹配人名：\nMr. Schafer Mr Smith Ms Davis Mrs. Robinson Mr. T M(r|s|rs)\\.?\\s[A-Z]\\w* 匹配两种格式的电话号码：\n123.555.1234 800-555-4321 900-555-4321 \\d{3}[.-]\\d{3}[.-]\\d{4} 匹配三种格式的电子邮件：\nCoreyMSchafer@gmail.com corey.schafer@university.edu corey-321-schafer@my-work.net [a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[0-9a-zA-Z.-]+ 按Group引用 提取文件中的url，并截取出其中的顶级域名：\nhttps://www.google.com http://coreyms.com https://youtube.com https://www.nasa.gov 匹配https?://(www\\.)?(\\w+)(\\.\\w+) 引用：$2$3 结果： google.com coreyms.com youtube.com nasa.gov ",
   "wordCount" : "132",
   "inLanguage": "zh-cn",
   "datePublished": "2022-02-03T16:00:45+08:00",

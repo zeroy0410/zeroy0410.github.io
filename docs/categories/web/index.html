@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Categories | zeroy&#39;s blog</title>
+<title>WEB | zeroy&#39;s blog</title>
 <meta name="keywords" content="" />
 <meta name="description" content="">
 <meta name="author" content="zeroy">
-<link rel="canonical" href="https://zeroy.site/categories/" />
+<link rel="canonical" href="https://zeroy.site/categories/web/" />
 <link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://zeroy.site/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://zeroy.site/favicon-16x16.png">
@@ -19,7 +19,7 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.92.2" />
-<link rel="alternate" type="application/rss+xml" href="https://zeroy.site/categories/index.xml">
+<link rel="alternate" type="application/rss+xml" href="https://zeroy.site/categories/web/index.xml">
 <noscript>
     <style>
         #theme-toggle,
@@ -56,13 +56,13 @@
         }
 
     </style>
-</noscript><meta property="og:title" content="Categories" />
+</noscript><meta property="og:title" content="WEB" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://zeroy.site/categories/" />
+<meta property="og:url" content="https://zeroy.site/categories/web/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Categories"/>
+<meta name="twitter:title" content="WEB"/>
 <meta name="twitter:description" content=""/>
 
 </head>
@@ -119,7 +119,7 @@
             </li>
             <li>
                 <a href="https://zeroy.site/categories/" title="分类">
-                    <span class="active">分类</span>
+                    <span>分类</span>
                 </a>
             </li>
             <li>
@@ -140,49 +140,27 @@
         </ul>
     </nav>
 </header>
-<main class="main">
-<header class="page-header">
-    <h1>Categories</h1>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="https://zeroy.site/">Home</a>&nbsp;»&nbsp;<a href="https://zeroy.site/categories/">Categories</a></div>
+  <h1>WEB</h1>
 </header>
 
-<ul class="terms-tags">
-    <li>
-        <a href="https://zeroy.site/categories/basic-tools/">Basic tools <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://zeroy.site/categories/ctf-web/">CTF-WEB <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://zeroy.site/categories/database/">DATABASE <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://zeroy.site/categories/golang-web/">golang-web <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://zeroy.site/categories/hello-world/">Hello World <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://zeroy.site/categories/math/">Math <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://zeroy.site/categories/python/">python <sup><strong><sup>2</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://zeroy.site/categories/python-flask/">Python-Flask <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://zeroy.site/categories/unity/">Unity <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://zeroy.site/categories/web/">WEB <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://zeroy.site/categories/%E6%96%87%E5%8C%96%E8%AF%BE/">文化课 <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://zeroy.site/categories/%E6%96%87%E5%AD%A6/">文学 <sup><strong><sup>2</sup></strong></sup> </a>
-    </li>
-</ul>
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>基于go-cqhttp的机器人NoyaBot
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>前言 2月14情人节过于孤独，于是萌生了写个qqbot玩的想法。
+概述 项目地址：zeroy0410/NoyaBot (github.com)
+配置完go-cqhttp的基本信息之后，就可以用它的api来操纵bot的账号进行各种操作，同时go-cqhttp会转发接收到的信息到指定端口。只需要在本地搭建一个服务器对收到的信息进行一定规则的回复即可。
+我使用了Python-Flask作为项目的框架。
+机器人功能（截止2022/3/3）
+ 闲聊   回答指定的问题 设定回答问题的概率   数学计算   计算能用一行字符串表示的Sympy库格式的数据   一言 翻译  /teach A|B #当输入为A时以B来回答 /let talk_enable (True or False) #是否在群内开启闲聊 /let talk_probability 一个浮点数 #闲聊时接话的概率 /ask A #问话就会回答（无视上面两条指令的限制） /calc sympy库格式的一条算式 #不要尝试计算复杂度过高的式子，计算时间过长会阻塞进程 /hito 参数# 一言参数参考https://hitokoto.cn/ /trans 内容|from|to #如trans Hello World!|en|zh 英译中 注意事项 数学计算功能使用了eval函数让python能够解析输入的代码，我过滤掉了大部分常用的注入语句，但仍有被注入的风险。</p>
+  </section>
+  <footer class="entry-footer"><span title='2022-03-03 10:04:25 +0800 CST'>March 3, 2022</span>&nbsp;·&nbsp;zeroy</footer>
+  <a class="entry-link" aria-label="post link to 基于go-cqhttp的机器人NoyaBot" href="https://zeroy.site/articles/noya/"></a>
+</article>
     </main>
     
 <footer class="footer">

@@ -18,7 +18,7 @@
 <link rel="mask-icon" href="https://zeroy.site/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.92.0" />
+<meta name="generator" content="Hugo 0.92.2" />
 <link rel="alternate" type="application/rss+xml" href="https://zeroy.site/index.xml">
 <link rel="alternate" type="application/json" href="https://zeroy.site/index.json">
 <noscript>
@@ -179,6 +179,23 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>基于go-cqhttp的机器人NoyaBot
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>前言 2月14情人节过于孤独，于是萌生了写个qqbot玩的想法。
+概述 项目地址：zeroy0410/NoyaBot (github.com)
+配置完go-cqhttp的基本信息之后，就可以用它的api来操纵bot的账号进行各种操作，同时go-cqhttp会转发接收到的信息到指定端口。只需要在本地搭建一个服务器对收到的信息进行一定规则的回复即可。
+我使用了Python-Flask作为项目的框架。
+机器人功能（截止2022/3/3）
+ 闲聊   回答指定的问题 设定回答问题的概率   数学计算   计算能用一行字符串表示的Sympy库格式的数据   一言 翻译  /teach A|B #当输入为A时以B来回答 /let talk_enable (True or False) #是否在群内开启闲聊 /let talk_probability 一个浮点数 #闲聊时接话的概率 /ask A #问话就会回答（无视上面两条指令的限制） /calc sympy库格式的一条算式 #不要尝试计算复杂度过高的式子，计算时间过长会阻塞进程 /hito 参数# 一言参数参考https://hitokoto.cn/ /trans 内容|from|to #如trans Hello World!|en|zh 英译中 注意事项 数学计算功能使用了eval函数让python能够解析输入的代码，我过滤掉了大部分常用的注入语句，但仍有被注入的风险。</p>
+  </section>
+  <footer class="entry-footer"><span title='2022-03-03 10:04:25 +0800 CST'>March 3, 2022</span>&nbsp;·&nbsp;zeroy</footer>
+  <a class="entry-link" aria-label="post link to 基于go-cqhttp的机器人NoyaBot" href="https://zeroy.site/articles/noya/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>高等数学（上） 不定积分 总结
     </h2>
   </header>
@@ -242,9 +259,9 @@ EXAMPLE: 向一张名为users的数据表中插入元素： INSERT INTO users(id
     <p>简介 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称正则表示式、正则表示法、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。
 许多程序设计语言都支持利用正则表达式进行字符串操作。例如，在Perl中就内建了一个功能强大的正则表达式引擎。正则表达式这个概念最初是由Unix中的工具软件（例如sed和grep）普及开的。
 语法总结 需要转义的特殊字符：
-.[{()\^$|?*&#43;就像在其它任何语言中那样，转义需要在符号前加上\。
+.[{()\^$|?*&#43; 就像在其它任何语言中那样，转义需要在符号前加上\。
 匹配规则：
-. - 除了新行外的任何字符\d - 数字 (0-9)\D - 非数字 (0-9)\w - 单词字母 (a-z, A-Z, 0-9, _)\W - 非单词字母\s - 空字符 (space, tab, newline)\S - 非空字符 (space, tab, newline)\b - 单词边界\B - 非单词边界^ - 字符串开头（默认将一行看作一整个字符串）$ - 字符串结尾（默认将一行看作一整个字符串）[] - 匹配字符集[^ ] - 匹配除了字符集外的字符| - 或者( ) - GroupQuantifiers:* - 0 or More&#43; - 1 or More?...</p>
+. - 除了新行外的任何字符 \d - 数字 (0-9) \D - 非数字 (0-9) \w - 单词字母 (a-z, A-Z, 0-9, _) \W - 非单词字母 \s - 空字符 (space, tab, newline) \S - 非空字符 (space, tab, newline) \b - 单词边界 \B - 非单词边界 ^ - 字符串开头（默认将一行看作一整个字符串） $ - 字符串结尾（默认将一行看作一整个字符串） [] - 匹配字符集 [^ ] - 匹配除了字符集外的字符 | - 或者 ( ) - Group Quantifiers: * - 0 or More &#43; - 1 or More ?...</p>
   </section>
   <footer class="entry-footer"><span title='2022-02-03 16:00:45 +0800 CST'>February 3, 2022</span>&nbsp;·&nbsp;zeroy</footer>
   <a class="entry-link" aria-label="post link to 正则表达式 For Beginner" href="https://zeroy.site/articles/regular-expression/"></a>
@@ -278,7 +295,7 @@ docker run -d -p 8080:8080 -v /database:/soft/TallyApp/database {{images_id}} </
 于是我找到了PySimpleGUI这个库。
 A introduction to PySimpleGUI
 这个库提供了一种近乎傻瓜化的方式，采用List来描述一个GUI界面，同时支持一个简单程序需要的全部特性，并且支持Win/Mac/Linux三大平台，十分适合拿来封装代码。
-安装 pip install PySimpleGUI在文件开头加上库引用：
+安装 pip install PySimpleGUI 在文件开头加上库引用：
 import PySimpleGUI as sg 元素 PySimpleGUI有着丰富的控件支持。
  文本框（Text）  sg.Text(&#39;文本框&#39;,size=(12,1),key=&#39;output&#39;) &#39;文本框&#39;为框体显示的文字，size为框体的大小，key为框体标识，用于之后对文本框的定位。
 输入框（Input）  sg.Input(key=&#39;input&#39;) 按钮（Button）  sg.Button(&#39;Go&#39;) &#39;Go&#39;为按钮的名字。也可以另外设置key值。
@@ -406,27 +423,6 @@ import PySimpleGUI as sg 元素 PySimpleGUI有着丰富的控件支持。
   </section>
   <footer class="entry-footer"><span title='2022-01-18 12:30:40 +0800 CST'>January 18, 2022</span>&nbsp;·&nbsp;zeroy</footer>
   <a class="entry-link" aria-label="post link to 分享一些看过的书" href="https://zeroy.site/articles/share-books/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>KKLEEEE（Unity入门项目总结）
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>项目构思与简介 套壳飞机大战加上模拟网络条件不佳的情况下产生的延迟（XDU校园网直呼内行）。
-把飞机大战的壳换成了可莉发射蹦蹦炸弹打丘丘人（?
-因为担心太简单所以另外开了个极限模式把延迟调到了1000ms，给喜欢操作的人留了很高的操作空间。
-项目说明 W：向上移动 A：向左移动 S：向下移动 D：向右移动 按下鼠标：丢出炸弹
-游戏实机截图 项目技术路线 一个正常的Unity入门项目，运用到了一些Unity的基本知识。
-物体之间的碰撞需要用到刚体的技术，在此项目中为Rigidbody 2D和Box Collider 2D元件。
-刚体碰撞的代码的具体实现如下：
-private void OnTriggerEnter2D(Collider2D collision) { if (collision.tag.Equals(&#34;Monster&#34;)) { Destroy(collision.gameObject); Destroy(this.gameObject); GameObject Fa = GameObject.Find(&#34;Empty&#34;); Fa.SendMessage(&#34;AddScore&#34;, 1); } } 总结 总而言之是个非常基础的项目，了解了一下Unity2D的基本工作流。
-链接：https://pan.baidu.com/s/18Is4HDqZL97i-scP0-b-Xg 提取码：yliq –来自百度网盘超级会员V3的分享
-链接：https://pan.baidu.com/s/1GXPYW85KffQoRN20MWjCtg 提取码：xqra –来自百度网盘超级会员V3的分享</p>
-  </section>
-  <footer class="entry-footer"><span title='2022-01-18 12:27:17 +0800 CST'>January 18, 2022</span>&nbsp;·&nbsp;zeroy</footer>
-  <a class="entry-link" aria-label="post link to KKLEEEE（Unity入门项目总结）" href="https://zeroy.site/articles/KKLEEEE/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
