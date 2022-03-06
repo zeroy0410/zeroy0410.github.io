@@ -24,17 +24,17 @@ D：向右移动
 
 #### 游戏实机截图
 
-![1](/klee1.png)
+![1](klee1.png)
 
-![2](/klee2.png)
+![2](klee2.png)
 
-![3](/klee3.png)
+![3](klee3.png)
 
 #### 项目技术路线
 
 一个正常的Unity入门项目，运用到了一些Unity的基本知识。
 
-![](/klee4.png)
+![](klee4.png)
 
 物体之间的碰撞需要用到刚体的技术，在此项目中为Rigidbody 2D和Box Collider 2D元件。
 

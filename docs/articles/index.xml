@@ -5,7 +5,41 @@
     <link>https://zeroy.site/articles/</link>
     <description>Recent content in Articles on zeroy&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 03 Mar 2022 10:04:25 +0800</lastBuildDate><atom:link href="https://zeroy.site/articles/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 05 Mar 2022 20:30:31 +0800</lastBuildDate><atom:link href="https://zeroy.site/articles/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[PWN.0x00]函数调用栈结构与栈迁移</title>
+      <link>https://zeroy.site/articles/CTFpwn1/</link>
+      <pubDate>Sat, 05 Mar 2022 20:30:31 +0800</pubDate>
+      
+      <guid>https://zeroy.site/articles/CTFpwn1/</guid>
+      <description>前置知识：汇编语言（第4版）前半本
+ 注：本文适用于32位程序，示意图中上为高地址区，下为低地址区。若方框中字体为蓝色表示此处内存的地址，为黑色表示此处内存存储的值。示意图中leave均表示leave&amp;amp;ret
+ 函数调用栈的基本结构 一些寄存器的作用：
+**EIP：**存储着下一条指令的地址，每执行一条指令，该寄存器变化一次。
+**EBP：**存储着当前函数栈底的地址，通过将其与偏移地址相加减获取变量的地址。
+**ESP：**始终指向栈顶。
+在进入一个函数时，会执行如下操作。
+push eip+4push ebpmov ebp,esp在执行完退出时，会执行如下操作。
+mov esp,ebppop ebppop eip即leave和ret。
+整个过程描述起来就是，先将函数执行完成之后应当去执行的语句（eip+4）和主程序的的基址（ebp）压入栈中，然后再将ebp指向栈底。在函数执行完之后，再进行一遍上述过程的逆过程。
+函数调用栈工作时的结构如下图：
+其中val0地址处存储主程序传入的参数，如果有多个传入参数，它们将按照从右到左的顺序被push入栈中，val1~3为函数申请的局部变量。它们将按照申请的顺序被放入栈中。举例来讲，形如：
+void func(int a){ int b,c; char s[10]; } 这样的函数，a将被存入val0，b将被存入val1，c将被存入val2，s将被存入val3。
+考虑最基础的栈溢出题目，由于程序将按照地址从低到高的顺序存储字符串变量，所以当s的数据由选手掌控且溢出空间足够大时，s将溢出到val2，val3，甚至旧ebp，eip的位置上。所以选手就可以控制旧ebp，eip处的内容，实现劫持程序返回，让程序执行恶意代码的目的。
+但有时候，选手能掌控的数据量很有限，不足以支持我们完成过于复杂的劫持指令，对于这种情况，其中一种解题方法就是栈迁移。
+栈迁移 栈迁移的核心思想是劫持当前函数已经压入栈中的eip段，将其内容改为一次leave，同时修改旧ebp段，借助旧ebp为跳板，实现对esp的控制，进而在下一次ret中，修改eip的值，实现目的。
+也就是说，要构造栈中数据如图所示：
+至于为什么要-4，后面模拟的过程中读者自能体会。
+好了，现在当前函数已经执行完了，程序将自行执行一次leave和ret。执行之后的结果如图：
+然后程序会执行eip指向的地址的命令，即再执行一次leave，ret，执行后栈的情况如图：
+这样我们就完成了借助ebp为跳板，将esp指向目标eip的位置，控制程序在最后一次ret（即pop eip）的时候，将eip赋值成了我们想让它执行的函数的地址。
+例题：ciscn_2019_s_4 BUUCTF在线评测 (buuoj.cn)
+所谓“从零开始的Pwner生活”第一题，差点直接给我整劝退。
+惯例checksec，只开了NX。
+ida分析得到：
+int vul() { char buf[40]; // [esp+0h] [ebp-28h] BYREF  memset(buf, 0, 0x20u); read(0, buf, 0x30u); printf(&amp;#34;Hello, %s\n&amp;#34;, buf); read(0, buf, 0x30u); return printf(&amp;#34;Hello, %s\n&amp;#34;, buf); } 发现只有8个字节的溢出空间，不足以支持一次完整的ROP，但是可以读两次，且第一次读入有输出，因此可以利用第一次读入来泄露ebp（注：这里的ebp指的是vul函数的ebp，即read函数栈帧中的旧ebp）。</description>
+    </item>
+    
     <item>
       <title>基于go-cqhttp的机器人NoyaBot</title>
       <link>https://zeroy.site/articles/noya/</link>
@@ -76,9 +110,9 @@ EXAMPLE: 向一张名为users的数据表中插入元素： INSERT INTO users(id
       <description>简介 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称正则表示式、正则表示法、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。
 许多程序设计语言都支持利用正则表达式进行字符串操作。例如，在Perl中就内建了一个功能强大的正则表达式引擎。正则表达式这个概念最初是由Unix中的工具软件（例如sed和grep）普及开的。
 语法总结 需要转义的特殊字符：
-.[{()\^$|?*+ 就像在其它任何语言中那样，转义需要在符号前加上\。
+.[{()\^$|?*+就像在其它任何语言中那样，转义需要在符号前加上\。
 匹配规则：
-. - 除了新行外的任何字符 \d - 数字 (0-9) \D - 非数字 (0-9) \w - 单词字母 (a-z, A-Z, 0-9, _) \W - 非单词字母 \s - 空字符 (space, tab, newline) \S - 非空字符 (space, tab, newline) \b - 单词边界 \B - 非单词边界 ^ - 字符串开头（默认将一行看作一整个字符串） $ - 字符串结尾（默认将一行看作一整个字符串） [] - 匹配字符集 [^ ] - 匹配除了字符集外的字符 | - 或者 ( ) - Group Quantifiers: * - 0 or More + - 1 or More ?</description>
+. - 除了新行外的任何字符\d - 数字 (0-9)\D - 非数字 (0-9)\w - 单词字母 (a-z, A-Z, 0-9, _)\W - 非单词字母\s - 空字符 (space, tab, newline)\S - 非空字符 (space, tab, newline)\b - 单词边界\B - 非单词边界^ - 字符串开头（默认将一行看作一整个字符串）$ - 字符串结尾（默认将一行看作一整个字符串）[] - 匹配字符集[^ ] - 匹配除了字符集外的字符| - 或者( ) - GroupQuantifiers:* - 0 or More+ - 1 or More?</description>
     </item>
     
     <item>
@@ -106,7 +140,7 @@ docker run -d -p 8080:8080 -v /database:/soft/TallyApp/database {{images_id}} </
 于是我找到了PySimpleGUI这个库。
 A introduction to PySimpleGUI
 这个库提供了一种近乎傻瓜化的方式，采用List来描述一个GUI界面，同时支持一个简单程序需要的全部特性，并且支持Win/Mac/Linux三大平台，十分适合拿来封装代码。
-安装 pip install PySimpleGUI 在文件开头加上库引用：
+安装 pip install PySimpleGUI在文件开头加上库引用：
 import PySimpleGUI as sg 元素 PySimpleGUI有着丰富的控件支持。
  文本框（Text）  sg.Text(&amp;#39;文本框&amp;#39;,size=(12,1),key=&amp;#39;output&amp;#39;) &#39;文本框&#39;为框体显示的文字，size为框体的大小，key为框体标识，用于之后对文本框的定位。
 输入框（Input）  sg.Input(key=&amp;#39;input&amp;#39;) 按钮（Button）  sg.Button(&amp;#39;Go&amp;#39;) &#39;Go&#39;为按钮的名字。也可以另外设置key值。

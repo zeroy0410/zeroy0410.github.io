@@ -18,7 +18,7 @@
 <link rel="mask-icon" href="https://zeroy.site/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.92.2" />
+<meta name="generator" content="Hugo 0.92.0" />
 <link rel="alternate" type="application/rss+xml" href="https://zeroy.site/categories/python/index.xml">
 <noscript>
     <style>
@@ -155,7 +155,7 @@
 于是我找到了PySimpleGUI这个库。
 A introduction to PySimpleGUI
 这个库提供了一种近乎傻瓜化的方式，采用List来描述一个GUI界面，同时支持一个简单程序需要的全部特性，并且支持Win/Mac/Linux三大平台，十分适合拿来封装代码。
-安装 pip install PySimpleGUI 在文件开头加上库引用：
+安装 pip install PySimpleGUI在文件开头加上库引用：
 import PySimpleGUI as sg 元素 PySimpleGUI有着丰富的控件支持。
  文本框（Text）  sg.Text(&#39;文本框&#39;,size=(12,1),key=&#39;output&#39;) &#39;文本框&#39;为框体显示的文字，size为框体的大小，key为框体标识，用于之后对文本框的定位。
 输入框（Input）  sg.Input(key=&#39;input&#39;) 按钮（Button）  sg.Button(&#39;Go&#39;) &#39;Go&#39;为按钮的名字。也可以另外设置key值。
