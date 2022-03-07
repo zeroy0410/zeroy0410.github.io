@@ -1,6 +1,6 @@
 ---
 title: "[PWN.0x01]canary|partial overwrite|ret2libc"
-date: 2022-03-05T20:30:31+08:00
+date: 2022-03-07T22:25:31+08:00
 draft: false
 url: "articles/CTFpwn2"
 categories: ["CTF","PWN"]
