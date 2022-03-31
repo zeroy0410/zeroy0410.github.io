@@ -343,6 +343,29 @@ warmup 进去之后发现一个滑稽表情，用burpsuite截获数据包后发�
   <footer class="entry-footer"><span title='2022-01-18 11:24:21 +0800 CST'>January 18, 2022</span>&nbsp;·&nbsp;zeroy</footer>
   <a class="entry-link" aria-label="post link to HelloWorld" href="https://zeroy.site/articles/hello-world/"></a>
 </article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>前置知识：欧拉定理
+进阶知识：Miller Rabin算法（用于生成大素数），蒙哥马利算法（用于加快大数相乘再取模运算）
+引入 历史上常规的密码加解密算法的流程如下：
+假设甲要给乙发送数据，则需要甲通过一定的加密规则将数据加密，传送给乙，乙再通过一定的解密规则进行解密。
+由于可靠性高的密码算法都要公开自己的加解密算法，因此，在数据传输的过程中，密钥的传输成了一个大难题。
+因此RSA算法将密钥分为公钥和私钥两个部分，公钥任何人都可以获取到，而私钥只有数据接收方知道，接下来我们看看RSA加解密算法的运作流程。
+算法流程  选定两个素数\(p\),\(q\),令\(n=pq,\phi{(n)}=(p-1)(q-1)\) 选取一个公钥\(e\)，满足\(1&lt;e&lt;\phi{(n)}\)，且\(e\)与\(\phi{(n)}\)互质 生成私钥 \(d\)，满足\(ed\equiv1(mod\ \phi{(n)})\) 假设要发送的信息为\(m\)，则加解密规则成立：  $$ m^e\equiv c\pmod{n}\ c^d\equiv m\pmod{n} $$
+可靠性分析 考虑甲向乙发送一串数据，乙只需要向甲传送\(n\)和\(e\),甲就可以将加密完成的\(c\)发还给乙，由乙来进行解密操作。
+考虑第三方攻击者，只可能截获\(n\),\(e\),\(c\)，若要获取私钥\(d\)，则必须计算得\(n\)分解成的\(p\),\(q\)两数。
+而大质数的因式分解所需要的运算量是非常恐怖的。因此，当选定的\(n\)很大时，RSA算法几乎不可能被破解。
+总而言之：RSA利用的是，大数容易相乘，难以分解的特性，使得算法可靠。
+代码实现 #RSA加解密算法实现 @copyright zeroy p=1000000007 q=998244353 n=p*q phi_n=(p-1)*(q-1) E=65537 def qkpow(a,b): ans=1 while b&gt;0: if b%2==1: ans=ans*a%n a=a*a%n b=b//2 return ans def exgcd(a,b): if b==0: return 1,0,a else: x,y,q=exgcd(b,a%b) x,y=y,(x-(a//b)*y) return x,y,q # E**D=1(mod phi_n) def calcD(): x,y,q=exgcd(E,phi_n) return x&#43;phi_n D=calcD() # C=m**E%n def encode(m): c=qkpow(m,E) return c # ans=c**D%n def decode(c): return qkpow(c,D) def main(): c=encode(234234) ans=decode(c) print(ans) main() 正确性证明 RSA算法过程以及正确性证明 - 简书 (jianshu....</p>
+  </section>
+  <footer class="entry-footer">zeroy</footer>
+  <a class="entry-link" aria-label="post link to " href="https://zeroy.site/articles/rsa%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/"></a>
+</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="https://zeroy.site/">« </a>
