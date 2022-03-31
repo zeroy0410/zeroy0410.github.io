@@ -163,6 +163,29 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>RSA算法详解
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>前置知识：欧拉定理
+进阶知识：Miller Rabin算法（用于生成大素数），蒙哥马利算法（用于加快大数相乘再取模运算）
+引入 历史上常规的密码加解密算法的流程如下：
+假设甲要给乙发送数据，则需要甲通过一定的加密规则将数据加密，传送给乙，乙再通过一定的解密规则进行解密。
+由于可靠性高的密码算法都要公开自己的加解密算法，因此，在数据传输的过程中，密钥的传输成了一个大难题。
+因此RSA算法将密钥分为公钥和私钥两个部分，公钥任何人都可以获取到，而私钥只有数据接收方知道，接下来我们看看RSA加解密算法的运作流程。
+算法流程  选定两个素数\(p\),\(q\),令\(n=pq,\phi{(n)}=(p-1)(q-1)\) 选取一个公钥\(e\)，满足\(1&lt;e&lt;\phi{(n)}\)，且\(e\)与\(\phi{(n)}\)互质 生成私钥 \(d\)，满足\(ed\equiv1(mod\ \phi{(n)})\) 假设要发送的信息为\(m\)，则加解密规则成立：  $$ m^e\equiv c\pmod{n}\ c^d\equiv m\pmod{n} $$
+可靠性分析 考虑甲向乙发送一串数据，乙只需要向甲传送\(n\)和\(e\),甲就可以将加密完成的\(c\)发还给乙，由乙来进行解密操作。
+考虑第三方攻击者，只可能截获\(n\),\(e\),\(c\)，若要获取私钥\(d\)，则必须计算得\(n\)分解成的\(p\),\(q\)两数。
+而大质数的因式分解所需要的运算量是非常恐怖的。因此，当选定的\(n\)很大时，RSA算法几乎不可能被破解。
+总而言之：RSA利用的是，大数容易相乘，难以分解的特性，使得算法可靠。
+代码实现 #RSA加解密算法实现 @copyright zeroy p=1000000007 q=998244353 n=p*q phi_n=(p-1)*(q-1) E=65537 def qkpow(a,b): ans=1 while b&gt;0: if b%2==1: ans=ans*a%n a=a*a%n b=b//2 return ans def exgcd(a,b): if b==0: return 1,0,a else: x,y,q=exgcd(b,a%b) x,y=y,(x-(a//b)*y) return x,y,q # E**D=1(mod phi_n) def calcD(): x,y,q=exgcd(E,phi_n) return x&#43;phi_n D=calcD() # C=m**E%n def encode(m): c=qkpow(m,E) return c # ans=c**D%n def decode(c): return qkpow(c,D) def main(): c=encode(234234) ans=decode(c) print(ans) main() 正确性证明 RSA算法过程以及正确性证明 - 简书 (jianshu....</p>
+  </section>
+  <footer class="entry-footer"><span title='2022-03-31 23:09:02 +0800 CST'>March 31, 2022</span>&nbsp;·&nbsp;zeroy</footer>
+  <a class="entry-link" aria-label="post link to RSA算法详解" href="https://zeroy.site/articles/basic_RSA/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>写在Apple2022年春季发布会之后
     </h2>
   </header>
@@ -357,27 +380,6 @@ docker run -d -p 8080:8080 -v /database:/soft/TallyApp/database {{images_id}} </
   </section>
   <footer class="entry-footer"><span title='2022-02-01 19:35:39 +0800 CST'>February 1, 2022</span>&nbsp;·&nbsp;zeroy</footer>
   <a class="entry-link" aria-label="post link to Flask学习1 TallyApp beta 0.9" href="https://zeroy.site/articles/tallyapp1/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>使用PySimpleGUI库构建简单的图形界面
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>前言 python构建本地GUI程序有很多方式，比如Tkinter，wxPython，或是PyQT。但是对于学生而言，并不需要多么华丽的用户界面，只需要“能用”就行了，开发环节越省力越好。
-于是我找到了PySimpleGUI这个库。
-A introduction to PySimpleGUI
-这个库提供了一种近乎傻瓜化的方式，采用List来描述一个GUI界面，同时支持一个简单程序需要的全部特性，并且支持Win/Mac/Linux三大平台，十分适合拿来封装代码。
-安装 pip install PySimpleGUI在文件开头加上库引用：
-import PySimpleGUI as sg 元素 PySimpleGUI有着丰富的控件支持。
- 文本框（Text）  sg.Text(&#39;文本框&#39;,size=(12,1),key=&#39;output&#39;) &#39;文本框&#39;为框体显示的文字，size为框体的大小，key为框体标识，用于之后对文本框的定位。
-输入框（Input）  sg.Input(key=&#39;input&#39;) 按钮（Button）  sg.Button(&#39;Go&#39;) &#39;Go&#39;为按钮的名字。也可以另外设置key值。
-下拉框（Comobo）  [ sg.Text(&#34;City&#34;, size = (20, 1)), sg.Combo((&#34;北京&#34;, &#34;上海&#34;, &#34;深圳&#34;), size=(10, 1), default_value=&#34;上海&#34;, key = &#34;-CITY-&#34;)] 弹窗（Popup）  sg.Popup(&#39;弹窗1&#39;,&#39;This is the first one&#39;) sg.Popup(&#39;弹窗2&#39;,&#39;This is the second one&#39;) sg.Popup(&#39;弹窗3&#39;,&#39;This is the third one&#39;) 弹出一个窗口包含标题和内容。
-选择文件（FileBrowse）  sg.FileBrowse() 选择文件路径（FolderBrowse）  sg....</p>
-  </section>
-  <footer class="entry-footer"><span title='2022-01-26 16:49:18 +0800 CST'>January 26, 2022</span>&nbsp;·&nbsp;zeroy</footer>
-  <a class="entry-link" aria-label="post link to 使用PySimpleGUI库构建简单的图形界面" href="https://zeroy.site/articles/PySimpleGUI/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
