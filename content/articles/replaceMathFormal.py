@@ -1,5 +1,5 @@
 
-file_name="RSA算法详解.md"
+file_name=""
 op=0
 ANS=""
 with open(file_name,"r",encoding="utf-8") as f:

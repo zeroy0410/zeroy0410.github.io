@@ -3,21 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://zeroy.site/articles/</loc>
-    <lastmod>2022-03-31T23:09:02+08:00</lastmod>
+    <lastmod>2022-04-19T08:36:18+08:00</lastmod>
   </url><url>
     <loc>https://zeroy.site/categories/</loc>
-    <lastmod>2022-03-31T23:09:02+08:00</lastmod>
+    <lastmod>2022-04-19T08:36:18+08:00</lastmod>
   </url><url>
     <loc>https://zeroy.site/categories/ctf/</loc>
-    <lastmod>2022-03-31T23:09:02+08:00</lastmod>
+    <lastmod>2022-04-19T08:36:18+08:00</lastmod>
+  </url><url>
+    <loc>https://zeroy.site/categories/ctf-reverse/</loc>
+    <lastmod>2022-04-19T08:36:18+08:00</lastmod>
+  </url><url>
+    <loc>https://zeroy.site/</loc>
+    <lastmod>2022-04-19T08:36:18+08:00</lastmod>
+  </url><url>
+    <loc>https://zeroy.site/articles/reverse-exercise-area/</loc>
+    <lastmod>2022-04-19T08:36:18+08:00</lastmod>
   </url><url>
     <loc>https://zeroy.site/categories/ctf-crypto/</loc>
     <lastmod>2022-03-31T23:09:02+08:00</lastmod>
   </url><url>
     <loc>https://zeroy.site/articles/basic_RSA/</loc>
-    <lastmod>2022-03-31T23:09:02+08:00</lastmod>
-  </url><url>
-    <loc>https://zeroy.site/</loc>
     <lastmod>2022-03-31T23:09:02+08:00</lastmod>
   </url><url>
     <loc>https://zeroy.site/articles/Appleevent2022/</loc>
