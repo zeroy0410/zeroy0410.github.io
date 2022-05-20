@@ -5,7 +5,18 @@
     <link>https://zeroy.site/</link>
     <description>Recent content on zeroy&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 19 Apr 2022 08:36:18 +0800</lastBuildDate><atom:link href="https://zeroy.site/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 20 May 2022 22:40:09 +0800</lastBuildDate><atom:link href="https://zeroy.site/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Templates</title>
+      <link>https://zeroy.site/articles/templates/</link>
+      <pubDate>Fri, 20 May 2022 22:40:09 +0800</pubDate>
+      
+      <guid>https://zeroy.site/articles/templates/</guid>
+      <description>@zeroy.site
+ 正向表 int tot=0,h[M]; struct edge{ int nxt; int to,cost; }G[3*M]; void add(int a,int b,int c){ G[++tot]=(edge){h[a],b,c}; h[a]=tot; } //图论题存图用的 //遍历： for(int i=h[x];i;i=G[i].nxt){ int u=G[i].to,v=G[i].cost; //... } 基础数据结构 树状数组 void Add(int x,int d){ while(x&amp;lt;=n){ C[x]+=d; x+=(x&amp;amp;-x); } } int Sum(int x){ int res=0; while(x){ res+=C[x]; x-=(x&amp;amp;-x); } return res; } //在线单点加值，查询前缀和，单次操作复杂度均为O(logn) ST表 预处理
+void Init_RMQ(int n){ for(int i=1;i&amp;lt;=n;i++)f[i][0]=A[i]; lg2[1]=0; for(int i=2;i&amp;lt;=n;i++)lg2[i]=lg2[i&amp;gt;&amp;gt;1]+1; for(int j=1;(1&amp;lt;&amp;lt;j)&amp;lt;=n;j++) for(int i=1;i+(1&amp;lt;&amp;lt;j)-1&amp;lt;=n;i++) f[i][j]=max(f[i][j-1],f[i+(1&amp;lt;&amp;lt;(j-1))][j-1]); } 查询</description>
+    </item>
+    
     <item>
       <title>攻防世界reverse练习区WP</title>
       <link>https://zeroy.site/articles/reverse-exercise-area/</link>
@@ -383,7 +394,8 @@ CSP-S 2019 一等奖 457
 2021-: iEEE Xtreme rank32
 CSP-24th 289
 西安电子科技大学程序设计新生赛2021 特等奖 第三名
-中国高校计算机大赛 团体程序设计天梯赛 个人三等奖</description>
+中国高校计算机大赛 团体程序设计天梯赛 个人三等奖
+miniL CTF团队赛 第五名</description>
     </item>
     
     <item>

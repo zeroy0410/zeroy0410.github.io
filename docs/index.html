@@ -180,6 +180,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>Templates
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>@zeroy.site
+ 正向表 int tot=0,h[M]; struct edge{ int nxt; int to,cost; }G[3*M]; void add(int a,int b,int c){ G[&#43;&#43;tot]=(edge){h[a],b,c}; h[a]=tot; } //图论题存图用的 //遍历： for(int i=h[x];i;i=G[i].nxt){ int u=G[i].to,v=G[i].cost; //... } 基础数据结构 树状数组 void Add(int x,int d){ while(x&lt;=n){ C[x]&#43;=d; x&#43;=(x&amp;-x); } } int Sum(int x){ int res=0; while(x){ res&#43;=C[x]; x-=(x&amp;-x); } return res; } //在线单点加值，查询前缀和，单次操作复杂度均为O(logn) ST表 预处理
+void Init_RMQ(int n){ for(int i=1;i&lt;=n;i&#43;&#43;)f[i][0]=A[i]; lg2[1]=0; for(int i=2;i&lt;=n;i&#43;&#43;)lg2[i]=lg2[i&gt;&gt;1]&#43;1; for(int j=1;(1&lt;&lt;j)&lt;=n;j&#43;&#43;) for(int i=1;i&#43;(1&lt;&lt;j)-1&lt;=n;i&#43;&#43;) f[i][j]=max(f[i][j-1],f[i&#43;(1&lt;&lt;(j-1))][j-1]); } 查询...</p>
+  </section>
+  <footer class="entry-footer"><span title='2022-05-20 22:40:09 +0800 CST'>May 20, 2022</span>&nbsp;·&nbsp;zeroy</footer>
+  <a class="entry-link" aria-label="post link to Templates" href="https://zeroy.site/articles/templates/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>攻防世界reverse练习区WP
     </h2>
   </header>
@@ -376,23 +390,6 @@ EXAMPLE: 向一张名为users的数据表中插入元素： INSERT INTO users(id
   </section>
   <footer class="entry-footer"><span title='2022-02-07 22:36:05 +0800 CST'>February 7, 2022</span>&nbsp;·&nbsp;zeroy</footer>
   <a class="entry-link" aria-label="post link to 数据库基础|JDBC入门|Druid连接池的简单配置" href="https://zeroy.site/articles/database-for-beginner/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>正则表达式 For Beginner
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>简介 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称正则表示式、正则表示法、规则表达式、常规表示法，是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些匹配某个模式的文本。
-许多程序设计语言都支持利用正则表达式进行字符串操作。例如，在Perl中就内建了一个功能强大的正则表达式引擎。正则表达式这个概念最初是由Unix中的工具软件（例如sed和grep）普及开的。
-语法总结 需要转义的特殊字符：
-.[{()\^$|?*&#43;就像在其它任何语言中那样，转义需要在符号前加上\。
-匹配规则：
-. - 除了新行外的任何字符\d - 数字 (0-9)\D - 非数字 (0-9)\w - 单词字母 (a-z, A-Z, 0-9, _)\W - 非单词字母\s - 空字符 (space, tab, newline)\S - 非空字符 (space, tab, newline)\b - 单词边界\B - 非单词边界^ - 字符串开头（默认将一行看作一整个字符串）$ - 字符串结尾（默认将一行看作一整个字符串）[] - 匹配字符集[^ ] - 匹配除了字符集外的字符| - 或者( ) - GroupQuantifiers:* - 0 or More&#43; - 1 or More?...</p>
-  </section>
-  <footer class="entry-footer"><span title='2022-02-03 16:00:45 +0800 CST'>February 3, 2022</span>&nbsp;·&nbsp;zeroy</footer>
-  <a class="entry-link" aria-label="post link to 正则表达式 For Beginner" href="https://zeroy.site/articles/regular-expression/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
