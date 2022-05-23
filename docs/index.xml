@@ -371,12 +371,13 @@ private void OnTriggerEnter2D(Collider2D collision) { if (collision.tag.Equals(&
       <pubDate>Tue, 18 Jan 2022 12:23:38 +0800</pubDate>
       
       <guid>https://zeroy.site/links/</guid>
-      <description>Wings哥哥！
+      <description>翼哥哥
 我的老博客
 果果
 Frank神
 qzx神
-arcturus神</description>
+arcturus神
+Dimole神</description>
     </item>
     
     <item>

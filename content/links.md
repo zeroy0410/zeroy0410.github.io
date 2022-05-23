@@ -4,7 +4,7 @@ date: 2022-01-18T12:23:38+08:00
 draft: false
 ---
 
-[Wings哥哥！](https://blog.wingszeng.top)
+[翼哥哥](https://blog.wingszeng.top)
 
 [我的老博客](https://www.cnblogs.com/zeroy)
 
@@ -15,3 +15,5 @@ draft: false
 [qzx神](https://www.cnblogs.com/qzx712/)
 
 [arcturus神](https://www.cnblogs.com/arcturus)
+
+[Dimole神](https://blog.dml.ink/)
