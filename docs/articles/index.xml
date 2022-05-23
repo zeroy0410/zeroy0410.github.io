@@ -13,8 +13,7 @@
       
       <guid>https://zeroy.site/articles/templates/</guid>
       <description>@zeroy.site
- 正向表 int tot=0,h[M]; struct edge{ int nxt; int to,cost; }G[3*M]; void add(int a,int b,int c){ G[++tot]=(edge){h[a],b,c}; h[a]=tot; } //图论题存图用的 //遍历： for(int i=h[x];i;i=G[i].nxt){ int u=G[i].to,v=G[i].cost; //... } 基础数据结构 树状数组 void Add(int x,int d){ while(x&amp;lt;=n){ C[x]+=d; x+=(x&amp;amp;-x); } } int Sum(int x){ int res=0; while(x){ res+=C[x]; x-=(x&amp;amp;-x); } return res; } //在线单点加值，查询前缀和，单次操作复杂度均为O(logn) ST表 预处理
-void Init_RMQ(int n){ for(int i=1;i&amp;lt;=n;i++)f[i][0]=A[i]; lg2[1]=0; for(int i=2;i&amp;lt;=n;i++)lg2[i]=lg2[i&amp;gt;&amp;gt;1]+1; for(int j=1;(1&amp;lt;&amp;lt;j)&amp;lt;=n;j++) for(int i=1;i+(1&amp;lt;&amp;lt;j)-1&amp;lt;=n;i++) f[i][j]=max(f[i][j-1],f[i+(1&amp;lt;&amp;lt;(j-1))][j-1]); } 查询</description>
+ 读入输出挂 inline int read(){ char c=getchar(); int num=0,fl=1; while(c&amp;lt;48 || c&amp;gt;57){if(c==&amp;#39;-&amp;#39;)fl=-1;c=getchar();} while(c&amp;gt;=48 &amp;amp;&amp;amp; c&amp;lt;=57){num=(num&amp;lt;&amp;lt;1)+(num&amp;lt;&amp;lt;3)+(c^48);c=getchar();} return num*fl; } inline void write(int x){ if(x&amp;lt;0){ putchar(&amp;#39;-&amp;#39;); x=-x; } if(x&amp;gt;9)write(x/10); putchar(x%10+&amp;#39;0&amp;#39;); } 正向表 int tot=0,h[M]; struct edge{ int nxt; int to,cost; }G[3*M]; void add(int a,int b,int c){ G[++tot]=(edge){h[a],b,c}; h[a]=tot; } //图论题存图用的 //遍历： for(int i=h[x];i;i=G[i].nxt){ int u=G[i].to,v=G[i].cost; //... } 基础数据结构 树状数组 void Add(int x,int d){ while(x&amp;lt;=n){ C[x]+=d; x+=(x&amp;amp;-x); } } int Sum(int x){ int res=0; while(x){ res+=C[x]; x-=(x&amp;amp;-x); } return res; } //在线单点加值，查询前缀和，单次操作复杂度均为O(logn) ST表 预处理</description>
     </item>
     
     <item>

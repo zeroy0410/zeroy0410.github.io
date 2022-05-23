@@ -168,8 +168,7 @@
   </header>
   <section class="entry-content">
     <p>@zeroy.site
- 正向表 int tot=0,h[M]; struct edge{ int nxt; int to,cost; }G[3*M]; void add(int a,int b,int c){ G[&#43;&#43;tot]=(edge){h[a],b,c}; h[a]=tot; } //图论题存图用的 //遍历： for(int i=h[x];i;i=G[i].nxt){ int u=G[i].to,v=G[i].cost; //... } 基础数据结构 树状数组 void Add(int x,int d){ while(x&lt;=n){ C[x]&#43;=d; x&#43;=(x&amp;-x); } } int Sum(int x){ int res=0; while(x){ res&#43;=C[x]; x-=(x&amp;-x); } return res; } //在线单点加值，查询前缀和，单次操作复杂度均为O(logn) ST表 预处理
-void Init_RMQ(int n){ for(int i=1;i&lt;=n;i&#43;&#43;)f[i][0]=A[i]; lg2[1]=0; for(int i=2;i&lt;=n;i&#43;&#43;)lg2[i]=lg2[i&gt;&gt;1]&#43;1; for(int j=1;(1&lt;&lt;j)&lt;=n;j&#43;&#43;) for(int i=1;i&#43;(1&lt;&lt;j)-1&lt;=n;i&#43;&#43;) f[i][j]=max(f[i][j-1],f[i&#43;(1&lt;&lt;(j-1))][j-1]); } 查询...</p>
+ 读入输出挂 inline int read(){ char c=getchar(); int num=0,fl=1; while(c&lt;48 || c&gt;57){if(c==&#39;-&#39;)fl=-1;c=getchar();} while(c&gt;=48 &amp;&amp; c&lt;=57){num=(num&lt;&lt;1)&#43;(num&lt;&lt;3)&#43;(c^48);c=getchar();} return num*fl; } inline void write(int x){ if(x&lt;0){ putchar(&#39;-&#39;); x=-x; } if(x&gt;9)write(x/10); putchar(x%10&#43;&#39;0&#39;); } 正向表 int tot=0,h[M]; struct edge{ int nxt; int to,cost; }G[3*M]; void add(int a,int b,int c){ G[&#43;&#43;tot]=(edge){h[a],b,c}; h[a]=tot; } //图论题存图用的 //遍历： for(int i=h[x];i;i=G[i].nxt){ int u=G[i].to,v=G[i].cost; //... } 基础数据结构 树状数组 void Add(int x,int d){ while(x&lt;=n){ C[x]&#43;=d; x&#43;=(x&amp;-x); } } int Sum(int x){ int res=0; while(x){ res&#43;=C[x]; x-=(x&amp;-x); } return res; } //在线单点加值，查询前缀和，单次操作复杂度均为O(logn) ST表 预处理...</p>
   </section>
   <footer class="entry-footer"><span title='2022-05-20 22:40:09 +0800 CST'>May 20, 2022</span>&nbsp;·&nbsp;zeroy</footer>
   <a class="entry-link" aria-label="post link to Templates" href="https://zeroy.site/articles/templates/"></a>

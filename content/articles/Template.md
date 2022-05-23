@@ -7,6 +7,26 @@ draft: False
 
 > @zeroy.site
 
+### 读入输出挂
+
+```cpp
+inline int read(){
+	char c=getchar();
+	int num=0,fl=1;
+	while(c<48 || c>57){if(c=='-')fl=-1;c=getchar();}
+	while(c>=48 && c<=57){num=(num<<1)+(num<<3)+(c^48);c=getchar();}
+	return num*fl; 
+}
+inline void write(int x){
+	if(x<0){
+		putchar('-');
+		x=-x;
+	}
+	if(x>9)write(x/10);
+	putchar(x%10+'0');
+}
+```
+
 
 
 ### 正向表
