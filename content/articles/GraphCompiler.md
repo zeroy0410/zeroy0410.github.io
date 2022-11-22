@@ -250,7 +250,7 @@ void parser()
 
 **InitScanner()：**初始化词法分析器。
 
-***GetToken()：**从输入文件中获取一个记号。
+**GetToken()：**从输入文件中获取一个记号。
 
 **CloseScanner()：**关闭词法分析器。
 
@@ -258,17 +258,17 @@ void parser()
 
 **ExprNode：**存储语法树结点的数据结构。
 
-***MakeExprNode：**制作一个语法树节点。
+**MakeExprNode：**制作一个语法树节点。
 
-***atom()：**匹配Atom文法。
+**atom()：**匹配Atom文法。
 
-***component()：**匹配Component文法。
+**component()：**匹配Component文法。
 
-***factor()：**匹配Factor文法。
+**factor()：**匹配Factor文法。
 
-***term()：**匹配Term文法。
+**term()：**匹配Term文法。
 
-***expression()：**匹配Expression文法。
+**expression()：**匹配Expression文法。
 
 **FetchToken()：**从词法分析器中获取一个记号，若是错误记号，报错。
 
