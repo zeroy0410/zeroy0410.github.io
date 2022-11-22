@@ -180,6 +180,25 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>编译原理大作业报告
+    </h2>
+  </header>
+  <section class="entry-content">
+    <p>1. 上机题目简介 上机实验的目的 通过做上机题加深对编译器构造原理和方法的理解，巩固所学知识。
+  会用正规式和产生式设计简单语言的语法；
+  会用递归下降子程序编写编译器或解释器；
+  上机题目 - 简单函数绘图语言的解释器  实现简单函数绘图的语句    循环绘图（FOR-DRAW）
+  比例设置（SCALE）
+  角度旋转（ROT）
+  坐标平移（ORIGIN）
+  屏幕（窗口）的坐标系   左上角为原点 x方向从左向右增长 y方向从上到小增长（与一般的坐标系方向相反）  函数绘图源程序举例  --------------- 函数f(t)=t的图形 origin is (100, 300);	-- 设置原点的偏移量 rot is 0;	-- 设置旋转角度(不旋转) scale is (1, 1);	-- 设置横坐标和纵坐标的比例 for T from 0 to 200 step 1 draw (t, 0); -- 横坐标的轨迹（纵坐标为0） for T from 0 to 150 step 1 draw (0, -t); -- 纵坐标的轨迹（横坐标为0） for T from 0 to 120 step 1 draw (t, -t); -- 函数f(t)=t的轨迹 默认值： origin is (0, 0) rot is 0; scale is (1, 1) 2....</p>
+  </section>
+  <footer class="entry-footer"><span title='2022-11-22 16:37:21 +0800 CST'>November 22, 2022</span>&nbsp;·&nbsp;zeroy</footer>
+  <a class="entry-link" aria-label="post link to 编译原理大作业报告" href="https://zeroy.site/articles/GraphCompiler/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Templates
     </h2>
   </header>
@@ -371,24 +390,6 @@ func sayHello(c *gin.Context/*gin框架中的临时变量，便于后续响应�
   </section>
   <footer class="entry-footer"><span title='2022-02-11 16:31:25 +0800 CST'>February 11, 2022</span>&nbsp;·&nbsp;zeroy</footer>
   <a class="entry-link" aria-label="post link to Golang|Gin Web development for Beginners" href="https://zeroy.site/articles/Golang-web1/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>数据库基础|JDBC入门|Druid连接池的简单配置
-    </h2>
-  </header>
-  <section class="entry-content">
-    <p>数据库基础 增 新建数据库
-CREATE DATABASE {{name}} 新建数据表
-CREATE TABLE {{name}}( {{列名}} {{数据类型}} {{约束}}, ..... ); EXAMPLE: CREATE TABLE Users( id int primary key, name varchar(30) NOT NULL, birthday date, score int NOT NULL ); 添加外键约束
-建表时添加
-CONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 建表后添加
-alter table {{表名}} add CONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 插入元素
-EXAMPLE: 向一张名为users的数据表中插入元素： INSERT INTO users(id,name,birthday,score) VALUES (1,&#39;zeroy&#39;,&#39;2003-4-10&#39;,100) , (2,&#39;admin&#39;,&#39;2003-4-10&#39;,99) 查 SELECT {{列名}} FROM {{表名}} WHERE {{条件}} GROUP BY {{分组字段}} HAVING {{分组后条件}} ORDER BY {{排序字段}} LIMIT {{分页限定}} 改 UPDATE {{表名}} set {{程序语句}} WHERE {{条件}} 事务 事务能实现多条命令捆绑，一旦失败，会回滚所有操作。...</p>
-  </section>
-  <footer class="entry-footer"><span title='2022-02-07 22:36:05 +0800 CST'>February 7, 2022</span>&nbsp;·&nbsp;zeroy</footer>
-  <a class="entry-link" aria-label="post link to 数据库基础|JDBC入门|Druid连接池的简单配置" href="https://zeroy.site/articles/database-for-beginner/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
