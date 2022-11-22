@@ -57,13 +57,13 @@ for T from 0 to 120 step 1 draw (t, -t);
 
 ### 2. 开发环境及配置
 
-**环境：**GNU-g++ 9.4.0/Python 3.9 tkinter
+**环境**：GNU-g++ 9.4.0/Python 3.9 tkinter
 
-**文本编辑器：**Visual Studio Code
+**文本编辑器**：Visual Studio Code
 
-**构建工具：**GNU make
+**构建工具**：GNU make
 
-**代码仓库地址：**https://github.com/zeroy0410/GraphCompiler
+**代码仓库地址**：https://github.com/zeroy0410/GraphCompiler
 
 #### 图形库依赖
 
@@ -242,53 +242,53 @@ void parser()
 
 #### 词法分析器
 
-**Token_Type：**枚举类型，表示记号的分类。
+**Token_Type**：枚举类型，表示记号的分类。
 
-**Token_Tab：**字典。
+**Token_Tab**：字典。
 
-**Token：**用来存储记号的数据结构。
+**Token**：用来存储记号的数据结构。
 
-**InitScanner()：**初始化词法分析器。
+**InitScanner()**：初始化词法分析器。
 
-**GetToken()：**从输入文件中获取一个记号。
+**GetToken()**：从输入文件中获取一个记号。
 
-**CloseScanner()：**关闭词法分析器。
+**CloseScanner()**：关闭词法分析器。
 
 #### 语法分析器
 
-**ExprNode：**存储语法树结点的数据结构。
+**ExprNode**：存储语法树结点的数据结构。
 
-**MakeExprNode：**制作一个语法树节点。
+**MakeExprNode**：制作一个语法树节点。
 
-**atom()：**匹配Atom文法。
+**atom()**：匹配Atom文法。
 
-**component()：**匹配Component文法。
+**component()**：匹配Component文法。
 
-**factor()：**匹配Factor文法。
+**factor()**：匹配Factor文法。
 
-**term()：**匹配Term文法。
+**term()**：匹配Term文法。
 
-**expression()：**匹配Expression文法。
+**expression()**：匹配Expression文法。
 
-**FetchToken()：**从词法分析器中获取一个记号，若是错误记号，报错。
+**FetchToken()**：从词法分析器中获取一个记号，若是错误记号，报错。
 
-**MatchToken()：**匹配记号，若不匹配，报错。
+**MatchToken()**：匹配记号，若不匹配，报错。
 
-**origin_statement()：**处理Origin语句（scale_statement、rot_statement、for_statement）同理。
+**origin_statement()**：处理Origin语句（scale_statement、rot_statement、for_statement）同理。
 
-**parser()：**语法分析器暴露给main的接口。
+**parser()**：语法分析器暴露给main的接口。
 
 #### 语义分析器
 
-**GetExprVal()：**计算表达式树的值。
+**GetExprVal()**：计算表达式树的值。
 
-**DrawLoop()：**生成绘制函数的Python代码（此项目中此代码为中间代码）。
+**DrawLoop()**：生成绘制函数的Python代码（此项目中此代码为中间代码）。
 
-**CloseDrawer()：**关闭绘图。
+**CloseDrawer()**：关闭绘图。
 
-**DrawPixel()：**绘制一个点。
+**DrawPixel()**：绘制一个点。
 
-**GetCoordinate()：**计算绘制点的坐标。
+**GetCoordinate()**：计算绘制点的坐标。
 
 
 
