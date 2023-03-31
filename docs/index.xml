@@ -4,9 +4,16 @@
         <link>http://zeroy.site/</link>
         <description>zeroy的碎碎念</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
-            <webMaster>zeroy0410@gmail.com (zeroy)</webMaster><lastBuildDate>Tue, 22 Nov 2022 16:37:21 &#43;0800</lastBuildDate>
+            <webMaster>zeroy0410@gmail.com (zeroy)</webMaster><lastBuildDate>Fri, 31 Mar 2023 21:00:58 &#43;0800</lastBuildDate>
             <atom:link href="http://zeroy.site/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>实现一个自己的shell（操作系统Lab2）</title>
+    <link>http://zeroy.site/posts/oslab2/</link>
+    <pubDate>Fri, 31 Mar 2023 21:00:58 &#43;0800</pubDate><author>
+        <name>zeroy</name>
+    </author><guid>http://zeroy.site/posts/oslab2/</guid>
+    <description><![CDATA[实验题目Project 1—UNIX Shell and History Feature This project consists of designing a C program to serve as a shell interface that accepts user commands and then executes each command in a separate process. This project can be completed on any Linux, UNIX, or Mac OS X system. A shell interface gives the user a prompt,]]></description>
+</item><item>
     <title>编译原理大作业报告</title>
     <link>http://zeroy.site/articles/GraphCompiler/</link>
     <pubDate>Tue, 22 Nov 2022 16:37:21 &#43;0800</pubDate><author>
@@ -69,12 +76,5 @@
         <name>zeroy</name>
     </author><guid>http://zeroy.site/articles/math-integrate/</guid>
     <description><![CDATA[高等数学上册(微积分)必背公式总结 - 知乎 (zhihu.com) 导数： $$ \begin{align} &amp;[\cos(\omega x+\varphi)]^{(n)}=\omega^n\cos(\omega x+\frac{n\pi}{2}+\varphi)\\ &amp;[\sin(\omega x+\varphi)]^{(n)}=\omega^n\sin(\omega x+\frac{n\pi}{2}+\varphi)\\ \end{align} $$ 重难点公式： $$ \begin{align} &amp;\int\frac{1}{a^2+x^2}dx=\frac{1}{a}arctan\frac{x}{a}+C\\ &amp;\int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a+x}{a-x}|+C\\ &amp;\int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}+C\\ &amp;\int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x+\sqrt{x^2\pm a^2}|+C\\ &amp;\int{tan\ x}dx=-ln|cos\ x|+C\\ &amp;\int{cot\ x}dx=ln|sin\ x|+C\\ &amp;\int{csc\ x}dx=ln|csc\ x-cot\ x|+C\\ &amp;\int{sec\ x}dx=ln|sec\ x+tan\ x|+C\\ &amp;\int{sec^2\ x}dx=tan\ x+C\\ &amp;\int{csc^2\ x}dx=-cot\ x+C\\ &amp;\int{sec\ x*tan\]]></description>
-</item><item>
-    <title>Golang|Gin Web development for Beginners</title>
-    <link>http://zeroy.site/articles/Golang-web1/</link>
-    <pubDate>Fri, 11 Feb 2022 16:31:25 &#43;0800</pubDate><author>
-        <name>zeroy</name>
-    </author><guid>http://zeroy.site/articles/Golang-web1/</guid>
-    <description><![CDATA[自带的net/http库的使用http库提供了HTTP服务的用户端和服务端的实现。 官方文档 Go语言基础之net/http | 李文周的博客 (liwenzhou.com) 示例]]></description>
 </item></channel>
 </rss>
