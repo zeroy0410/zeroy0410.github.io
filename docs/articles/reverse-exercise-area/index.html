@@ -1,423 +1,541 @@
 <!DOCTYPE html>
-<html lang="zh-cn" dir="auto">
+<html lang="zh-CN">
 
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>攻防世界reverse练习区WP | zeroy&#39;s blog</title>
-<meta name="keywords" content="" />
-<meta name="description" content="0x00. simple-unpack 使用exeinfope脱壳，拖进IDA shift&#43;F12搜索字符串。
-0x01. logmein 反编译得到如下代码：
-void __fastcall __noreturn main(int a1, char **a2, char **a3) { size_t v3; // rsi  int i; // [rsp&#43;3Ch] [rbp-54h]  char s[36]; // [rsp&#43;40h] [rbp-50h] BYREF  int v6; // [rsp&#43;64h] [rbp-2Ch]  __int64 v7; // [rsp&#43;68h] [rbp-28h]  char v8[28]; // [rsp&#43;70h] [rbp-20h] BYREF  int v9; // [rsp&#43;8Ch] [rbp-4h]  v9 = 0; strcpy(v8, &#34;:\&#34;AL_RT^L*.?&#43;6/46&#34;); v7 = 0x65626D61726168LL; v6 = 7; printf(&#34;Welcome to the RC3 secure password guesser.">
-<meta name="author" content="zeroy">
-<link rel="canonical" href="https://zeroy.site/articles/reverse-exercise-area/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://zeroy.site/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://zeroy.site/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://zeroy.site/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://zeroy.site/apple-touch-icon.png">
-<link rel="mask-icon" href="https://zeroy.site/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.92.0" />
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript><meta property="og:title" content="攻防世界reverse练习区WP" />
-<meta property="og:description" content="0x00. simple-unpack 使用exeinfope脱壳，拖进IDA shift&#43;F12搜索字符串。
-0x01. logmein 反编译得到如下代码：
-void __fastcall __noreturn main(int a1, char **a2, char **a3) { size_t v3; // rsi  int i; // [rsp&#43;3Ch] [rbp-54h]  char s[36]; // [rsp&#43;40h] [rbp-50h] BYREF  int v6; // [rsp&#43;64h] [rbp-2Ch]  __int64 v7; // [rsp&#43;68h] [rbp-28h]  char v8[28]; // [rsp&#43;70h] [rbp-20h] BYREF  int v9; // [rsp&#43;8Ch] [rbp-4h]  v9 = 0; strcpy(v8, &#34;:\&#34;AL_RT^L*.?&#43;6/46&#34;); v7 = 0x65626D61726168LL; v6 = 7; printf(&#34;Welcome to the RC3 secure password guesser." />
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>攻防世界reverse练习区WP - zeroy的网络小窝</title><meta name="Description" content="zeroy的碎碎念"><meta property="og:title" content="攻防世界reverse练习区WP" />
+<meta property="og:description" content="0x00. simple-unpack使用exeinfope脱壳，拖进IDA shift&#43;F12搜索字符串。 0x01. logmein反编译得到如下代码： 1 2 3 4" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://zeroy.site/articles/reverse-exercise-area/" /><meta property="article:section" content="articles" />
-<meta property="article:published_time" content="2022-04-19T08:36:18&#43;08:00" />
-<meta property="article:modified_time" content="2022-04-19T08:36:18&#43;08:00" />
+<meta property="og:url" content="http://zeroy.site/articles/reverse-exercise-area/" /><meta property="og:image" content="http://zeroy.site/ava.jpeg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-04-19T08:36:18+08:00" />
+<meta property="article:modified_time" content="2022-04-19T08:36:18+08:00" /><meta property="og:site_name" content="zeroy的网络小窝" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://zeroy.site/ava.jpeg"/>
 
-<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="攻防世界reverse练习区WP"/>
-<meta name="twitter:description" content="0x00. simple-unpack 使用exeinfope脱壳，拖进IDA shift&#43;F12搜索字符串。
-0x01. logmein 反编译得到如下代码：
-void __fastcall __noreturn main(int a1, char **a2, char **a3) { size_t v3; // rsi  int i; // [rsp&#43;3Ch] [rbp-54h]  char s[36]; // [rsp&#43;40h] [rbp-50h] BYREF  int v6; // [rsp&#43;64h] [rbp-2Ch]  __int64 v7; // [rsp&#43;68h] [rbp-28h]  char v8[28]; // [rsp&#43;70h] [rbp-20h] BYREF  int v9; // [rsp&#43;8Ch] [rbp-4h]  v9 = 0; strcpy(v8, &#34;:\&#34;AL_RT^L*.?&#43;6/46&#34;); v7 = 0x65626D61726168LL; v6 = 7; printf(&#34;Welcome to the RC3 secure password guesser."/>
+<meta name="twitter:description" content="0x00. simple-unpack使用exeinfope脱壳，拖进IDA shift&#43;F12搜索字符串。 0x01. logmein反编译得到如下代码： 1 2 3 4"/>
+<meta name="application-name" content="DoIt">
+<meta name="apple-mobile-web-app-title" content="DoIt">
 
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://zeroy.site/articles/reverse-exercise-area/" /><link rel="prev" href="http://zeroy.site/articles/basic_RSA/" /><link rel="next" href="http://zeroy.site/articles/templates/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
     {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Articles",
-      "item": "https://zeroy.site/articles/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "攻防世界reverse练习区WP",
-      "item": "https://zeroy.site/articles/reverse-exercise-area/"
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "攻防世界reverse练习区WP",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/zeroy.site\/articles\/reverse-exercise-area\/"
+        },"genre": "posts","wordcount":  1478 ,
+        "url": "http:\/\/zeroy.site\/articles\/reverse-exercise-area\/","datePublished": "2022-04-19T08:36:18+08:00","dateModified": "2022-04-19T08:36:18+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "zeroy"
+            },"description": ""
     }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "攻防世界reverse练习区WP",
-  "name": "攻防世界reverse练习区WP",
-  "description": "0x00. simple-unpack 使用exeinfope脱壳，拖进IDA shift+F12搜索字符串。\n0x01. logmein 反编译得到如下代码：\nvoid __fastcall __noreturn main(int a1, char **a2, char **a3) { size_t v3; // rsi  int i; // [rsp+3Ch] [rbp-54h]  char s[36]; // [rsp+40h] [rbp-50h] BYREF  int v6; // [rsp+64h] [rbp-2Ch]  __int64 v7; // [rsp+68h] [rbp-28h]  char v8[28]; // [rsp+70h] [rbp-20h] BYREF  int v9; // [rsp+8Ch] [rbp-4h]  v9 = 0; strcpy(v8, \u0026#34;:\\\u0026#34;AL_RT^L*.?+6/46\u0026#34;); v7 = 0x65626D61726168LL; v6 = 7; printf(\u0026#34;Welcome to the RC3 secure password guesser.",
-  "keywords": [
-    
-  ],
-  "articleBody": "0x00. simple-unpack 使用exeinfope脱壳，拖进IDA shift+F12搜索字符串。\n0x01. logmein 反编译得到如下代码：\nvoid __fastcall __noreturn main(int a1, char **a2, char **a3) { size_t v3; // rsi  int i; // [rsp+3Ch] [rbp-54h]  char s[36]; // [rsp+40h] [rbp-50h] BYREF  int v6; // [rsp+64h] [rbp-2Ch]  __int64 v7; // [rsp+68h] [rbp-28h]  char v8[28]; // [rsp+70h] [rbp-20h] BYREF  int v9; // [rsp+8Ch] [rbp-4h]  v9 = 0; strcpy(v8, \":\\\"AL_RT^L*.?+6/46\"); v7 = 0x65626D61726168LL; v6 = 7; printf(\"Welcome to the RC3 secure password guesser.\\n\"); printf(\"To continue, you must enter the correct password.\\n\"); printf(\"Enter your guess: \"); __isoc99_scanf(); v3 = strlen(s); if ( v3  strlen(v8) ) sub_4007C0(); for ( i = 0; i  strlen(s); ++i ) { if ( i = strlen(v8) ) sub_4007C0(); if ( s[i] != (char)(*((_BYTE *)\u0026v7 + i % v6) ^ v8[i]) ) sub_4007C0(); } sub_4007F0(); } 可以看出，flag就是v7，v6，v8经过一定规则生成的字符串，提取出生成flag的逻辑，写成脚本如下：\nv8=\":\\\"AL_RT^L*.?+6/46\" v7 = 'ebmarah'[::-1] s='' for i in range(len(v8)): s+=chr(ord(v7[i%7])^ord(v8[i])) print(s) 0x02. insanity 直接拖进IDA，查找字符串。\n0x03. python-trade 反编译之后发现有个encode函数，根据函数的逻辑规则写出decode函数如下：\nimport base64 buf = base64.b64decode('XlNkVmtUI1MgXWBZXCFeKY+AaXNt') flag = '' for i in buf: i -= 16 i ^= 32 flag += chr(i) print(flag) 0x04. re1 又一个直接查找字符串就能找到flag的题。\n0x05. game 打开是个游戏，游戏通关拿到flag（草）\n0x06. Hello, CTF 反编译获得如下代码：\nint __cdecl main(int argc, const char **argv, const char **envp) { int i; // ebx  char v4; // al  int result; // eax  char Buffer[2]; // [esp+12h] [ebp-5Eh] BYREF  char v7[20]; // [esp+14h] [ebp-5Ch] BYREF  char v8[32]; // [esp+28h] [ebp-48h] BYREF  __int16 v9; // [esp+48h] [ebp-28h]  char v10; // [esp+4Ah] [ebp-26h]  char v11[36]; // [esp+4Ch] [ebp-24h] BYREF  strcpy(v11, \"437261636b4d654a757374466f7246756e\"); while ( 1 ) { memset(v8, 0, sizeof(v8)); v9 = 0; v10 = 0; printf(aPleaseInputYou); scanf(\"%s\", v7); if ( strlen(v7)  0x11 ) break; for ( i = 0; i  17; ++i ) { v4 = v7[i]; if ( !v4 ) break; sprintf(Buffer, \"%x\", v4); strcat(v8, Buffer); } if ( !strcmp(v8, v11) ) printf(\"success!\\n\"); else printf(\"wrong!\\n\"); } printf(\"wrong!\\n\"); result = --Stream._cnt; if ( Stream._cnt  0 ) return _filbuf(\u0026Stream); ++Stream._ptr; return result; } 阅读代码后发现就是将输入的字符串转换为16进制存储，再与给定字符串比较。\n因此可以根据给定字符串推导出flag。\n0x07. open-source 题目直接给出了源代码：\n#include #include  int main(int argc, char *argv[]) { if (argc != 4) { printf(\"what?\\n\"); exit(1); } unsigned int first = atoi(argv[1]); if (first != 0xcafe) { printf(\"you are wrong, sorry.\\n\"); exit(2); } unsigned int second = atoi(argv[2]); if (second % 5 == 3 || second % 17 != 8) { printf(\"ha, you won't get it!\\n\"); exit(3); } if (strcmp(\"h4cky0u\", argv[3])) { printf(\"so close, dude!\\n\"); exit(4); } printf(\"Brr wrrr grr\\n\"); unsigned int hash = first * 31337 + (second % 17) * 11 + strlen(argv[3]) - 1615810207; printf(\"Get your key: \"); printf(\"%x\\n\", hash); return 0; } 根据规则构造payload即可获取flag。\n0x08. no-strings-attached 打开来发现是一个非常大的程序：\n注意到最后一个函数authenticate可能是验证输入的flag是否正确，打开后如下：\n看样子是要比较ws和s2的值是否一致，而s2是由decrypt函数生成的：\n生成flag的算法看起来挺复杂，懒得写了，故采用动态调试。阅读汇编代码可知，decrypt函数结束后，返回值存在eax中。\n用gdb再decrypt函数处下个断点，程序运行至decrypt处停下，再往前运行一步，再结束运行此函数，此时eax寄存器存储的值就是flag。\n(gdb)b decrypt (gdb)n (gdb)finish (gdb)x/6sw $eax 0x09. csaw2013reversing2 打开来发现有一个窗体，弹出了一坨乱码： 打开IDA查看程序逻辑：\n发现程序存在反调试IsDebuggerPresent。\n跳过反调试，将jnz short loc_401096改为jmp short loc_401096，绕过反调试检查。\n再将int 3 ;Trap to Debugger改为nop去掉这个中断。\n再跳转回原来的弹窗输出flag。\n Patch Program的方法：Edit-Patch Program-Assemble\n全部更改完成后，点击Edit-Patch Program-Apply patches to input file\n 0x0a. getit 拖进IDA看见如下代码：\n分析逻辑之后发现t的值就是flag，可以直接根据逻辑写exp，不过我这里使用动态调试的方法。\n在for循环的第一个函数处下个断点，之后直接查看t的值。\n(gdb)b fseek (gdb)r (gdb)x/6 0x6010e0#t的地址 成功获取flag。\n0x0b. maze XCTF reverse maze - YenKoc - 博客园 (cnblogs.com)\n",
-  "wordCount" : "473",
-  "inLanguage": "zh-cn",
-  "datePublished": "2022-04-19T08:36:18+08:00",
-  "dateModified": "2022-04-19T08:36:18+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "zeroy"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://zeroy.site/articles/reverse-exercise-area/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "zeroy's blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://zeroy.site/favicon.ico"
-    }
-  }
-}
-</script>
+    </script><script src="//instant.page/5.1.1" defer type="module" integrity="sha384-MWfCL6g1OTGsbSwfuMHc8+8J2u71/LA8dzlIN3ycajckxuZZmF+DNjdm7O6H3PSq"></script>
 </head>
 
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://zeroy.site/" accesskey="h" title="zeroy&#39;s blog (Alt + H)">zeroy&#39;s blog</a>
-            <span class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </span>
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme; }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="zeroy的网络小窝"><img
+        class="logo"
+        loading="lazy"
+        src="/ava.jpeg"
+        srcset="/ava.jpeg, /ava.jpeg 1.5x, /ava.jpeg 2x"
+        sizes="auto"
+        alt="/ava.jpeg"
+        title="/ava.jpeg" >zeroy的网络小窝</a>
         </div>
-        <ul id="menu">
-            <li>
-                <a href="https://zeroy.site/" title="首页">
-                    <span>首页</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/archives/" title="归档">
-                    <span>归档</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/categories/" title="分类">
-                    <span>分类</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/about/" title="关于">
-                    <span>关于</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/search/" title="搜索 (Alt &#43; /)" accesskey=/>
-                    <span>搜索</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/links/" title="友链">
-                    <span>友链</span>
-                </a>
-            </li>
-        </ul>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=80 src="//music.163.com/outchain/player?type=2&id=415904308&auto=1&height=66"></iframe>
-    </nav>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="zeroy的网络小窝"><img
+        class="logo"
+        loading="lazy"
+        src="/ava.jpeg"
+        srcset="/ava.jpeg, /ava.jpeg 1.5x, /ava.jpeg 2x"
+        sizes="auto"
+        alt="/ava.jpeg"
+        title="/ava.jpeg" >zeroy的网络小窝</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about" title="">关于</a><a href="#" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
 </header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
 <main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://zeroy.site/">Home</a>&nbsp;»&nbsp;<a href="https://zeroy.site/articles/">Articles</a></div>
-    <h1 class="post-title">
-      攻防世界reverse练习区WP
-    </h1>
-    <div class="post-meta"><span title='2022-04-19 08:36:18 +0800 CST'>April 19, 2022</span>&nbsp;·&nbsp;zeroy
-
+            <div class="container"><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "false")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">攻防世界reverse练习区WP</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><i class="author fas fa-user-circle fa-fw"></i><a href="zeroy.site" title="Author" rel=" author" class="author">zeroy</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/ctf/"><i class="far fa-folder fa-fw"></i>CTF</a>&nbsp;<a href="/categories/ctf-reverse/"><i class="far fa-folder fa-fw"></i>CTF-reverse</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-04-19">2022-04-19</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2022-04-19">2022-04-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1478 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#0x00-simple-unpack">0x00. simple-unpack</a></li>
+        <li><a href="#0x01-logmein">0x01. logmein</a></li>
+        <li><a href="#0x02-insanity">0x02. insanity</a></li>
+        <li><a href="#0x03-python-trade">0x03. python-trade</a></li>
+        <li><a href="#0x04-re1">0x04. re1</a></li>
+        <li><a href="#0x05-game">0x05. game</a></li>
+        <li><a href="#0x06-hello-ctf">0x06. Hello, CTF</a></li>
+        <li><a href="#0x07-open-source">0x07. open-source</a></li>
+        <li><a href="#0x08-no-strings-attached">0x08. no-strings-attached</a></li>
+        <li><a href="#0x09-csaw2013reversing2">0x09. csaw2013reversing2</a></li>
+        <li><a href="#0x0a-getit">0x0a. getit</a></li>
+        <li><a href="#0x0b-maze">0x0b. maze</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h3 id="0x00-simple-unpack" class="headerLink">
+    <a href="#0x00-simple-unpack" class="header-mark"></a>0x00. simple-unpack</h3><p>使用exeinfope脱壳，拖进IDA shift+F12搜索字符串。</p>
+<h3 id="0x01-logmein" class="headerLink">
+    <a href="#0x01-logmein" class="header-mark"></a>0x01. logmein</h3><p>反编译得到如下代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="kr">__fastcall</span> <span class="n">__noreturn</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">a1</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">a2</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">a3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">size_t</span> <span class="n">v3</span><span class="p">;</span> <span class="c1">// rsi
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// [rsp+3Ch] [rbp-54h]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">36</span><span class="p">];</span> <span class="c1">// [rsp+40h] [rbp-50h] BYREF
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">v6</span><span class="p">;</span> <span class="c1">// [rsp+64h] [rbp-2Ch]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">__int64</span> <span class="n">v7</span><span class="p">;</span> <span class="c1">// [rsp+68h] [rbp-28h]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">char</span> <span class="n">v8</span><span class="p">[</span><span class="mi">28</span><span class="p">];</span> <span class="c1">// [rsp+70h] [rbp-20h] BYREF
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">v9</span><span class="p">;</span> <span class="c1">// [rsp+8Ch] [rbp-4h]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="n">v9</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">strcpy</span><span class="p">(</span><span class="n">v8</span><span class="p">,</span> <span class="s">&#34;:</span><span class="se">\&#34;</span><span class="s">AL_RT^L*.?+6/46&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">v7</span> <span class="o">=</span> <span class="mh">0x65626D61726168LL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">v6</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Welcome to the RC3 secure password guesser.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">printf</span><span class="p">(</span><span class="s">&#34;To continue, you must enter the correct password.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Enter your guess: &#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">__isoc99_scanf</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="n">v3</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span> <span class="n">v3</span> <span class="o">&lt;</span> <span class="n">strlen</span><span class="p">(</span><span class="n">v8</span><span class="p">)</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sub_4007C0</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">strlen</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">v8</span><span class="p">)</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="n">sub_4007C0</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="p">(</span><span class="kt">char</span><span class="p">)(</span><span class="o">*</span><span class="p">((</span><span class="n">_BYTE</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">v7</span> <span class="o">+</span> <span class="n">i</span> <span class="o">%</span> <span class="n">v6</span><span class="p">)</span> <span class="o">^</span> <span class="n">v8</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="n">sub_4007C0</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">sub_4007F0</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><ul>
-                <li>
-                    <a href="#0x00-simple-unpack" aria-label="0x00. simple-unpack">0x00. simple-unpack</a></li>
-                <li>
-                    <a href="#0x01-logmein" aria-label="0x01. logmein">0x01. logmein</a></li>
-                <li>
-                    <a href="#0x02-insanity" aria-label="0x02. insanity">0x02. insanity</a></li>
-                <li>
-                    <a href="#0x03-python-trade" aria-label="0x03. python-trade">0x03. python-trade</a></li>
-                <li>
-                    <a href="#0x04-re1" aria-label="0x04. re1">0x04. re1</a></li>
-                <li>
-                    <a href="#0x05-game" aria-label="0x05. game">0x05. game</a></li>
-                <li>
-                    <a href="#0x06-hello-ctf" aria-label="0x06. Hello, CTF">0x06. Hello, CTF</a></li>
-                <li>
-                    <a href="#0x07-open-source" aria-label="0x07. open-source">0x07. open-source</a></li>
-                <li>
-                    <a href="#0x08-no-strings-attached" aria-label="0x08. no-strings-attached">0x08. no-strings-attached</a></li>
-                <li>
-                    <a href="#0x09-csaw2013reversing2" aria-label="0x09. csaw2013reversing2">0x09. csaw2013reversing2</a></li>
-                <li>
-                    <a href="#0x0a-getit" aria-label="0x0a. getit">0x0a. getit</a></li>
-                <li>
-                    <a href="#0x0b-maze" aria-label="0x0b. maze">0x0b. maze</a>
-                </li>
-            </ul>
-        </div>
-    </details>
-    
+</div><p>可以看出，flag就是v7，v6，v8经过一定规则生成的字符串，提取出生成flag的逻辑，写成脚本如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">v8</span><span class="o">=</span><span class="s2">&#34;:</span><span class="se">\&#34;</span><span class="s2">AL_RT^L*.?+6/46&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">v7</span> <span class="o">=</span> <span class="s1">&#39;ebmarah&#39;</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v8</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">+=</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">v7</span><span class="p">[</span><span class="n">i</span><span class="o">%</span><span class="mi">7</span><span class="p">])</span><span class="o">^</span><span class="nb">ord</span><span class="p">(</span><span class="n">v8</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
 </div>
-
-  <div class="post-content"><h3 id="0x00-simple-unpack">0x00. simple-unpack<a hidden class="anchor" aria-hidden="true" href="#0x00-simple-unpack">#</a></h3>
-<p>使用exeinfope脱壳，拖进IDA shift+F12搜索字符串。</p>
-<h3 id="0x01-logmein">0x01. logmein<a hidden class="anchor" aria-hidden="true" href="#0x01-logmein">#</a></h3>
-<p>反编译得到如下代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">void</span> <span style="color:#66d9ef">__fastcall</span> __noreturn <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> a1, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>a2, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>a3)
-{
-  size_t v3; <span style="color:#75715e">// rsi
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">int</span> i; <span style="color:#75715e">// [rsp+3Ch] [rbp-54h]
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">char</span> s[<span style="color:#ae81ff">36</span>]; <span style="color:#75715e">// [rsp+40h] [rbp-50h] BYREF
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">int</span> v6; <span style="color:#75715e">// [rsp+64h] [rbp-2Ch]
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">__int64</span> v7; <span style="color:#75715e">// [rsp+68h] [rbp-28h]
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">char</span> v8[<span style="color:#ae81ff">28</span>]; <span style="color:#75715e">// [rsp+70h] [rbp-20h] BYREF
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">int</span> v9; <span style="color:#75715e">// [rsp+8Ch] [rbp-4h]
-</span><span style="color:#75715e"></span>
-  v9 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-  strcpy(v8, <span style="color:#e6db74">&#34;:</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">AL_RT^L*.?+6/46&#34;</span>);
-  v7 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x65626D61726168LL</span>;
-  v6 <span style="color:#f92672">=</span> <span style="color:#ae81ff">7</span>;
-  printf(<span style="color:#e6db74">&#34;Welcome to the RC3 secure password guesser.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-  printf(<span style="color:#e6db74">&#34;To continue, you must enter the correct password.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-  printf(<span style="color:#e6db74">&#34;Enter your guess: &#34;</span>);
-  __isoc99_scanf();
-  v3 <span style="color:#f92672">=</span> strlen(s);
-  <span style="color:#66d9ef">if</span> ( v3 <span style="color:#f92672">&lt;</span> strlen(v8) )
-    sub_4007C0();
-  <span style="color:#66d9ef">for</span> ( i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> strlen(s); <span style="color:#f92672">++</span>i )
-  {
-    <span style="color:#66d9ef">if</span> ( i <span style="color:#f92672">&gt;=</span> strlen(v8) )
-      sub_4007C0();
-    <span style="color:#66d9ef">if</span> ( s[i] <span style="color:#f92672">!=</span> (<span style="color:#66d9ef">char</span>)(<span style="color:#f92672">*</span>((_BYTE <span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span>v7 <span style="color:#f92672">+</span> i <span style="color:#f92672">%</span> v6) <span style="color:#f92672">^</span> v8[i]) )
-      sub_4007C0();
-  }
-  sub_4007F0();
-}
-</code></pre></div><p>可以看出，flag就是v7，v6，v8经过一定规则生成的字符串，提取出生成flag的逻辑，写成脚本如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">v8<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;:</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">AL_RT^L*.?+6/46&#34;</span>
-v7 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;ebmarah&#39;</span>[::<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
-s<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>
-<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(v8)):
-    s<span style="color:#f92672">+=</span>chr(ord(v7[i<span style="color:#f92672">%</span><span style="color:#ae81ff">7</span>])<span style="color:#f92672">^</span>ord(v8[i]))
-print(s)
-</code></pre></div><h3 id="0x02-insanity">0x02. insanity<a hidden class="anchor" aria-hidden="true" href="#0x02-insanity">#</a></h3>
-<p>直接拖进IDA，查找字符串。</p>
-<h3 id="0x03-python-trade">0x03. python-trade<a hidden class="anchor" aria-hidden="true" href="#0x03-python-trade">#</a></h3>
-<p>反编译之后发现有个encode函数，根据函数的逻辑规则写出decode函数如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> base64
-buf <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64decode(<span style="color:#e6db74">&#39;XlNkVmtUI1MgXWBZXCFeKY+AaXNt&#39;</span>)
-flag <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
-<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> buf:
-    i <span style="color:#f92672">-=</span> <span style="color:#ae81ff">16</span>
-    i <span style="color:#f92672">^=</span> <span style="color:#ae81ff">32</span>
-    flag <span style="color:#f92672">+=</span> chr(i)
-print(flag)
-</code></pre></div><h3 id="0x04-re1">0x04. re1<a hidden class="anchor" aria-hidden="true" href="#0x04-re1">#</a></h3>
-<p>又一个直接查找字符串就能找到flag的题。</p>
-<h3 id="0x05-game">0x05. game<a hidden class="anchor" aria-hidden="true" href="#0x05-game">#</a></h3>
-<p>打开是个游戏，游戏通关拿到flag（草）</p>
-<h3 id="0x06-hello-ctf">0x06. Hello, CTF<a hidden class="anchor" aria-hidden="true" href="#0x06-hello-ctf">#</a></h3>
-<p>反编译获得如下代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">int</span> <span style="color:#66d9ef">__cdecl</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>argv, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>envp)
-{
-  <span style="color:#66d9ef">int</span> i; <span style="color:#75715e">// ebx
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">char</span> v4; <span style="color:#75715e">// al
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">int</span> result; <span style="color:#75715e">// eax
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">char</span> Buffer[<span style="color:#ae81ff">2</span>]; <span style="color:#75715e">// [esp+12h] [ebp-5Eh] BYREF
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">char</span> v7[<span style="color:#ae81ff">20</span>]; <span style="color:#75715e">// [esp+14h] [ebp-5Ch] BYREF
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">char</span> v8[<span style="color:#ae81ff">32</span>]; <span style="color:#75715e">// [esp+28h] [ebp-48h] BYREF
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">__int16</span> v9; <span style="color:#75715e">// [esp+48h] [ebp-28h]
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">char</span> v10; <span style="color:#75715e">// [esp+4Ah] [ebp-26h]
-</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">char</span> v11[<span style="color:#ae81ff">36</span>]; <span style="color:#75715e">// [esp+4Ch] [ebp-24h] BYREF
-</span><span style="color:#75715e"></span>
-  strcpy(v11, <span style="color:#e6db74">&#34;437261636b4d654a757374466f7246756e&#34;</span>);
-  <span style="color:#66d9ef">while</span> ( <span style="color:#ae81ff">1</span> )
-  {
-    memset(v8, <span style="color:#ae81ff">0</span>, <span style="color:#66d9ef">sizeof</span>(v8));
-    v9 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-    v10 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-    printf(aPleaseInputYou);
-    scanf(<span style="color:#e6db74">&#34;%s&#34;</span>, v7);
-    <span style="color:#66d9ef">if</span> ( strlen(v7) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0x11</span> )
-      <span style="color:#66d9ef">break</span>;
-    <span style="color:#66d9ef">for</span> ( i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">17</span>; <span style="color:#f92672">++</span>i )
-    {
-      v4 <span style="color:#f92672">=</span> v7[i];
-      <span style="color:#66d9ef">if</span> ( <span style="color:#f92672">!</span>v4 )
-        <span style="color:#66d9ef">break</span>;
-      sprintf(Buffer, <span style="color:#e6db74">&#34;%x&#34;</span>, v4);
-      strcat(v8, Buffer);
-    }
-    <span style="color:#66d9ef">if</span> ( <span style="color:#f92672">!</span>strcmp(v8, v11) )
-      printf(<span style="color:#e6db74">&#34;success!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-    <span style="color:#66d9ef">else</span>
-      printf(<span style="color:#e6db74">&#34;wrong!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-  }
-  printf(<span style="color:#e6db74">&#34;wrong!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-  result <span style="color:#f92672">=</span> <span style="color:#f92672">--</span>Stream._cnt;
-  <span style="color:#66d9ef">if</span> ( Stream._cnt <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span> )
-    <span style="color:#66d9ef">return</span> _filbuf(<span style="color:#f92672">&amp;</span>Stream);
-  <span style="color:#f92672">++</span>Stream._ptr;
-  <span style="color:#66d9ef">return</span> result;
-}
-</code></pre></div><p>阅读代码后发现就是将输入的字符串转换为16进制存储，再与给定字符串比较。</p>
+</div><h3 id="0x02-insanity" class="headerLink">
+    <a href="#0x02-insanity" class="header-mark"></a>0x02. insanity</h3><p>直接拖进IDA，查找字符串。</p>
+<h3 id="0x03-python-trade" class="headerLink">
+    <a href="#0x03-python-trade" class="header-mark"></a>0x03. python-trade</h3><p>反编译之后发现有个encode函数，根据函数的逻辑规则写出decode函数如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">base64</span>
+</span></span><span class="line"><span class="cl"><span class="n">buf</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="s1">&#39;XlNkVmtUI1MgXWBZXCFeKY+AaXNt&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">flag</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">buf</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">-=</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">^=</span> <span class="mi">32</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="0x04-re1" class="headerLink">
+    <a href="#0x04-re1" class="header-mark"></a>0x04. re1</h3><p>又一个直接查找字符串就能找到flag的题。</p>
+<h3 id="0x05-game" class="headerLink">
+    <a href="#0x05-game" class="header-mark"></a>0x05. game</h3><p>打开是个游戏，游戏通关拿到flag（草）</p>
+<h3 id="0x06-hello-ctf" class="headerLink">
+    <a href="#0x06-hello-ctf" class="header-mark"></a>0x06. Hello, CTF</h3><p>反编译获得如下代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="kr">__cdecl</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">envp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// ebx
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">char</span> <span class="n">v4</span><span class="p">;</span> <span class="c1">// al
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">int</span> <span class="n">result</span><span class="p">;</span> <span class="c1">// eax
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">char</span> <span class="n">Buffer</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span> <span class="c1">// [esp+12h] [ebp-5Eh] BYREF
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">char</span> <span class="n">v7</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span> <span class="c1">// [esp+14h] [ebp-5Ch] BYREF
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">char</span> <span class="n">v8</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span> <span class="c1">// [esp+28h] [ebp-48h] BYREF
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">__int16</span> <span class="n">v9</span><span class="p">;</span> <span class="c1">// [esp+48h] [ebp-28h]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">char</span> <span class="n">v10</span><span class="p">;</span> <span class="c1">// [esp+4Ah] [ebp-26h]
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kt">char</span> <span class="n">v11</span><span class="p">[</span><span class="mi">36</span><span class="p">];</span> <span class="c1">// [esp+4Ch] [ebp-24h] BYREF
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">  <span class="n">strcpy</span><span class="p">(</span><span class="n">v11</span><span class="p">,</span> <span class="s">&#34;437261636b4d654a757374466f7246756e&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">while</span> <span class="p">(</span> <span class="mi">1</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">memset</span><span class="p">(</span><span class="n">v8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">v8</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v9</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">v10</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="n">aPleaseInputYou</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">scanf</span><span class="p">(</span><span class="s">&#34;%s&#34;</span><span class="p">,</span> <span class="n">v7</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="n">strlen</span><span class="p">(</span><span class="n">v7</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mh">0x11</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">17</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">v4</span> <span class="o">=</span> <span class="n">v7</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">v4</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">sprintf</span><span class="p">(</span><span class="n">Buffer</span><span class="p">,</span> <span class="s">&#34;%x&#34;</span><span class="p">,</span> <span class="n">v4</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="n">strcat</span><span class="p">(</span><span class="n">v8</span><span class="p">,</span> <span class="n">Buffer</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">v8</span><span class="p">,</span> <span class="n">v11</span><span class="p">)</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="n">printf</span><span class="p">(</span><span class="s">&#34;success!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">      <span class="n">printf</span><span class="p">(</span><span class="s">&#34;wrong!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="n">printf</span><span class="p">(</span><span class="s">&#34;wrong!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">result</span> <span class="o">=</span> <span class="o">--</span><span class="n">Stream</span><span class="p">.</span><span class="n">_cnt</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span> <span class="n">Stream</span><span class="p">.</span><span class="n">_cnt</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">_filbuf</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Stream</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="o">++</span><span class="n">Stream</span><span class="p">.</span><span class="n">_ptr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>阅读代码后发现就是将输入的字符串转换为16进制存储，再与给定字符串比较。</p>
 <p>因此可以根据给定字符串推导出flag。</p>
-<h3 id="0x07-open-source">0x07. open-source<a hidden class="anchor" aria-hidden="true" href="#0x07-open-source">#</a></h3>
-<p>题目直接给出了源代码：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string.h&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e"></span>
-<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
-    <span style="color:#66d9ef">if</span> (argc <span style="color:#f92672">!=</span> <span style="color:#ae81ff">4</span>) {
-    	printf(<span style="color:#e6db74">&#34;what?</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-    	exit(<span style="color:#ae81ff">1</span>);
-    }
-
-    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> first <span style="color:#f92672">=</span> atoi(argv[<span style="color:#ae81ff">1</span>]);
-    <span style="color:#66d9ef">if</span> (first <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0xcafe</span>) {
-    	printf(<span style="color:#e6db74">&#34;you are wrong, sorry.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-    	exit(<span style="color:#ae81ff">2</span>);
-    }
-
-    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> second <span style="color:#f92672">=</span> atoi(argv[<span style="color:#ae81ff">2</span>]);
-    <span style="color:#66d9ef">if</span> (second <span style="color:#f92672">%</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">||</span> second <span style="color:#f92672">%</span> <span style="color:#ae81ff">17</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">8</span>) {
-    	printf(<span style="color:#e6db74">&#34;ha, you won&#39;t get it!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-    	exit(<span style="color:#ae81ff">3</span>);
-    }
-
-    <span style="color:#66d9ef">if</span> (strcmp(<span style="color:#e6db74">&#34;h4cky0u&#34;</span>, argv[<span style="color:#ae81ff">3</span>])) {
-    	printf(<span style="color:#e6db74">&#34;so close, dude!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-    	exit(<span style="color:#ae81ff">4</span>);
-    }
-
-    printf(<span style="color:#e6db74">&#34;Brr wrrr grr</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-
-    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> hash <span style="color:#f92672">=</span> first <span style="color:#f92672">*</span> <span style="color:#ae81ff">31337</span> <span style="color:#f92672">+</span> (second <span style="color:#f92672">%</span> <span style="color:#ae81ff">17</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">11</span> <span style="color:#f92672">+</span> strlen(argv[<span style="color:#ae81ff">3</span>]) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1615810207</span>;
-
-    printf(<span style="color:#e6db74">&#34;Get your key: &#34;</span>);
-    printf(<span style="color:#e6db74">&#34;%x</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, hash);
-    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
-}
-</code></pre></div><p>根据规则构造payload即可获取flag。</p>
-<h3 id="0x08-no-strings-attached">0x08. no-strings-attached<a hidden class="anchor" aria-hidden="true" href="#0x08-no-strings-attached">#</a></h3>
-<p>打开来发现是一个非常大的程序：</p>
-<p><img loading="lazy" src="1.png" alt="1"  />
-</p>
+<h3 id="0x07-open-source" class="headerLink">
+    <a href="#0x07-open-source" class="header-mark"></a>0x07. open-source</h3><p>题目直接给出了源代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    	<span class="n">printf</span><span class="p">(</span><span class="s">&#34;what?</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    	<span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">first</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">first</span> <span class="o">!=</span> <span class="mh">0xcafe</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    	<span class="n">printf</span><span class="p">(</span><span class="s">&#34;you are wrong, sorry.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    	<span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">second</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">second</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">3</span> <span class="o">||</span> <span class="n">second</span> <span class="o">%</span> <span class="mi">17</span> <span class="o">!=</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    	<span class="n">printf</span><span class="p">(</span><span class="s">&#34;ha, you won&#39;t get it!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    	<span class="n">exit</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="s">&#34;h4cky0u&#34;</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    	<span class="n">printf</span><span class="p">(</span><span class="s">&#34;so close, dude!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    	<span class="n">exit</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Brr wrrr grr</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">first</span> <span class="o">*</span> <span class="mi">31337</span> <span class="o">+</span> <span class="p">(</span><span class="n">second</span> <span class="o">%</span> <span class="mi">17</span><span class="p">)</span> <span class="o">*</span> <span class="mi">11</span> <span class="o">+</span> <span class="n">strlen</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1615810207</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Get your key: &#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%x</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">hash</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>根据规则构造payload即可获取flag。</p>
+<h3 id="0x08-no-strings-attached" class="headerLink">
+    <a href="#0x08-no-strings-attached" class="header-mark"></a>0x08. no-strings-attached</h3><p>打开来发现是一个非常大的程序：</p>
+<p><figure><a class="lightgallery" href="1.png" title="1" data-thumbnail="1.png">
+        <img
+            
+            loading="lazy"
+            src="1.png"
+            srcset="1.png, 1.png 1.5x, 1.png 2x"
+            sizes="auto"
+            alt="1.png">
+    </a></figure></p>
 <p>注意到最后一个函数<code>authenticate</code>可能是验证输入的flag是否正确，打开后如下：</p>
-<p><img loading="lazy" src="2.png" alt="2"  />
-</p>
+<p><figure><a class="lightgallery" href="2.png" title="2" data-thumbnail="2.png">
+        <img
+            
+            loading="lazy"
+            src="2.png"
+            srcset="2.png, 2.png 1.5x, 2.png 2x"
+            sizes="auto"
+            alt="2.png">
+    </a></figure></p>
 <p>看样子是要比较ws和s2的值是否一致，而s2是由decrypt函数生成的：</p>
-<p><img loading="lazy" src="3.png" alt="3"  />
-</p>
+<p><figure><a class="lightgallery" href="3.png" title="3" data-thumbnail="3.png">
+        <img
+            
+            loading="lazy"
+            src="3.png"
+            srcset="3.png, 3.png 1.5x, 3.png 2x"
+            sizes="auto"
+            alt="3.png">
+    </a></figure></p>
 <p>生成flag的算法看起来挺复杂，懒得写了，故采用动态调试。阅读汇编代码可知，decrypt函数结束后，返回值存在eax中。</p>
 <p>用gdb再decrypt函数处下个断点，程序运行至decrypt处停下，再往前运行一步，再结束运行此函数，此时eax寄存器存储的值就是flag。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span>b decrypt
-<span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span>n
-<span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span>finish
-<span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span>x/6sw $eax
-</code></pre></div><p><img loading="lazy" src="4.png" alt="4"  />
-</p>
-<h3 id="0x09-csaw2013reversing2">0x09. csaw2013reversing2<a hidden class="anchor" aria-hidden="true" href="#0x09-csaw2013reversing2">#</a></h3>
-<p>打开来发现有一个窗体，弹出了一坨乱码：
-<img loading="lazy" src="5.png" alt="5"  />
-</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span>b decrypt
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span>n
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span>finish
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span>x/6sw <span class="nv">$eax</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="4.png" title="4" data-thumbnail="4.png">
+        <img
+            
+            loading="lazy"
+            src="4.png"
+            srcset="4.png, 4.png 1.5x, 4.png 2x"
+            sizes="auto"
+            alt="4.png">
+    </a></figure></p>
+<h3 id="0x09-csaw2013reversing2" class="headerLink">
+    <a href="#0x09-csaw2013reversing2" class="header-mark"></a>0x09. csaw2013reversing2</h3><p>打开来发现有一个窗体，弹出了一坨乱码：
+<figure><a class="lightgallery" href="5.png" title="5" data-thumbnail="5.png">
+        <img
+            
+            loading="lazy"
+            src="5.png"
+            srcset="5.png, 5.png 1.5x, 5.png 2x"
+            sizes="auto"
+            alt="5.png">
+    </a></figure></p>
 <p>打开IDA查看程序逻辑：</p>
-<p><img loading="lazy" src="6.png" alt="6"  />
-</p>
+<p><figure><a class="lightgallery" href="6.png" title="6" data-thumbnail="6.png">
+        <img
+            
+            loading="lazy"
+            src="6.png"
+            srcset="6.png, 6.png 1.5x, 6.png 2x"
+            sizes="auto"
+            alt="6.png">
+    </a></figure></p>
 <p>发现程序存在反调试<code>IsDebuggerPresent</code>。</p>
 <p>跳过反调试，将<code>jnz short loc_401096</code>改为<code>jmp short loc_401096</code>，绕过反调试检查。</p>
 <p>再将<code>int 3 ;Trap to Debugger</code>改为<code>nop</code>去掉这个中断。</p>
@@ -426,167 +544,91 @@ print(flag)
 <p>Patch Program的方法：Edit-&gt;Patch Program-&gt;Assemble</p>
 <p>全部更改完成后，点击Edit-&gt;Patch Program-&gt;Apply patches to input file</p>
 </blockquote>
-<h3 id="0x0a-getit">0x0a. getit<a hidden class="anchor" aria-hidden="true" href="#0x0a-getit">#</a></h3>
-<p>拖进IDA看见如下代码：</p>
-<p><img loading="lazy" src="7.png" alt="7"  />
-</p>
+<h3 id="0x0a-getit" class="headerLink">
+    <a href="#0x0a-getit" class="header-mark"></a>0x0a. getit</h3><p>拖进IDA看见如下代码：</p>
+<p><figure><a class="lightgallery" href="7.png" title="7" data-thumbnail="7.png">
+        <img
+            
+            loading="lazy"
+            src="7.png"
+            srcset="7.png, 7.png 1.5x, 7.png 2x"
+            sizes="auto"
+            alt="7.png">
+    </a></figure></p>
 <p>分析逻辑之后发现t的值就是flag，可以直接根据逻辑写exp，不过我这里使用动态调试的方法。</p>
 <p>在for循环的第一个函数处下个断点，之后直接查看t的值。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span>b fseek
-<span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span>r
-<span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span>x/6 0x6010e0#t的地址
-</code></pre></div><p><img loading="lazy" src="8.png" alt="8"  />
-</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span>b fseek
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span>r
+</span></span><span class="line"><span class="cl"><span class="o">(</span>gdb<span class="o">)</span>x/6 0x6010e0#t的地址
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><figure><a class="lightgallery" href="8.png" title="8" data-thumbnail="8.png">
+        <img
+            
+            loading="lazy"
+            src="8.png"
+            srcset="8.png, 8.png 1.5x, 8.png 2x"
+            sizes="auto"
+            alt="8.png">
+    </a></figure></p>
 <p>成功获取flag。</p>
-<h3 id="0x0b-maze">0x0b. maze<a hidden class="anchor" aria-hidden="true" href="#0x0b-maze">#</a></h3>
-<p><a href="https://www.cnblogs.com/YenKoc/p/12779944.html">XCTF reverse maze - YenKoc - 博客园 (cnblogs.com)</a></p>
+<h3 id="0x0b-maze" class="headerLink">
+    <a href="#0x0b-maze" class="header-mark"></a>0x0b. maze</h3><p><a href="https://www.cnblogs.com/YenKoc/p/12779944.html" target="_blank" rel="noopener noreferrer">XCTF reverse maze - YenKoc - 博客园 (cnblogs.com)</a></p>
+</div>
 
+        
 
-  </div>
+<div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-04-19</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span><a class="link-to-mardown" href=/articles/reverse-exercise-area/index.md target="_blank" rel="noopener noreferrer">阅读原始文档</a>
+                    </span></div>
+            <div class="post-info-share">
+                <span><a href="#" title="分享到 Twitter" data-sharer="twitter" data-url="http://zeroy.site/articles/reverse-exercise-area/" data-title="攻防世界reverse练习区WP"><i class="fab fa-twitter fa-fw"></i></a><a href="#" title="分享到 微博" data-sharer="weibo" data-url="http://zeroy.site/articles/reverse-exercise-area/" data-title="攻防世界reverse练习区WP"><i class="fab fa-weibo fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
 
-  <footer class="post-footer">
-<nav class="paginav">
-  <a class="prev" href="https://zeroy.site/articles/templates/">
-    <span class="title">« </span>
-    <br>
-    <span>Templates</span>
-  </a>
-  <a class="next" href="https://zeroy.site/articles/basic_RSA/">
-    <span class="title"> »</span>
-    <br>
-    <span>RSA算法详解</span>
-  </a>
-  
-</nav>
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
 
-  </footer><script src="https://utteranc.es/client.js"
-        repo="zeroy0410/zeroy0410.github.io"
-        issue-term="pathname"
-        label="Comment"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://zeroy.site/">zeroy&#39;s blog</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
+    <div class="post-nav"><a href="/articles/basic_RSA/" class="prev" rel="prev" title="RSA算法详解"><i class="fas fa-angle-left fa-fw"></i>RSA算法详解</a>
+            <a href="/articles/templates/" class="next" rel="next" title="Templates">Templates<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.111.3">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.3.0"><i class="far fa-edit fa-fw"></i> DoIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="zeroy.site" target="_blank" rel="noopener noreferrer">zeroy</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
 
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
-
-        function copyingDone() {
-            copybutton.innerText = 'copied!';
-            setTimeout(() => {
-                copybutton.innerText = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-<script type="text/javascript"
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script></body>
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div id="cookieconsent-container"></div><div class="assets"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":50,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js" defer></script><script type="text/javascript" src="/lib/katex/auto-render.min.js" defer></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js" defer></script><script type="text/javascript" src="/lib/katex/mhchem.min.js" defer></script><script type="text/javascript" src="/js/katex.min.js" defer></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script type="text/javascript" src="/js/cookieconsent.min.js" defer></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
 
 </html>

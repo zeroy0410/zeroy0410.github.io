@@ -1,23 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>Math on zeroy&#39;s blog</title>
-    <link>https://zeroy.site/categories/math/</link>
-    <description>Recent content in Math on zeroy&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 16 Feb 2022 15:38:32 +0800</lastBuildDate><atom:link href="https://zeroy.site/categories/math/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>高等数学（上） 不定积分 总结</title>
-      <link>https://zeroy.site/articles/math-integrate/</link>
-      <pubDate>Wed, 16 Feb 2022 15:38:32 +0800</pubDate>
-      
-      <guid>https://zeroy.site/articles/math-integrate/</guid>
-      <description>高等数学上册(微积分)必背公式总结 - 知乎 (zhihu.com)
-导数： $$ \begin{align} &amp;amp;[\cos(\omega x+\varphi)]^{(n)}=\omega^n\cos(\omega x+\frac{n\pi}{2}+\varphi)\\ &amp;amp;[\sin(\omega x+\varphi)]^{(n)}=\omega^n\sin(\omega x+\frac{n\pi}{2}+\varphi)\\ \end{align} $$
-重难点公式： $$ \begin{align} &amp;amp;\int\frac{1}{a^2+x^2}dx=\frac{1}{a}arctan\frac{x}{a}+C\\ &amp;amp;\int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a+x}{a-x}|+C\\ &amp;amp;\int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}+C\\ &amp;amp;\int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x+\sqrt{x^2\pm a^2}|+C\\ &amp;amp;\int{tan\ x}dx=-ln|cos\ x|+C\\ &amp;amp;\int{cot\ x}dx=ln|sin\ x|+C\\ &amp;amp;\int{csc\ x}dx=ln|csc\ x-cot\ x|+C\\ &amp;amp;\int{sec\ x}dx=ln|sec\ x+tan\ x|+C\\ &amp;amp;\int{sec^2\ x}dx=tan\ x+C\\ &amp;amp;\int{csc^2\ x}dx=-cot\ x+C\\ &amp;amp;\int{sec\ x*tan\ x}dx=sec\ x+C\\ &amp;amp;\int{csc\ x*cot\ x}dx=-csc\ x+C\\ \end{align} $$
-凑系数，拆项： $$ \int{\frac{x}{(2x+3)^2}}dx=\frac{1}{2}\int{\frac{2x+3-3}{(2x+3)^2}}dx=\frac{1}{2}\int{\frac{2x+3}{(2x+3)^2}}dx-\frac{1}{2}\int\frac{3}{(2x+3)^2}dx\ &amp;hellip; $$ 分子包含多项的，直接无法求解可以拆项求。
-常见的配凑： $$ \begin{align} &amp;amp;xe^x:\\ &amp;amp;\int\frac{1+x}{x(xe^x+1)}dx=\int\frac{(1+x)e^x}{xe^x(xe^x+1)}dx=\int\frac{1}{xe^x(xe^x+1)}d(xe^x)\overset{t=xe^x}=\int\frac{1}{t(t+1)}dt\\ &amp;amp;xlnx:\\ &amp;amp;\int\frac{(1+lnx)dx}{1+x^2ln^2x}=\int\frac{1}{1+(xlnx)^2}d(xlnx)\\ &amp;amp;\frac{1}{\sqrt{x}}:\\ &amp;amp;\int\frac{1}{\sqrt{x(x+4)}}dx=2\int\frac{1}{2\sqrt{x}\sqrt{x+4}}dx=2\int\frac{1}{\sqrt{4+\sqrt{x}^2}}d{\sqrt{x}}\\ &amp;amp;e^x:\\ &amp;amp;\int f(e^x){\rm dx}=\int\frac{f(e^x)}{e^x}{\rm de^x}=\int\frac{f(t)}{t}{\rm dt} \end{align} $$</description>
-    </item>
-    
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Math - 分类 - zeroy的网络小窝</title>
+        <link>http://zeroy.site/categories/math/</link>
+        <description>Math - 分类 - zeroy的网络小窝</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+            <webMaster>zeroy0410@gmail.com (zeroy)</webMaster><lastBuildDate>Wed, 16 Feb 2022 15:38:32 &#43;0800</lastBuildDate><atom:link href="http://zeroy.site/categories/math/" rel="self" type="application/rss+xml" /><item>
+    <title>高等数学（上） 不定积分 总结</title>
+    <link>http://zeroy.site/articles/math-integrate/</link>
+    <pubDate>Wed, 16 Feb 2022 15:38:32 &#43;0800</pubDate><author>
+        <name>zeroy</name>
+    </author><guid>http://zeroy.site/articles/math-integrate/</guid>
+    <description><![CDATA[高等数学上册(微积分)必背公式总结 - 知乎 (zhihu.com) 导数： $$ \begin{align} &amp;[\cos(\omega x+\varphi)]^{(n)}=\omega^n\cos(\omega x+\frac{n\pi}{2}+\varphi)\\ &amp;[\sin(\omega x+\varphi)]^{(n)}=\omega^n\sin(\omega x+\frac{n\pi}{2}+\varphi)\\ \end{align} $$ 重难点公式： $$ \begin{align} &amp;\int\frac{1}{a^2+x^2}dx=\frac{1}{a}arctan\frac{x}{a}+C\\ &amp;\int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a+x}{a-x}|+C\\ &amp;\int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}+C\\ &amp;\int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x+\sqrt{x^2\pm a^2}|+C\\ &amp;\int{tan\ x}dx=-ln|cos\ x|+C\\ &amp;\int{cot\ x}dx=ln|sin\ x|+C\\ &amp;\int{csc\ x}dx=ln|csc\ x-cot\ x|+C\\ &amp;\int{sec\ x}dx=ln|sec\ x+tan\ x|+C\\ &amp;\int{sec^2\ x}dx=tan\ x+C\\ &amp;\int{csc^2\ x}dx=-cot\ x+C\\ &amp;\int{sec\ x*tan\]]></description>
+</item></channel>
 </rss>

@@ -1,25 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>DATABASE on zeroy&#39;s blog</title>
-    <link>https://zeroy.site/categories/database/</link>
-    <description>Recent content in DATABASE on zeroy&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 07 Feb 2022 22:36:05 +0800</lastBuildDate><atom:link href="https://zeroy.site/categories/database/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>数据库基础|JDBC入门|Druid连接池的简单配置</title>
-      <link>https://zeroy.site/articles/database-for-beginner/</link>
-      <pubDate>Mon, 07 Feb 2022 22:36:05 +0800</pubDate>
-      
-      <guid>https://zeroy.site/articles/database-for-beginner/</guid>
-      <description>数据库基础 增 新建数据库
-CREATE DATABASE {{name}} 新建数据表
-CREATE TABLE {{name}}( {{列名}} {{数据类型}} {{约束}}, ..... ); EXAMPLE: CREATE TABLE Users( id int primary key, name varchar(30) NOT NULL, birthday date, score int NOT NULL ); 添加外键约束
-建表时添加
-CONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 建表后添加
-alter table {{表名}} add CONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 插入元素
-EXAMPLE: 向一张名为users的数据表中插入元素： INSERT INTO users(id,name,birthday,score) VALUES (1,&amp;#39;zeroy&amp;#39;,&amp;#39;2003-4-10&amp;#39;,100) , (2,&amp;#39;admin&amp;#39;,&amp;#39;2003-4-10&amp;#39;,99) 查 SELECT {{列名}} FROM {{表名}} WHERE {{条件}} GROUP BY {{分组字段}} HAVING {{分组后条件}} ORDER BY {{排序字段}} LIMIT {{分页限定}} 改 UPDATE {{表名}} set {{程序语句}} WHERE {{条件}} 事务 事务能实现多条命令捆绑，一旦失败，会回滚所有操作。</description>
-    </item>
-    
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>DATABASE - 分类 - zeroy的网络小窝</title>
+        <link>http://zeroy.site/categories/database/</link>
+        <description>DATABASE - 分类 - zeroy的网络小窝</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+            <webMaster>zeroy0410@gmail.com (zeroy)</webMaster><lastBuildDate>Mon, 07 Feb 2022 22:36:05 &#43;0800</lastBuildDate><atom:link href="http://zeroy.site/categories/database/" rel="self" type="application/rss+xml" /><item>
+    <title>数据库基础|JDBC入门|Druid连接池的简单配置</title>
+    <link>http://zeroy.site/articles/database-for-beginner/</link>
+    <pubDate>Mon, 07 Feb 2022 22:36:05 &#43;0800</pubDate><author>
+        <name>zeroy</name>
+    </author><guid>http://zeroy.site/articles/database-for-beginner/</guid>
+    <description><![CDATA[数据库基础 增新建数据库 1 CREATE DATABASE {{name}} 新建数据表 1 2 3 4 5 6 7 8 9 10 11 12 CREATE TABLE {{name}}( {{列名}} {{数据类型}} {{约束}}, ..... ); EXAMPLE: CREATE TABLE Users( id int primary key, name varchar(30) NOT NULL,]]></description>
+</item></channel>
 </rss>

@@ -1,52 +1,22 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>python on zeroy&#39;s blog</title>
-    <link>https://zeroy.site/categories/python/</link>
-    <description>Recent content in python on zeroy&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 26 Jan 2022 16:49:18 +0800</lastBuildDate><atom:link href="https://zeroy.site/categories/python/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>使用PySimpleGUI库构建简单的图形界面</title>
-      <link>https://zeroy.site/articles/PySimpleGUI/</link>
-      <pubDate>Wed, 26 Jan 2022 16:49:18 +0800</pubDate>
-      
-      <guid>https://zeroy.site/articles/PySimpleGUI/</guid>
-      <description>前言 python构建本地GUI程序有很多方式，比如Tkinter，wxPython，或是PyQT。但是对于学生而言，并不需要多么华丽的用户界面，只需要“能用”就行了，开发环节越省力越好。
-于是我找到了PySimpleGUI这个库。
-A introduction to PySimpleGUI
-这个库提供了一种近乎傻瓜化的方式，采用List来描述一个GUI界面，同时支持一个简单程序需要的全部特性，并且支持Win/Mac/Linux三大平台，十分适合拿来封装代码。
-安装 pip install PySimpleGUI在文件开头加上库引用：
-import PySimpleGUI as sg 元素 PySimpleGUI有着丰富的控件支持。
- 文本框（Text）  sg.Text(&amp;#39;文本框&amp;#39;,size=(12,1),key=&amp;#39;output&amp;#39;) &#39;文本框&#39;为框体显示的文字，size为框体的大小，key为框体标识，用于之后对文本框的定位。
-输入框（Input）  sg.Input(key=&amp;#39;input&amp;#39;) 按钮（Button）  sg.Button(&amp;#39;Go&amp;#39;) &#39;Go&#39;为按钮的名字。也可以另外设置key值。
-下拉框（Comobo）  [ sg.Text(&amp;#34;City&amp;#34;, size = (20, 1)), sg.Combo((&amp;#34;北京&amp;#34;, &amp;#34;上海&amp;#34;, &amp;#34;深圳&amp;#34;), size=(10, 1), default_value=&amp;#34;上海&amp;#34;, key = &amp;#34;-CITY-&amp;#34;)] 弹窗（Popup）  sg.Popup(&amp;#39;弹窗1&amp;#39;,&amp;#39;This is the first one&amp;#39;) sg.Popup(&amp;#39;弹窗2&amp;#39;,&amp;#39;This is the second one&amp;#39;) sg.Popup(&amp;#39;弹窗3&amp;#39;,&amp;#39;This is the third one&amp;#39;) 弹出一个窗口包含标题和内容。
-选择文件（FileBrowse）  sg.FileBrowse() 选择文件路径（FolderBrowse）  sg.</description>
-    </item>
-    
-    <item>
-      <title>Bilibili直播弹幕收发小程序</title>
-      <link>https://zeroy.site/articles/Bilibili-send-and-receive/</link>
-      <pubDate>Tue, 18 Jan 2022 15:32:48 +0800</pubDate>
-      
-      <guid>https://zeroy.site/articles/Bilibili-send-and-receive/</guid>
-      <description>项目地址
-需求分析 在Linux下直播看不到弹幕，无法与观众互动。
-实现过程 第一阶段 问题可拆分为收与发。
-可行性分析 B站有API能够返回一个直播间最近的10条弹幕，可以依赖这个API接收弹幕。
-抓包可知一次发送弹幕的行为即为一次POST请求，可以使用python脚本实现发送信息。
-分别编写发送和接收弹幕的程序。开两个终端使用。
-第二阶段 开两个终端切换较为麻烦，于是萌生了把两个程序整合成一个的想法，想实现类似网页的上方是弹幕下方是输入框的效果。
-可行性分析 弹幕的动态捕捉依赖间隔固定时间地获取最近10条弹幕，提取出新的弹幕，显示在终端上，但是如果整合进输入程序，输入方法会阻塞进程，如果一直不输入就没有办法获取新的弹幕，所以需要为输入设定超时。
-查阅资料得知，为输入方法设定超时需要使用多线程，或者异步异常信息处理，刚学py，不会这些。。。
-查阅英文资料和pypi得知，python有个inputimeout库可以处理超时输入的问题，所以就整上了。
-但是在现在这一流程中，每次输入超时都需要清屏，这样每次更新弹幕的时候都会闪一下，体验非常不好。
-第三阶段 有没有办法实现一个terminal中分屏显示都个session呢？
-可行性分析 结合我个人的Linux使用经验，可以使用tmux这个工具实现分屏操作，所以第二阶段的工作就白做了。。。
-最终效果 不足与提升空间 冷启动时需要较多的步骤，不够优雅。
-未来可以尝试使用GUI框架封装代码，实现一个输出框一个输入框收发代码。
-1/25 Update 采用PysimpleGUI这个最简单的GUI库封装了代码，现在很好用（）</description>
-    </item>
-    
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>python - 分类 - zeroy的网络小窝</title>
+        <link>http://zeroy.site/categories/python/</link>
+        <description>python - 分类 - zeroy的网络小窝</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+            <webMaster>zeroy0410@gmail.com (zeroy)</webMaster><lastBuildDate>Wed, 26 Jan 2022 16:49:18 &#43;0800</lastBuildDate><atom:link href="http://zeroy.site/categories/python/" rel="self" type="application/rss+xml" /><item>
+    <title>使用PySimpleGUI库构建简单的图形界面</title>
+    <link>http://zeroy.site/articles/PySimpleGUI/</link>
+    <pubDate>Wed, 26 Jan 2022 16:49:18 &#43;0800</pubDate><author>
+        <name>zeroy</name>
+    </author><guid>http://zeroy.site/articles/PySimpleGUI/</guid>
+    <description><![CDATA[前言python构建本地GUI程序有很多方式，比如Tkinter，wxPython，或是PyQT。但是对于学生而言，并不需要多么华丽的用户界]]></description>
+</item><item>
+    <title>Bilibili直播弹幕收发小程序</title>
+    <link>http://zeroy.site/articles/Bilibili-send-and-receive/</link>
+    <pubDate>Tue, 18 Jan 2022 15:32:48 &#43;0800</pubDate><author>
+        <name>zeroy</name>
+    </author><guid>http://zeroy.site/articles/Bilibili-send-and-receive/</guid>
+    <description><![CDATA[项目地址 需求分析在Linux下直播看不到弹幕，无法与观众互动。 实现过程 第一阶段问题可拆分为收与发。 可行性分析B站有API能够返回一个直播间最]]></description>
+</item></channel>
 </rss>

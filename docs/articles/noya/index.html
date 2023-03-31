@@ -1,254 +1,182 @@
 <!DOCTYPE html>
-<html lang="zh-cn" dir="auto">
+<html lang="zh-CN">
 
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>基于go-cqhttp的机器人NoyaBot | zeroy&#39;s blog</title>
-<meta name="keywords" content="" />
-<meta name="description" content="前言 2月14情人节过于孤独，于是萌生了写个qqbot玩的想法。
-概述 项目地址：zeroy0410/NoyaBot (github.com)
-配置完go-cqhttp的基本信息之后，就可以用它的api来操纵bot的账号进行各种操作，同时go-cqhttp会转发接收到的信息到指定端口。只需要在本地搭建一个服务器对收到的信息进行一定规则的回复即可。
-我使用了Python-Flask作为项目的框架。
-机器人功能（截止2022/3/3）
- 闲聊   回答指定的问题 设定回答问题的概率   数学计算   计算能用一行字符串表示的Sympy库格式的数据   一言 翻译  /teach A|B #当输入为A时以B来回答 /let talk_enable (True or False) #是否在群内开启闲聊 /let talk_probability 一个浮点数 #闲聊时接话的概率 /ask A #问话就会回答（无视上面两条指令的限制） /calc sympy库格式的一条算式 #不要尝试计算复杂度过高的式子，计算时间过长会阻塞进程 /hito 参数# 一言参数参考https://hitokoto.cn/ /trans 内容|from|to #如trans Hello World!|en|zh 英译中 注意事项 数学计算功能使用了eval函数让python能够解析输入的代码，我过滤掉了大部分常用的注入语句，但仍有被注入的风险。">
-<meta name="author" content="zeroy">
-<link rel="canonical" href="https://zeroy.site/articles/noya/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://zeroy.site/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://zeroy.site/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://zeroy.site/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://zeroy.site/apple-touch-icon.png">
-<link rel="mask-icon" href="https://zeroy.site/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.92.0" />
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript><meta property="og:title" content="基于go-cqhttp的机器人NoyaBot" />
-<meta property="og:description" content="前言 2月14情人节过于孤独，于是萌生了写个qqbot玩的想法。
-概述 项目地址：zeroy0410/NoyaBot (github.com)
-配置完go-cqhttp的基本信息之后，就可以用它的api来操纵bot的账号进行各种操作，同时go-cqhttp会转发接收到的信息到指定端口。只需要在本地搭建一个服务器对收到的信息进行一定规则的回复即可。
-我使用了Python-Flask作为项目的框架。
-机器人功能（截止2022/3/3）
- 闲聊   回答指定的问题 设定回答问题的概率   数学计算   计算能用一行字符串表示的Sympy库格式的数据   一言 翻译  /teach A|B #当输入为A时以B来回答 /let talk_enable (True or False) #是否在群内开启闲聊 /let talk_probability 一个浮点数 #闲聊时接话的概率 /ask A #问话就会回答（无视上面两条指令的限制） /calc sympy库格式的一条算式 #不要尝试计算复杂度过高的式子，计算时间过长会阻塞进程 /hito 参数# 一言参数参考https://hitokoto.cn/ /trans 内容|from|to #如trans Hello World!|en|zh 英译中 注意事项 数学计算功能使用了eval函数让python能够解析输入的代码，我过滤掉了大部分常用的注入语句，但仍有被注入的风险。" />
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>基于go-cqhttp的机器人NoyaBot - zeroy的网络小窝</title><meta name="Description" content="zeroy的碎碎念"><meta property="og:title" content="基于go-cqhttp的机器人NoyaBot" />
+<meta property="og:description" content="前言2月14情人节过于孤独，于是萌生了写个qqbot玩的想法。 概述项目地址：zeroy0410/NoyaBot (github.com) 配置完go-cqhttp的基" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://zeroy.site/articles/noya/" /><meta property="article:section" content="articles" />
-<meta property="article:published_time" content="2022-03-03T10:04:25&#43;08:00" />
-<meta property="article:modified_time" content="2022-03-03T10:04:25&#43;08:00" />
+<meta property="og:url" content="http://zeroy.site/articles/noya/" /><meta property="og:image" content="http://zeroy.site/ava.jpeg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-03-03T10:04:25+08:00" />
+<meta property="article:modified_time" content="2022-03-03T10:04:25+08:00" /><meta property="og:site_name" content="zeroy的网络小窝" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://zeroy.site/ava.jpeg"/>
 
-<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="基于go-cqhttp的机器人NoyaBot"/>
-<meta name="twitter:description" content="前言 2月14情人节过于孤独，于是萌生了写个qqbot玩的想法。
-概述 项目地址：zeroy0410/NoyaBot (github.com)
-配置完go-cqhttp的基本信息之后，就可以用它的api来操纵bot的账号进行各种操作，同时go-cqhttp会转发接收到的信息到指定端口。只需要在本地搭建一个服务器对收到的信息进行一定规则的回复即可。
-我使用了Python-Flask作为项目的框架。
-机器人功能（截止2022/3/3）
- 闲聊   回答指定的问题 设定回答问题的概率   数学计算   计算能用一行字符串表示的Sympy库格式的数据   一言 翻译  /teach A|B #当输入为A时以B来回答 /let talk_enable (True or False) #是否在群内开启闲聊 /let talk_probability 一个浮点数 #闲聊时接话的概率 /ask A #问话就会回答（无视上面两条指令的限制） /calc sympy库格式的一条算式 #不要尝试计算复杂度过高的式子，计算时间过长会阻塞进程 /hito 参数# 一言参数参考https://hitokoto.cn/ /trans 内容|from|to #如trans Hello World!|en|zh 英译中 注意事项 数学计算功能使用了eval函数让python能够解析输入的代码，我过滤掉了大部分常用的注入语句，但仍有被注入的风险。"/>
+<meta name="twitter:description" content="前言2月14情人节过于孤独，于是萌生了写个qqbot玩的想法。 概述项目地址：zeroy0410/NoyaBot (github.com) 配置完go-cqhttp的基"/>
+<meta name="application-name" content="DoIt">
+<meta name="apple-mobile-web-app-title" content="DoIt">
 
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://zeroy.site/articles/noya/" /><link rel="prev" href="http://zeroy.site/articles/math-integrate/" /><link rel="next" href="http://zeroy.site/articles/CTFpwn1/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
     {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Articles",
-      "item": "https://zeroy.site/articles/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "基于go-cqhttp的机器人NoyaBot",
-      "item": "https://zeroy.site/articles/noya/"
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "基于go-cqhttp的机器人NoyaBot",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/zeroy.site\/articles\/noya\/"
+        },"genre": "posts","wordcount":  478 ,
+        "url": "http:\/\/zeroy.site\/articles\/noya\/","datePublished": "2022-03-03T10:04:25+08:00","dateModified": "2022-03-03T10:04:25+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "zeroy"
+            },"description": ""
     }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "基于go-cqhttp的机器人NoyaBot",
-  "name": "基于go-cqhttp的机器人NoyaBot",
-  "description": "前言 2月14情人节过于孤独，于是萌生了写个qqbot玩的想法。\n概述 项目地址：zeroy0410/NoyaBot (github.com)\n配置完go-cqhttp的基本信息之后，就可以用它的api来操纵bot的账号进行各种操作，同时go-cqhttp会转发接收到的信息到指定端口。只需要在本地搭建一个服务器对收到的信息进行一定规则的回复即可。\n我使用了Python-Flask作为项目的框架。\n机器人功能（截止2022/3/3）\n 闲聊   回答指定的问题 设定回答问题的概率   数学计算   计算能用一行字符串表示的Sympy库格式的数据   一言 翻译  /teach A|B #当输入为A时以B来回答 /let talk_enable (True or False) #是否在群内开启闲聊 /let talk_probability 一个浮点数 #闲聊时接话的概率 /ask A #问话就会回答（无视上面两条指令的限制） /calc sympy库格式的一条算式 #不要尝试计算复杂度过高的式子，计算时间过长会阻塞进程 /hito 参数# 一言参数参考https://hitokoto.cn/ /trans 内容|from|to #如trans Hello World!|en|zh 英译中 注意事项 数学计算功能使用了eval函数让python能够解析输入的代码，我过滤掉了大部分常用的注入语句，但仍有被注入的风险。",
-  "keywords": [
-    
-  ],
-  "articleBody": "前言 2月14情人节过于孤独，于是萌生了写个qqbot玩的想法。\n概述 项目地址：zeroy0410/NoyaBot (github.com)\n配置完go-cqhttp的基本信息之后，就可以用它的api来操纵bot的账号进行各种操作，同时go-cqhttp会转发接收到的信息到指定端口。只需要在本地搭建一个服务器对收到的信息进行一定规则的回复即可。\n我使用了Python-Flask作为项目的框架。\n机器人功能（截止2022/3/3）\n 闲聊   回答指定的问题 设定回答问题的概率   数学计算   计算能用一行字符串表示的Sympy库格式的数据   一言 翻译  /teach A|B #当输入为A时以B来回答 /let talk_enable (True or False) #是否在群内开启闲聊 /let talk_probability 一个浮点数 #闲聊时接话的概率 /ask A #问话就会回答（无视上面两条指令的限制） /calc sympy库格式的一条算式 #不要尝试计算复杂度过高的式子，计算时间过长会阻塞进程 /hito 参数# 一言参数参考https://hitokoto.cn/ /trans 内容|from|to #如trans Hello World!|en|zh 英译中 注意事项 数学计算功能使用了eval函数让python能够解析输入的代码，我过滤掉了大部分常用的注入语句，但仍有被注入的风险。\n",
-  "wordCount" : "45",
-  "inLanguage": "zh-cn",
-  "datePublished": "2022-03-03T10:04:25+08:00",
-  "dateModified": "2022-03-03T10:04:25+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "zeroy"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://zeroy.site/articles/noya/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "zeroy's blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://zeroy.site/favicon.ico"
-    }
-  }
-}
-</script>
+    </script><script src="//instant.page/5.1.1" defer type="module" integrity="sha384-MWfCL6g1OTGsbSwfuMHc8+8J2u71/LA8dzlIN3ycajckxuZZmF+DNjdm7O6H3PSq"></script>
 </head>
 
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://zeroy.site/" accesskey="h" title="zeroy&#39;s blog (Alt + H)">zeroy&#39;s blog</a>
-            <span class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </span>
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme; }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="zeroy的网络小窝"><img
+        class="logo"
+        loading="lazy"
+        src="/ava.jpeg"
+        srcset="/ava.jpeg, /ava.jpeg 1.5x, /ava.jpeg 2x"
+        sizes="auto"
+        alt="/ava.jpeg"
+        title="/ava.jpeg" >zeroy的网络小窝</a>
         </div>
-        <ul id="menu">
-            <li>
-                <a href="https://zeroy.site/" title="首页">
-                    <span>首页</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/archives/" title="归档">
-                    <span>归档</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/categories/" title="分类">
-                    <span>分类</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/about/" title="关于">
-                    <span>关于</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/search/" title="搜索 (Alt &#43; /)" accesskey=/>
-                    <span>搜索</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/links/" title="友链">
-                    <span>友链</span>
-                </a>
-            </li>
-        </ul>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=80 src="//music.163.com/outchain/player?type=2&id=415904308&auto=1&height=66"></iframe>
-    </nav>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="zeroy的网络小窝"><img
+        class="logo"
+        loading="lazy"
+        src="/ava.jpeg"
+        srcset="/ava.jpeg, /ava.jpeg 1.5x, /ava.jpeg 2x"
+        sizes="auto"
+        alt="/ava.jpeg"
+        title="/ava.jpeg" >zeroy的网络小窝</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about" title="">关于</a><a href="#" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
 </header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
 <main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://zeroy.site/">Home</a>&nbsp;»&nbsp;<a href="https://zeroy.site/articles/">Articles</a></div>
-    <h1 class="post-title">
-      基于go-cqhttp的机器人NoyaBot
-    </h1>
-    <div class="post-meta"><span title='2022-03-03 10:04:25 +0800 CST'>March 3, 2022</span>&nbsp;·&nbsp;zeroy
-
-</div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><ul>
-                <li>
-                    <a href="#%e5%89%8d%e8%a8%80" aria-label="前言">前言</a></li>
-                <li>
-                    <a href="#%e6%a6%82%e8%bf%b0" aria-label="概述">概述</a></li>
-                <li>
-                    <a href="#%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" aria-label="注意事项">注意事项</a>
-                </li>
-            </ul>
-        </div>
-    </details>
-    
-</div>
-
-  <div class="post-content"><h4 id="前言">前言<a hidden class="anchor" aria-hidden="true" href="#前言">#</a></h4>
-<p>2月14情人节过于孤独，于是萌生了写个qqbot玩的想法。</p>
-<h4 id="概述">概述<a hidden class="anchor" aria-hidden="true" href="#概述">#</a></h4>
-<p><strong>项目地址：</strong><a href="https://github.com/zeroy0410/NoyaBot">zeroy0410/NoyaBot (github.com)</a></p>
-<p>配置完<a href="https://docs.go-cqhttp.org/">go-cqhttp</a>的基本信息之后，就可以用它的api来操纵bot的账号进行各种操作，同时go-cqhttp会转发接收到的信息到指定端口。只需要在本地搭建一个服务器对收到的信息进行一定规则的回复即可。</p>
+            <div class="container"><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "false")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">基于go-cqhttp的机器人NoyaBot</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><i class="author fas fa-user-circle fa-fw"></i><a href="zeroy.site" title="Author" rel=" author" class="author">zeroy</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/web/"><i class="far fa-folder fa-fw"></i>WEB</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-03-03">2022-03-03</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2022-03-03">2022-03-03</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 478 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 1 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#前言">前言</a></li>
+            <li><a href="#概述">概述</a></li>
+            <li><a href="#注意事项">注意事项</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div class="details admonition note open">
+                <div class="details-summary admonition-title">
+                    <i class="icon fas fa-pencil-alt fa-fwnote"></i>注意<i class="details-icon fas fa-angle-right fa-fw"></i>
+                </div>
+                <div class="details-content">
+                    <div class="admonition-content">
+                        本文最后更新于 <span class="timeago" datetime="2022-03-03T10:04:25" title="March 3, 2022">2022-03-03</span>，文中内容可能已过时。</div>
+                </div>
+            </div><h4 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>前言</h4><p>2月14情人节过于孤独，于是萌生了写个qqbot玩的想法。</p>
+<h4 id="概述" class="headerLink">
+    <a href="#%e6%a6%82%e8%bf%b0" class="header-mark"></a>概述</h4><p><strong>项目地址：</strong><a href="https://github.com/zeroy0410/NoyaBot" target="_blank" rel="noopener noreferrer">zeroy0410/NoyaBot (github.com)</a></p>
+<p>配置完<a href="https://docs.go-cqhttp.org/" target="_blank" rel="noopener noreferrer">go-cqhttp</a>的基本信息之后，就可以用它的api来操纵bot的账号进行各种操作，同时go-cqhttp会转发接收到的信息到指定端口。只需要在本地搭建一个服务器对收到的信息进行一定规则的回复即可。</p>
 <p>我使用了Python-Flask作为项目的框架。</p>
 <p><strong>机器人功能（截止2022/3/3）</strong></p>
 <ul>
@@ -268,162 +196,76 @@
 <li>一言</li>
 <li>翻译</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/teach A|B <span style="color:#75715e">#当输入为A时以B来回答</span>
-/let talk_enable <span style="color:#f92672">(</span>True or False<span style="color:#f92672">)</span> <span style="color:#75715e">#是否在群内开启闲聊</span>
-/let talk_probability 一个浮点数 <span style="color:#75715e">#闲聊时接话的概率</span>
-/ask A <span style="color:#75715e">#问话就会回答（无视上面两条指令的限制）</span>
-/calc sympy库格式的一条算式 <span style="color:#75715e">#不要尝试计算复杂度过高的式子，计算时间过长会阻塞进程</span>
-/hito 参数# 一言参数参考https://hitokoto.cn/
-/trans 内容|from|to <span style="color:#75715e">#如trans Hello World!|en|zh 英译中</span>
-</code></pre></div><h4 id="注意事项">注意事项<a hidden class="anchor" aria-hidden="true" href="#注意事项">#</a></h4>
-<p>数学计算功能使用了eval函数让python能够解析输入的代码，我过滤掉了大部分常用的注入语句，但仍有被注入的风险。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/teach A<span class="p">|</span>B <span class="c1">#当输入为A时以B来回答</span>
+</span></span><span class="line"><span class="cl">/let talk_enable <span class="o">(</span>True or False<span class="o">)</span> <span class="c1">#是否在群内开启闲聊</span>
+</span></span><span class="line"><span class="cl">/let talk_probability 一个浮点数 <span class="c1">#闲聊时接话的概率</span>
+</span></span><span class="line"><span class="cl">/ask A <span class="c1">#问话就会回答（无视上面两条指令的限制）</span>
+</span></span><span class="line"><span class="cl">/calc sympy库格式的一条算式 <span class="c1">#不要尝试计算复杂度过高的式子，计算时间过长会阻塞进程</span>
+</span></span><span class="line"><span class="cl">/hito 参数# 一言参数参考https://hitokoto.cn/
+</span></span><span class="line"><span class="cl">/trans 内容<span class="p">|</span>from<span class="p">|</span>to <span class="c1">#如trans Hello World!|en|zh 英译中</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="注意事项" class="headerLink">
+    <a href="#%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" class="header-mark"></a>注意事项</h4><p>数学计算功能使用了eval函数让python能够解析输入的代码，我过滤掉了大部分常用的注入语句，但仍有被注入的风险。</p>
+</div>
 
+        
 
-  </div>
+<div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-03-03</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span><a class="link-to-mardown" href=/articles/noya/index.md target="_blank" rel="noopener noreferrer">阅读原始文档</a>
+                    </span></div>
+            <div class="post-info-share">
+                <span><a href="#" title="分享到 Twitter" data-sharer="twitter" data-url="http://zeroy.site/articles/noya/" data-title="基于go-cqhttp的机器人NoyaBot"><i class="fab fa-twitter fa-fw"></i></a><a href="#" title="分享到 微博" data-sharer="weibo" data-url="http://zeroy.site/articles/noya/" data-title="基于go-cqhttp的机器人NoyaBot"><i class="fab fa-weibo fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
 
-  <footer class="post-footer">
-<nav class="paginav">
-  <a class="prev" href="https://zeroy.site/articles/CTFpwn1/">
-    <span class="title">« </span>
-    <br>
-    <span>[PWN.0x00]函数调用栈结构与栈迁移</span>
-  </a>
-  <a class="next" href="https://zeroy.site/articles/math-integrate/">
-    <span class="title"> »</span>
-    <br>
-    <span>高等数学（上） 不定积分 总结</span>
-  </a>
-  
-</nav>
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
 
-  </footer><script src="https://utteranc.es/client.js"
-        repo="zeroy0410/zeroy0410.github.io"
-        issue-term="pathname"
-        label="Comment"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://zeroy.site/">zeroy&#39;s blog</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
+    <div class="post-nav"><a href="/articles/math-integrate/" class="prev" rel="prev" title="高等数学（上） 不定积分 总结"><i class="fas fa-angle-left fa-fw"></i>高等数学（上） 不定积分 总结</a>
+            <a href="/articles/CTFpwn1/" class="next" rel="next" title="[PWN.0x00]函数调用栈结构与栈迁移">[PWN.0x00]函数调用栈结构与栈迁移<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.111.3">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.3.0"><i class="far fa-edit fa-fw"></i> DoIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="zeroy.site" target="_blank" rel="noopener noreferrer">zeroy</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
 
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
-
-        function copyingDone() {
-            copybutton.innerText = 'copied!';
-            setTimeout(() => {
-                copybutton.innerText = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-<script type="text/javascript"
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script></body>
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div id="cookieconsent-container"></div><div class="assets"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":50,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js" defer></script><script type="text/javascript" src="/lib/katex/auto-render.min.js" defer></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js" defer></script><script type="text/javascript" src="/lib/katex/mhchem.min.js" defer></script><script type="text/javascript" src="/js/katex.min.js" defer></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script type="text/javascript" src="/js/cookieconsent.min.js" defer></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
 
 </html>

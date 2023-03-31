@@ -1,19 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>Hello World on zeroy&#39;s blog</title>
-    <link>https://zeroy.site/categories/hello-world/</link>
-    <description>Recent content in Hello World on zeroy&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 18 Jan 2022 11:24:21 +0800</lastBuildDate><atom:link href="https://zeroy.site/categories/hello-world/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>HelloWorld</title>
-      <link>https://zeroy.site/articles/hello-world/</link>
-      <pubDate>Tue, 18 Jan 2022 11:24:21 +0800</pubDate>
-      
-      <guid>https://zeroy.site/articles/hello-world/</guid>
-      <description>$$ Hello World! $$</description>
-    </item>
-    
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Hello World - 分类 - zeroy的网络小窝</title>
+        <link>http://zeroy.site/categories/hello-world/</link>
+        <description>Hello World - 分类 - zeroy的网络小窝</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+            <webMaster>zeroy0410@gmail.com (zeroy)</webMaster><lastBuildDate>Tue, 18 Jan 2022 11:24:21 &#43;0800</lastBuildDate><atom:link href="http://zeroy.site/categories/hello-world/" rel="self" type="application/rss+xml" /><item>
+    <title>HelloWorld</title>
+    <link>http://zeroy.site/articles/hello-world/</link>
+    <pubDate>Tue, 18 Jan 2022 11:24:21 &#43;0800</pubDate><author>
+        <name>zeroy</name>
+    </author><guid>http://zeroy.site/articles/hello-world/</guid>
+    <description><![CDATA[$$ Hello World! $$]]></description>
+</item></channel>
 </rss>

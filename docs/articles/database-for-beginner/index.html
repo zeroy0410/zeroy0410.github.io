@@ -1,544 +1,532 @@
 <!DOCTYPE html>
-<html lang="zh-cn" dir="auto">
+<html lang="zh-CN">
 
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>数据库基础|JDBC入门|Druid连接池的简单配置 | zeroy&#39;s blog</title>
-<meta name="keywords" content="" />
-<meta name="description" content="数据库基础 增 新建数据库
-CREATE DATABASE {{name}} 新建数据表
-CREATE TABLE {{name}}( {{列名}} {{数据类型}} {{约束}}, ..... ); EXAMPLE: CREATE TABLE Users( id int primary key, name varchar(30) NOT NULL, birthday date, score int NOT NULL ); 添加外键约束
-建表时添加
-CONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 建表后添加
-alter table {{表名}} add CONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 插入元素
-EXAMPLE: 向一张名为users的数据表中插入元素： INSERT INTO users(id,name,birthday,score) VALUES (1,&#39;zeroy&#39;,&#39;2003-4-10&#39;,100) , (2,&#39;admin&#39;,&#39;2003-4-10&#39;,99) 查 SELECT {{列名}} FROM {{表名}} WHERE {{条件}} GROUP BY {{分组字段}} HAVING {{分组后条件}} ORDER BY {{排序字段}} LIMIT {{分页限定}} 改 UPDATE {{表名}} set {{程序语句}} WHERE {{条件}} 事务 事务能实现多条命令捆绑，一旦失败，会回滚所有操作。">
-<meta name="author" content="zeroy">
-<link rel="canonical" href="https://zeroy.site/articles/database-for-beginner/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://zeroy.site/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://zeroy.site/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://zeroy.site/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://zeroy.site/apple-touch-icon.png">
-<link rel="mask-icon" href="https://zeroy.site/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.92.0" />
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript><meta property="og:title" content="数据库基础|JDBC入门|Druid连接池的简单配置" />
-<meta property="og:description" content="数据库基础 增 新建数据库
-CREATE DATABASE {{name}} 新建数据表
-CREATE TABLE {{name}}( {{列名}} {{数据类型}} {{约束}}, ..... ); EXAMPLE: CREATE TABLE Users( id int primary key, name varchar(30) NOT NULL, birthday date, score int NOT NULL ); 添加外键约束
-建表时添加
-CONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 建表后添加
-alter table {{表名}} add CONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 插入元素
-EXAMPLE: 向一张名为users的数据表中插入元素： INSERT INTO users(id,name,birthday,score) VALUES (1,&#39;zeroy&#39;,&#39;2003-4-10&#39;,100) , (2,&#39;admin&#39;,&#39;2003-4-10&#39;,99) 查 SELECT {{列名}} FROM {{表名}} WHERE {{条件}} GROUP BY {{分组字段}} HAVING {{分组后条件}} ORDER BY {{排序字段}} LIMIT {{分页限定}} 改 UPDATE {{表名}} set {{程序语句}} WHERE {{条件}} 事务 事务能实现多条命令捆绑，一旦失败，会回滚所有操作。" />
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>数据库基础|JDBC入门|Druid连接池的简单配置 - zeroy的网络小窝</title><meta name="Description" content="zeroy的碎碎念"><meta property="og:title" content="数据库基础|JDBC入门|Druid连接池的简单配置" />
+<meta property="og:description" content="数据库基础 增新建数据库 1 CREATE DATABASE {{name}} 新建数据表 1 2 3 4 5 6 7 8 9 10 11 12 CREATE TABLE {{name}}( {{列名}} {{数据类型}} {{约束}}, ..... ); EXAMPLE: CREATE TABLE Users( id int primary key, name varchar(30) NOT NULL," />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://zeroy.site/articles/database-for-beginner/" /><meta property="article:section" content="articles" />
-<meta property="article:published_time" content="2022-02-07T22:36:05&#43;08:00" />
-<meta property="article:modified_time" content="2022-02-07T22:36:05&#43;08:00" />
+<meta property="og:url" content="http://zeroy.site/articles/database-for-beginner/" /><meta property="og:image" content="http://zeroy.site/ava.jpeg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-02-07T22:36:05+08:00" />
+<meta property="article:modified_time" content="2022-02-07T22:36:05+08:00" /><meta property="og:site_name" content="zeroy的网络小窝" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://zeroy.site/ava.jpeg"/>
 
-<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="数据库基础|JDBC入门|Druid连接池的简单配置"/>
-<meta name="twitter:description" content="数据库基础 增 新建数据库
-CREATE DATABASE {{name}} 新建数据表
-CREATE TABLE {{name}}( {{列名}} {{数据类型}} {{约束}}, ..... ); EXAMPLE: CREATE TABLE Users( id int primary key, name varchar(30) NOT NULL, birthday date, score int NOT NULL ); 添加外键约束
-建表时添加
-CONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 建表后添加
-alter table {{表名}} add CONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 插入元素
-EXAMPLE: 向一张名为users的数据表中插入元素： INSERT INTO users(id,name,birthday,score) VALUES (1,&#39;zeroy&#39;,&#39;2003-4-10&#39;,100) , (2,&#39;admin&#39;,&#39;2003-4-10&#39;,99) 查 SELECT {{列名}} FROM {{表名}} WHERE {{条件}} GROUP BY {{分组字段}} HAVING {{分组后条件}} ORDER BY {{排序字段}} LIMIT {{分页限定}} 改 UPDATE {{表名}} set {{程序语句}} WHERE {{条件}} 事务 事务能实现多条命令捆绑，一旦失败，会回滚所有操作。"/>
+<meta name="twitter:description" content="数据库基础 增新建数据库 1 CREATE DATABASE {{name}} 新建数据表 1 2 3 4 5 6 7 8 9 10 11 12 CREATE TABLE {{name}}( {{列名}} {{数据类型}} {{约束}}, ..... ); EXAMPLE: CREATE TABLE Users( id int primary key, name varchar(30) NOT NULL,"/>
+<meta name="application-name" content="DoIt">
+<meta name="apple-mobile-web-app-title" content="DoIt">
 
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://zeroy.site/articles/database-for-beginner/" /><link rel="prev" href="http://zeroy.site/articles/regular-expression/" /><link rel="next" href="http://zeroy.site/articles/Golang-web1/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
     {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Articles",
-      "item": "https://zeroy.site/articles/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "数据库基础|JDBC入门|Druid连接池的简单配置",
-      "item": "https://zeroy.site/articles/database-for-beginner/"
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "数据库基础|JDBC入门|Druid连接池的简单配置",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/zeroy.site\/articles\/database-for-beginner\/"
+        },"genre": "posts","wordcount":  1487 ,
+        "url": "http:\/\/zeroy.site\/articles\/database-for-beginner\/","datePublished": "2022-02-07T22:36:05+08:00","dateModified": "2022-02-07T22:36:05+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "zeroy"
+            },"description": ""
     }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "数据库基础|JDBC入门|Druid连接池的简单配置",
-  "name": "数据库基础|JDBC入门|Druid连接池的简单配置",
-  "description": "数据库基础 增 新建数据库\nCREATE DATABASE {{name}} 新建数据表\nCREATE TABLE {{name}}( {{列名}} {{数据类型}} {{约束}}, ..... ); EXAMPLE: CREATE TABLE Users( id int primary key, name varchar(30) NOT NULL, birthday date, score int NOT NULL ); 添加外键约束\n建表时添加\nCONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 建表后添加\nalter table {{表名}} add CONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 插入元素\nEXAMPLE: 向一张名为users的数据表中插入元素： INSERT INTO users(id,name,birthday,score) VALUES (1,\u0026#39;zeroy\u0026#39;,\u0026#39;2003-4-10\u0026#39;,100) , (2,\u0026#39;admin\u0026#39;,\u0026#39;2003-4-10\u0026#39;,99) 查 SELECT {{列名}} FROM {{表名}} WHERE {{条件}} GROUP BY {{分组字段}} HAVING {{分组后条件}} ORDER BY {{排序字段}} LIMIT {{分页限定}} 改 UPDATE {{表名}} set {{程序语句}} WHERE {{条件}} 事务 事务能实现多条命令捆绑，一旦失败，会回滚所有操作。",
-  "keywords": [
-    
-  ],
-  "articleBody": "数据库基础 增 新建数据库\nCREATE DATABASE {{name}} 新建数据表\nCREATE TABLE {{name}}( {{列名}} {{数据类型}} {{约束}}, ..... ); EXAMPLE: CREATE TABLE Users( id int primary key, name varchar(30) NOT NULL, birthday date, score int NOT NULL ); 添加外键约束\n建表时添加\nCONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 建表后添加\nalter table {{表名}} add CONSTRAINT {{键名}} FOREIGN KEY({{当前表列名}}) REFERENCES {{别的表(别的表列名)}} 插入元素\nEXAMPLE: 向一张名为users的数据表中插入元素： INSERT INTO users(id,name,birthday,score) VALUES (1,'zeroy','2003-4-10',100) , (2,'admin','2003-4-10',99) 查 SELECT {{列名}} FROM {{表名}} WHERE {{条件}} GROUP BY {{分组字段}} HAVING {{分组后条件}} ORDER BY {{排序字段}} LIMIT {{分页限定}} 改 UPDATE {{表名}} set {{程序语句}} WHERE {{条件}} 事务 事务能实现多条命令捆绑，一旦失败，会回滚所有操作。\n-- 开启事务 BEGIN; -- 回滚事务 ROLLBACK; -- 提交事务 COMMIT; 数据库设计 一对多\n如博客系统一个用户对应多篇文章，需要在文章表处引一条外键连向数据表。\n多对多\n如购物系统中一个商品对应多个订单，一个订单也被多个商品所共有。\n实现方式：新建一张表引出两条外键分别连向商品表和订单表的主键，这张数据表的一行代表一件商品与一张订单之间的关系。\n一对一\n用于表拆分，提升常用信息的访问速度。\nJDBC入门 简介 Java数据库连接，（Java Database Connectivity，简称JDBC）是Java语言中用来规范客户端程序如何来访问数据库的应用程序接口，提供了诸如查询和更新数据库中数据的方法。JDBC也是Sun Microsystems的商标[1]。JDBC是面向关系型数据库的。\n步骤 注册驱动\nClass.forName(\"com.mysql.jdbc.Driver\") 获取连接对象\nConnection conn= DriverManager.getConnection(\"jdbc:mysql://127.0.0.1:3306/{{数据库名}}\",\"username\",\"password\"); 获取连接状态\n有两种方式，后者可以预处理sql模板。\nString sql=\"SELECT * FROM customers\";//查询sql语句 Statement stmt=conn.createStatement(); PreparedStatement pstmt=conn.prepareStatement(sql); 发送查询请求\nResultSet rs=stmt.executeQuery(sql); Resultset rs=pstmt.executeQuery(); 将查询请求封装为对象储存\nwhile(rs.next()) { Customer customer = new Customer(); int customerId = rs.getInt(\"customer_id\"); String firstName = rs.getString(\"firstName\"); String lastName = rs.getString(\"lastName\"); Date birthDate = rs.getDate(\"birthDate\"); int points = rs.getInt(\"points\"); customer.setId(customerId); customer.setBirthDate(birthDate); customer.setFirstName(firstName); customer.setLastName(lastName); customer.setPoints(points); customers.add(customer); } 使用PreparedStatement模板查询或修改数据\n使用？作为占位符，在后续代码中再进行数据填充。\nString sql=\"insert customers(first_name,last_name,birth_date,points,address,city,state) value(?,?,?,?,?,?,?);\"; PreparedStatement pstmt=conn.prepareStatement(sql); pstmt.setString(1,firstName); pstmt.setString(2,lastName); pstmt.setDate(3,birthDate); pstmt.setInt(4,points); pstmt.setString(5,addtress); pstmt.setString(6,city); pstmt.setString(7,state); 这样做的优点是可以预防SQL注入。\nPreparedStatement对象会对输入的字符串做转义处理，可以防止原理为简单字符串拼接生效的SQL注入。（当然还有模板注入防不了）\nDruid数据库连接池的简单使用 简介 在软件工程中，连接池（英语：connection pool）是维护的数据库连接的缓存，以便在将来需要对数据库发出请求时可以重用连接。 连接池用于提高在数据库上执行命令的性能。为每个用户打开和维护数据库连接，尤其是对动态数据库驱动的网站应用程序发出的请求，既昂贵又浪费资源。在连接池中，创建连接之后，将连接放在池中并再次使用，这样就不必创建新的连接。如果所有连接都正在使用，则创建一个新连接并将其添加到池中。连接池还减少了用户必须等待创建与数据库的连接的时间。\nDruid是由阿里巴巴开发的数据库连接池。\n配置文件的书写 driverClassName=com.mysql.jdbc.Driver\rurl={{数据库地址}}\rusername={{your username}}\rpassword={{your password}}\r# 默认连接数\rinitialSize=5\r# 最大连接数\rmaxActive=10\r# 最长等待时间\rmaxWait=3000\r从数据库连接池中获取连接 Properties prop=new Properties(); prop.load(new FileInputStream(\"src/druid.properties\"));//填写druid配置文件的路径 DataSource dataSource= DruidDataSourceFactory.createDataSource(prop); Connection conn=dataSource.getConnection(); ",
-  "wordCount" : "220",
-  "inLanguage": "zh-cn",
-  "datePublished": "2022-02-07T22:36:05+08:00",
-  "dateModified": "2022-02-07T22:36:05+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "zeroy"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://zeroy.site/articles/database-for-beginner/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "zeroy's blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://zeroy.site/favicon.ico"
-    }
-  }
-}
-</script>
+    </script><script src="//instant.page/5.1.1" defer type="module" integrity="sha384-MWfCL6g1OTGsbSwfuMHc8+8J2u71/LA8dzlIN3ycajckxuZZmF+DNjdm7O6H3PSq"></script>
 </head>
 
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://zeroy.site/" accesskey="h" title="zeroy&#39;s blog (Alt + H)">zeroy&#39;s blog</a>
-            <span class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </span>
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme; }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="zeroy的网络小窝"><img
+        class="logo"
+        loading="lazy"
+        src="/ava.jpeg"
+        srcset="/ava.jpeg, /ava.jpeg 1.5x, /ava.jpeg 2x"
+        sizes="auto"
+        alt="/ava.jpeg"
+        title="/ava.jpeg" >zeroy的网络小窝</a>
         </div>
-        <ul id="menu">
-            <li>
-                <a href="https://zeroy.site/" title="首页">
-                    <span>首页</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/archives/" title="归档">
-                    <span>归档</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/categories/" title="分类">
-                    <span>分类</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/about/" title="关于">
-                    <span>关于</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/search/" title="搜索 (Alt &#43; /)" accesskey=/>
-                    <span>搜索</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/links/" title="友链">
-                    <span>友链</span>
-                </a>
-            </li>
-        </ul>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=80 src="//music.163.com/outchain/player?type=2&id=415904308&auto=1&height=66"></iframe>
-    </nav>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="zeroy的网络小窝"><img
+        class="logo"
+        loading="lazy"
+        src="/ava.jpeg"
+        srcset="/ava.jpeg, /ava.jpeg 1.5x, /ava.jpeg 2x"
+        sizes="auto"
+        alt="/ava.jpeg"
+        title="/ava.jpeg" >zeroy的网络小窝</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about" title="">关于</a><a href="#" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
 </header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
 <main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://zeroy.site/">Home</a>&nbsp;»&nbsp;<a href="https://zeroy.site/articles/">Articles</a></div>
-    <h1 class="post-title">
-      数据库基础|JDBC入门|Druid连接池的简单配置
-    </h1>
-    <div class="post-meta"><span title='2022-02-07 22:36:05 +0800 CST'>February 7, 2022</span>&nbsp;·&nbsp;zeroy
-
+            <div class="container"><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "false")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">数据库基础|JDBC入门|Druid连接池的简单配置</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><i class="author fas fa-user-circle fa-fw"></i><a href="zeroy.site" title="Author" rel=" author" class="author">zeroy</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/database/"><i class="far fa-folder fa-fw"></i>DATABASE</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-02-07">2022-02-07</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2022-02-07">2022-02-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1487 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#数据库基础">数据库基础</a>
+          <ul>
+            <li><a href="#增">增</a></li>
+            <li><a href="#查">查</a></li>
+            <li><a href="#改">改</a></li>
+            <li><a href="#事务">事务</a></li>
+            <li><a href="#数据库设计">数据库设计</a></li>
+          </ul>
+        </li>
+        <li><a href="#jdbc入门">JDBC入门</a>
+          <ul>
+            <li><a href="#简介">简介</a></li>
+            <li><a href="#步骤">步骤</a></li>
+          </ul>
+        </li>
+        <li><a href="#druid数据库连接池的简单使用">Druid数据库连接池的简单使用</a>
+          <ul>
+            <li><a href="#简介-1">简介</a></li>
+            <li><a href="#配置文件的书写">配置文件的书写</a></li>
+            <li><a href="#从数据库连接池中获取连接">从数据库连接池中获取连接</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div class="details admonition note open">
+                <div class="details-summary admonition-title">
+                    <i class="icon fas fa-pencil-alt fa-fwnote"></i>注意<i class="details-icon fas fa-angle-right fa-fw"></i>
+                </div>
+                <div class="details-content">
+                    <div class="admonition-content">
+                        本文最后更新于 <span class="timeago" datetime="2022-02-07T22:36:05" title="February 7, 2022">2022-02-07</span>，文中内容可能已过时。</div>
+                </div>
+            </div><h3 id="数据库基础" class="headerLink">
+    <a href="#%e6%95%b0%e6%8d%ae%e5%ba%93%e5%9f%ba%e7%a1%80" class="header-mark"></a>数据库基础</h3><h4 id="增" class="headerLink">
+    <a href="#%e5%a2%9e" class="header-mark"></a>增</h4><p><strong>新建数据库</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="err">{{</span><span class="n">name</span><span class="err">}}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><ul>
-                <li>
-                    <a href="#%e6%95%b0%e6%8d%ae%e5%ba%93%e5%9f%ba%e7%a1%80" aria-label="数据库基础">数据库基础</a><ul>
-                        
-                <li>
-                    <a href="#%e5%a2%9e" aria-label="增">增</a></li>
-                <li>
-                    <a href="#%e6%9f%a5" aria-label="查">查</a></li>
-                <li>
-                    <a href="#%e6%94%b9" aria-label="改">改</a></li>
-                <li>
-                    <a href="#%e4%ba%8b%e5%8a%a1" aria-label="事务">事务</a></li>
-                <li>
-                    <a href="#%e6%95%b0%e6%8d%ae%e5%ba%93%e8%ae%be%e8%ae%a1" aria-label="数据库设计">数据库设计</a></li></ul>
-                </li>
-                <li>
-                    <a href="#jdbc%e5%85%a5%e9%97%a8" aria-label="JDBC入门">JDBC入门</a><ul>
-                        
-                <li>
-                    <a href="#%e7%ae%80%e4%bb%8b" aria-label="简介">简介</a></li>
-                <li>
-                    <a href="#%e6%ad%a5%e9%aa%a4" aria-label="步骤">步骤</a></li></ul>
-                </li>
-                <li>
-                    <a href="#druid%e6%95%b0%e6%8d%ae%e5%ba%93%e8%bf%9e%e6%8e%a5%e6%b1%a0%e7%9a%84%e7%ae%80%e5%8d%95%e4%bd%bf%e7%94%a8" aria-label="Druid数据库连接池的简单使用">Druid数据库连接池的简单使用</a><ul>
-                        
-                <li>
-                    <a href="#%e7%ae%80%e4%bb%8b-1" aria-label="简介">简介</a></li>
-                <li>
-                    <a href="#%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e7%9a%84%e4%b9%a6%e5%86%99" aria-label="配置文件的书写">配置文件的书写</a></li>
-                <li>
-                    <a href="#%e4%bb%8e%e6%95%b0%e6%8d%ae%e5%ba%93%e8%bf%9e%e6%8e%a5%e6%b1%a0%e4%b8%ad%e8%8e%b7%e5%8f%96%e8%bf%9e%e6%8e%a5" aria-label="从数据库连接池中获取连接">从数据库连接池中获取连接</a>
-                </li>
-            </ul>
-            </li>
-            </ul>
-        </div>
-    </details>
-    
+</div><p><strong>新建数据表</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="err">{{</span><span class="n">name</span><span class="err">}}</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">{{列名}}</span><span class="w"> </span><span class="err">{{数据类型}}</span><span class="w"> </span><span class="err">{{约束}}</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">.....</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">EXAMPLE</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="nf">Users</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">id</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">name</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">birthday</span><span class="w"> </span><span class="kt">date</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">score</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
-
-  <div class="post-content"><h3 id="数据库基础">数据库基础<a hidden class="anchor" aria-hidden="true" href="#数据库基础">#</a></h3>
-<h4 id="增">增<a hidden class="anchor" aria-hidden="true" href="#增">#</a></h4>
-<p><strong>新建数据库</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">DATABASE</span> <span style="color:#960050;background-color:#1e0010">{{</span>name<span style="color:#960050;background-color:#1e0010">}}</span>
-</code></pre></div><p><strong>新建数据表</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#960050;background-color:#1e0010">{{</span>name<span style="color:#960050;background-color:#1e0010">}}</span>(
-<span style="color:#960050;background-color:#1e0010">{{列名}}</span> <span style="color:#960050;background-color:#1e0010">{{数据类型}}</span> <span style="color:#960050;background-color:#1e0010">{{约束}}</span>,
-.....
-);
-
-EXAMPLE:
-<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">Users</span>(
-id <span style="color:#66d9ef">int</span> <span style="color:#66d9ef">primary</span> <span style="color:#66d9ef">key</span>,
-name <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">30</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
-birthday <span style="color:#66d9ef">date</span>,
-score <span style="color:#66d9ef">int</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>
-);
-</code></pre></div><p><strong>添加外键约束</strong></p>
+</div><p><strong>添加外键约束</strong></p>
 <p>建表时添加</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CONSTRAINT</span> <span style="color:#960050;background-color:#1e0010">{{键名}}</span> <span style="color:#66d9ef">FOREIGN</span> <span style="color:#66d9ef">KEY</span>(<span style="color:#960050;background-color:#1e0010">{{当前表列名}}</span>) <span style="color:#66d9ef">REFERENCES</span> <span style="color:#960050;background-color:#1e0010">{{别的表</span>(<span style="color:#960050;background-color:#1e0010">别的表列名</span>)<span style="color:#960050;background-color:#1e0010">}}</span>
-</code></pre></div><p>建表后添加</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">alter</span> <span style="color:#66d9ef">table</span> <span style="color:#960050;background-color:#1e0010">{{表名}}</span> <span style="color:#66d9ef">add</span> <span style="color:#66d9ef">CONSTRAINT</span> <span style="color:#960050;background-color:#1e0010">{{键名}}</span> <span style="color:#66d9ef">FOREIGN</span> <span style="color:#66d9ef">KEY</span>(<span style="color:#960050;background-color:#1e0010">{{当前表列名}}</span>) <span style="color:#66d9ef">REFERENCES</span> <span style="color:#960050;background-color:#1e0010">{{别的表</span>(<span style="color:#960050;background-color:#1e0010">别的表列名</span>)<span style="color:#960050;background-color:#1e0010">}}</span>
-</code></pre></div><p><strong>插入元素</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">EXAMPLE:
-<span style="color:#960050;background-color:#1e0010">向一张名为</span>users的数据表中插入元素<span style="color:#960050;background-color:#1e0010">：</span>
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">users</span>(id,name,birthday,score) <span style="color:#66d9ef">VALUES</span>
-(<span style="color:#ae81ff">1</span>,<span style="color:#e6db74">&#39;zeroy&#39;</span>,<span style="color:#e6db74">&#39;2003-4-10&#39;</span>,<span style="color:#ae81ff">100</span>) ,
-(<span style="color:#ae81ff">2</span>,<span style="color:#e6db74">&#39;admin&#39;</span>,<span style="color:#e6db74">&#39;2003-4-10&#39;</span>,<span style="color:#ae81ff">99</span>) 
-</code></pre></div><h4 id="查">查<a hidden class="anchor" aria-hidden="true" href="#查">#</a></h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#960050;background-color:#1e0010">{{列名}}</span>
-<span style="color:#66d9ef">FROM</span> <span style="color:#960050;background-color:#1e0010">{{表名}}</span>
-<span style="color:#66d9ef">WHERE</span> <span style="color:#960050;background-color:#1e0010">{{条件}}</span>
-<span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> <span style="color:#960050;background-color:#1e0010">{{分组字段}}</span>
-<span style="color:#66d9ef">HAVING</span> <span style="color:#960050;background-color:#1e0010">{{分组后条件}}</span>
-<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#960050;background-color:#1e0010">{{排序字段}}</span>
-<span style="color:#66d9ef">LIMIT</span> <span style="color:#960050;background-color:#1e0010">{{分页限定}}</span>
-</code></pre></div><h4 id="改">改<a hidden class="anchor" aria-hidden="true" href="#改">#</a></h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UPDATE</span> <span style="color:#960050;background-color:#1e0010">{{表名}}</span> <span style="color:#66d9ef">set</span> <span style="color:#960050;background-color:#1e0010">{{程序语句}}</span> <span style="color:#66d9ef">WHERE</span> <span style="color:#960050;background-color:#1e0010">{{条件}}</span>
-</code></pre></div><h4 id="事务">事务<a hidden class="anchor" aria-hidden="true" href="#事务">#</a></h4>
-<p>事务能实现多条命令捆绑，一旦失败，会回滚所有操作。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#75715e">-- 开启事务
-</span><span style="color:#75715e"></span>BEGIN;
-<span style="color:#75715e">-- 回滚事务
-</span><span style="color:#75715e"></span>ROLLBACK;
-<span style="color:#75715e">-- 提交事务
-</span><span style="color:#75715e"></span>COMMIT;
-</code></pre></div><h4 id="数据库设计">数据库设计<a hidden class="anchor" aria-hidden="true" href="#数据库设计">#</a></h4>
-<p><strong>一对多</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">CONSTRAINT</span><span class="w"> </span><span class="err">{{键名}}</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="p">(</span><span class="err">{{当前表列名}}</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="err">{{别的表</span><span class="p">(</span><span class="err">别的表列名</span><span class="p">)</span><span class="err">}}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>建表后添加</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="err">{{表名}}</span><span class="w"> </span><span class="k">add</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="err">{{键名}}</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="p">(</span><span class="err">{{当前表列名}}</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="err">{{别的表</span><span class="p">(</span><span class="err">别的表列名</span><span class="p">)</span><span class="err">}}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>插入元素</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="n">EXAMPLE</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">向一张名为</span><span class="n">users</span><span class="err">的数据表中插入元素：</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="nf">users</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">birthday</span><span class="p">,</span><span class="n">score</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;zeroy&#39;</span><span class="p">,</span><span class="s1">&#39;2003-4-10&#39;</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span><span class="s1">&#39;2003-4-10&#39;</span><span class="p">,</span><span class="mi">99</span><span class="p">)</span><span class="w"> 
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="查" class="headerLink">
+    <a href="#%e6%9f%a5" class="header-mark"></a>查</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="err">{{列名}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w"> </span><span class="err">{{表名}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHERE</span><span class="w"> </span><span class="err">{{条件}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">{{分组字段}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">HAVING</span><span class="w"> </span><span class="err">{{分组后条件}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">{{排序字段}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">LIMIT</span><span class="w"> </span><span class="err">{{分页限定}}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="改" class="headerLink">
+    <a href="#%e6%94%b9" class="header-mark"></a>改</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">UPDATE</span><span class="w"> </span><span class="err">{{表名}}</span><span class="w"> </span><span class="kt">set</span><span class="w"> </span><span class="err">{{程序语句}}</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="err">{{条件}}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="事务" class="headerLink">
+    <a href="#%e4%ba%8b%e5%8a%a1" class="header-mark"></a>事务</h4><p>事务能实现多条命令捆绑，一旦失败，会回滚所有操作。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="c1">-- 开启事务
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">BEGIN</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- 回滚事务
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">ROLLBACK</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- 提交事务
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">COMMIT</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="数据库设计" class="headerLink">
+    <a href="#%e6%95%b0%e6%8d%ae%e5%ba%93%e8%ae%be%e8%ae%a1" class="header-mark"></a>数据库设计</h4><p><strong>一对多</strong></p>
 <p>如博客系统一个用户对应多篇文章，需要在文章表处引一条外键连向数据表。</p>
 <p><strong>多对多</strong></p>
 <p>如购物系统中一个商品对应多个订单，一个订单也被多个商品所共有。</p>
 <p>实现方式：新建一张表引出两条外键分别连向商品表和订单表的主键，这张数据表的一行代表一件商品与一张订单之间的关系。</p>
 <p><strong>一对一</strong></p>
 <p>用于表拆分，提升常用信息的访问速度。</p>
-<h3 id="jdbc入门">JDBC入门<a hidden class="anchor" aria-hidden="true" href="#jdbc入门">#</a></h3>
-<h4 id="简介">简介<a hidden class="anchor" aria-hidden="true" href="#简介">#</a></h4>
-<p><strong>Java数据库连接</strong>，（<strong>Java Database Connectivity</strong>，简称<strong>JDBC</strong>）是<a href="https://zh.wikipedia.org/wiki/Java%E8%AF%AD%E8%A8%80">Java语言</a>中用来规范<a href="https://zh.wikipedia.org/wiki/%E5%AE%A2%E6%88%B7%E7%AB%AF">客户端</a>程序如何来访问<a href="https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>的<a href="https://zh.wikipedia.org/wiki/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%8E%A5%E5%8F%A3">应用程序接口</a>，提供了诸如查询和更新数据库中数据的方法。JDBC也是<a href="https://zh.wikipedia.org/wiki/Sun_Microsystems">Sun Microsystems</a>的<a href="https://zh.wikipedia.org/wiki/%E5%95%86%E6%A0%87">商标</a>[<a href="https://zh.wikipedia.org/wiki/Java%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5#cite_note-1">1]</a>。JDBC是面向<a href="https://zh.wikipedia.org/wiki/%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93">关系型数据库</a>的。</p>
-<h4 id="步骤">步骤<a hidden class="anchor" aria-hidden="true" href="#步骤">#</a></h4>
-<p><strong>注册驱动</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Class<span style="color:#f92672">.</span><span style="color:#a6e22e">forName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;com.mysql.jdbc.Driver&#34;</span><span style="color:#f92672">)</span>
-</code></pre></div><p><strong>获取连接对象</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Connection conn<span style="color:#f92672">=</span> DriverManager<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnection</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;jdbc:mysql://127.0.0.1:3306/{{数据库名}}&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;password&#34;</span><span style="color:#f92672">);</span>
-</code></pre></div><p><strong>获取连接状态</strong></p>
+<h3 id="jdbc入门" class="headerLink">
+    <a href="#jdbc%e5%85%a5%e9%97%a8" class="header-mark"></a>JDBC入门</h3><h4 id="简介" class="headerLink">
+    <a href="#%e7%ae%80%e4%bb%8b" class="header-mark"></a>简介</h4><p><strong>Java数据库连接</strong>，（<strong>Java Database Connectivity</strong>，简称<strong>JDBC</strong>）是<a href="https://zh.wikipedia.org/wiki/Java%e8%af%ad%e8%a8%80" target="_blank" rel="noopener noreferrer">Java语言</a>中用来规范<a href="https://zh.wikipedia.org/wiki/%e5%ae%a2%e6%88%b7%e7%ab%af" target="_blank" rel="noopener noreferrer">客户端</a>程序如何来访问<a href="https://zh.wikipedia.org/wiki/%e6%95%b0%e6%8d%ae%e5%ba%93" target="_blank" rel="noopener noreferrer">数据库</a>的<a href="https://zh.wikipedia.org/wiki/%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f%e6%8e%a5%e5%8f%a3" target="_blank" rel="noopener noreferrer">应用程序接口</a>，提供了诸如查询和更新数据库中数据的方法。JDBC也是<a href="https://zh.wikipedia.org/wiki/Sun_Microsystems" target="_blank" rel="noopener noreferrer">Sun Microsystems</a>的<a href="https://zh.wikipedia.org/wiki/%e5%95%86%e6%a0%87" target="_blank" rel="noopener noreferrer">商标</a>[<a href="https://zh.wikipedia.org/wiki/Java%e6%95%b0%e6%8d%ae%e5%ba%93%e8%bf%9e%e6%8e%a5#cite_note-1" target="_blank" rel="noopener noreferrer">1]</a>。JDBC是面向<a href="https://zh.wikipedia.org/wiki/%e5%85%b3%e7%b3%bb%e5%9e%8b%e6%95%b0%e6%8d%ae%e5%ba%93" target="_blank" rel="noopener noreferrer">关系型数据库</a>的。</p>
+<h4 id="步骤" class="headerLink">
+    <a href="#%e6%ad%a5%e9%aa%a4" class="header-mark"></a>步骤</h4><p><strong>注册驱动</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">&#34;com.mysql.jdbc.Driver&#34;</span><span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>获取连接对象</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="n">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="s">&#34;jdbc:mysql://127.0.0.1:3306/{{数据库名}}&#34;</span><span class="o">,</span><span class="s">&#34;username&#34;</span><span class="o">,</span><span class="s">&#34;password&#34;</span><span class="o">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>获取连接状态</strong></p>
 <p>有两种方式，后者可以预处理sql模板。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String sql<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;SELECT * FROM customers&#34;</span><span style="color:#f92672">;</span><span style="color:#75715e">//查询sql语句
-</span><span style="color:#75715e"></span>Statement stmt<span style="color:#f92672">=</span>conn<span style="color:#f92672">.</span><span style="color:#a6e22e">createStatement</span><span style="color:#f92672">();</span>
-PreparedStatement pstmt<span style="color:#f92672">=</span>conn<span style="color:#f92672">.</span><span style="color:#a6e22e">prepareStatement</span><span style="color:#f92672">(</span>sql<span style="color:#f92672">);</span>
-</code></pre></div><p><strong>发送查询请求</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ResultSet rs<span style="color:#f92672">=</span>stmt<span style="color:#f92672">.</span><span style="color:#a6e22e">executeQuery</span><span style="color:#f92672">(</span>sql<span style="color:#f92672">);</span>
-Resultset rs<span style="color:#f92672">=</span>pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">executeQuery</span><span style="color:#f92672">();</span>
-</code></pre></div><p><strong>将查询请求封装为对象储存</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">while</span><span style="color:#f92672">(</span>rs<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-    Customer customer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Customer<span style="color:#f92672">();</span>
-    <span style="color:#66d9ef">int</span> customerId <span style="color:#f92672">=</span> rs<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;customer_id&#34;</span><span style="color:#f92672">);</span>
-    String firstName <span style="color:#f92672">=</span> rs<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;firstName&#34;</span><span style="color:#f92672">);</span>
-    String lastName <span style="color:#f92672">=</span> rs<span style="color:#f92672">.</span><span style="color:#a6e22e">getString</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;lastName&#34;</span><span style="color:#f92672">);</span>
-    Date birthDate <span style="color:#f92672">=</span> rs<span style="color:#f92672">.</span><span style="color:#a6e22e">getDate</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;birthDate&#34;</span><span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">int</span> points <span style="color:#f92672">=</span> rs<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;points&#34;</span><span style="color:#f92672">);</span>
-    customer<span style="color:#f92672">.</span><span style="color:#a6e22e">setId</span><span style="color:#f92672">(</span>customerId<span style="color:#f92672">);</span>
-    customer<span style="color:#f92672">.</span><span style="color:#a6e22e">setBirthDate</span><span style="color:#f92672">(</span>birthDate<span style="color:#f92672">);</span>
-    customer<span style="color:#f92672">.</span><span style="color:#a6e22e">setFirstName</span><span style="color:#f92672">(</span>firstName<span style="color:#f92672">);</span>
-    customer<span style="color:#f92672">.</span><span style="color:#a6e22e">setLastName</span><span style="color:#f92672">(</span>lastName<span style="color:#f92672">);</span>
-    customer<span style="color:#f92672">.</span><span style="color:#a6e22e">setPoints</span><span style="color:#f92672">(</span>points<span style="color:#f92672">);</span>
-    customers<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>customer<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p><strong>使用PreparedStatement模板查询或修改数据</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">String</span> <span class="n">sql</span><span class="o">=</span><span class="s">&#34;SELECT * FROM customers&#34;</span><span class="o">;</span><span class="c1">//查询sql语句
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">Statement</span> <span class="n">stmt</span><span class="o">=</span><span class="n">conn</span><span class="o">.</span><span class="na">createStatement</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">PreparedStatement</span> <span class="n">pstmt</span><span class="o">=</span><span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>发送查询请求</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">ResultSet</span> <span class="n">rs</span><span class="o">=</span><span class="n">stmt</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Resultset</span> <span class="n">rs</span><span class="o">=</span><span class="n">pstmt</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>将查询请求封装为对象储存</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">while</span><span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">next</span><span class="o">())</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">customerId</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="s">&#34;customer_id&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">firstName</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&#34;firstName&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">String</span> <span class="n">lastName</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&#34;lastName&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Date</span> <span class="n">birthDate</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getDate</span><span class="o">(</span><span class="s">&#34;birthDate&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">points</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="s">&#34;points&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">customer</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="n">customerId</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">customer</span><span class="o">.</span><span class="na">setBirthDate</span><span class="o">(</span><span class="n">birthDate</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">customer</span><span class="o">.</span><span class="na">setFirstName</span><span class="o">(</span><span class="n">firstName</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">customer</span><span class="o">.</span><span class="na">setLastName</span><span class="o">(</span><span class="n">lastName</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">customer</span><span class="o">.</span><span class="na">setPoints</span><span class="o">(</span><span class="n">points</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">customers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>使用PreparedStatement模板查询或修改数据</strong></p>
 <p>使用<code>？</code>作为占位符，在后续代码中再进行数据填充。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String sql<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;insert customers(first_name,last_name,birth_date,points,address,city,state) value(?,?,?,?,?,?,?);&#34;</span><span style="color:#f92672">;</span>
-PreparedStatement pstmt<span style="color:#f92672">=</span>conn<span style="color:#f92672">.</span><span style="color:#a6e22e">prepareStatement</span><span style="color:#f92672">(</span>sql<span style="color:#f92672">);</span>
-pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">setString</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span>firstName<span style="color:#f92672">);</span>
-pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">setString</span><span style="color:#f92672">(</span>2<span style="color:#f92672">,</span>lastName<span style="color:#f92672">);</span>
-pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">setDate</span><span style="color:#f92672">(</span>3<span style="color:#f92672">,</span>birthDate<span style="color:#f92672">);</span>
-pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">setInt</span><span style="color:#f92672">(</span>4<span style="color:#f92672">,</span>points<span style="color:#f92672">);</span>
-pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">setString</span><span style="color:#f92672">(</span>5<span style="color:#f92672">,</span>addtress<span style="color:#f92672">);</span>
-pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">setString</span><span style="color:#f92672">(</span>6<span style="color:#f92672">,</span>city<span style="color:#f92672">);</span>
-pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">setString</span><span style="color:#f92672">(</span>7<span style="color:#f92672">,</span>state<span style="color:#f92672">);</span>
-</code></pre></div><p>这样做的优点是可以预防SQL注入。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">String</span> <span class="n">sql</span><span class="o">=</span><span class="s">&#34;insert customers(first_name,last_name,birth_date,points,address,city,state) value(?,?,?,?,?,?,?);&#34;</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">PreparedStatement</span> <span class="n">pstmt</span><span class="o">=</span><span class="n">conn</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="n">firstName</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span><span class="n">lastName</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">pstmt</span><span class="o">.</span><span class="na">setDate</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span><span class="n">birthDate</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">pstmt</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="n">points</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span><span class="n">addtress</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">6</span><span class="o">,</span><span class="n">city</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">pstmt</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">7</span><span class="o">,</span><span class="n">state</span><span class="o">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样做的优点是可以预防SQL注入。</p>
 <p>PreparedStatement对象会对输入的字符串做转义处理，可以防止原理为简单字符串拼接生效的SQL注入。（当然还有模板注入防不了）</p>
-<h3 id="druid数据库连接池的简单使用">Druid数据库连接池的简单使用<a hidden class="anchor" aria-hidden="true" href="#druid数据库连接池的简单使用">#</a></h3>
-<h4 id="简介-1">简介<a hidden class="anchor" aria-hidden="true" href="#简介-1">#</a></h4>
-<p>在<a href="https://zh.wikipedia.org/wiki/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B">软件工程</a>中，<strong>连接池</strong>（英语：connection pool）是维护的<a href="https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5">数据库连接</a>的缓存，以便在将来需要对数据库发出请求时可以重用连接。 连接池用于提高在数据库上执行命令的性能。为每个用户打开和维护数据库连接，尤其是对动态数据库驱动的<a href="https://zh.wikipedia.org/wiki/%E7%B6%B2%E7%AB%99">网站</a>应用程序发出的请求，既昂贵又浪费资源。在连接池中，创建连接之后，将连接放在池中并再次使用，这样就不必创建新的连接。如果所有连接都正在使用，则创建一个新连接并将其添加到池中。连接池还减少了用户必须等待创建与数据库的连接的时间。</p>
+<h3 id="druid数据库连接池的简单使用" class="headerLink">
+    <a href="#druid%e6%95%b0%e6%8d%ae%e5%ba%93%e8%bf%9e%e6%8e%a5%e6%b1%a0%e7%9a%84%e7%ae%80%e5%8d%95%e4%bd%bf%e7%94%a8" class="header-mark"></a>Druid数据库连接池的简单使用</h3><h4 id="简介-1" class="headerLink">
+    <a href="#%e7%ae%80%e4%bb%8b-1" class="header-mark"></a>简介</h4><p>在<a href="https://zh.wikipedia.org/wiki/%e8%bd%af%e4%bb%b6%e5%b7%a5%e7%a8%8b" target="_blank" rel="noopener noreferrer">软件工程</a>中，<strong>连接池</strong>（英语：connection pool）是维护的<a href="https://zh.wikipedia.org/wiki/%e6%95%b0%e6%8d%ae%e5%ba%93%e8%bf%9e%e6%8e%a5" target="_blank" rel="noopener noreferrer">数据库连接</a>的缓存，以便在将来需要对数据库发出请求时可以重用连接。 连接池用于提高在数据库上执行命令的性能。为每个用户打开和维护数据库连接，尤其是对动态数据库驱动的<a href="https://zh.wikipedia.org/wiki/%e7%b6%b2%e7%ab%99" target="_blank" rel="noopener noreferrer">网站</a>应用程序发出的请求，既昂贵又浪费资源。在连接池中，创建连接之后，将连接放在池中并再次使用，这样就不必创建新的连接。如果所有连接都正在使用，则创建一个新连接并将其添加到池中。连接池还减少了用户必须等待创建与数据库的连接的时间。</p>
 <p>Druid是由阿里巴巴开发的数据库连接池。</p>
-<h4 id="配置文件的书写">配置文件的书写<a hidden class="anchor" aria-hidden="true" href="#配置文件的书写">#</a></h4>
-<pre tabindex="0"><code class="language-properties" data-lang="properties">driverClassName=com.mysql.jdbc.Driver
-url={{数据库地址}}
-username={{your username}}
-password={{your password}}
-# 默认连接数
-initialSize=5
-# 最大连接数
-maxActive=10
-# 最长等待时间
-maxWait=3000
-</code></pre><h4 id="从数据库连接池中获取连接">从数据库连接池中获取连接<a hidden class="anchor" aria-hidden="true" href="#从数据库连接池中获取连接">#</a></h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Properties prop<span style="color:#f92672">=</span><span style="color:#66d9ef">new</span> Properties<span style="color:#f92672">();</span>
-prop<span style="color:#f92672">.</span><span style="color:#a6e22e">load</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> FileInputStream<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;src/druid.properties&#34;</span><span style="color:#f92672">));</span><span style="color:#75715e">//填写druid配置文件的路径
-</span><span style="color:#75715e"></span>DataSource dataSource<span style="color:#f92672">=</span> DruidDataSourceFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">createDataSource</span><span style="color:#f92672">(</span>prop<span style="color:#f92672">);</span>
-Connection conn<span style="color:#f92672">=</span>dataSource<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnection</span><span style="color:#f92672">();</span>
-</code></pre></div>
+<h4 id="配置文件的书写" class="headerLink">
+    <a href="#%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6%e7%9a%84%e4%b9%a6%e5%86%99" class="header-mark"></a>配置文件的书写</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-properties" data-lang="properties"><span class="line"><span class="cl"><span class="na">driverClassName</span><span class="o">=</span><span class="s">com.mysql.jdbc.Driver</span>
+</span></span><span class="line"><span class="cl"><span class="na">url</span><span class="o">=</span><span class="s">{{数据库地址}}</span>
+</span></span><span class="line"><span class="cl"><span class="na">username</span><span class="o">=</span><span class="s">{{your username}}</span>
+</span></span><span class="line"><span class="cl"><span class="na">password</span><span class="o">=</span><span class="s">{{your password}}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 默认连接数</span>
+</span></span><span class="line"><span class="cl"><span class="na">initialSize</span><span class="o">=</span><span class="s">5</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 最大连接数</span>
+</span></span><span class="line"><span class="cl"><span class="na">maxActive</span><span class="o">=</span><span class="s">10</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 最长等待时间</span>
+</span></span><span class="line"><span class="cl"><span class="na">maxWait</span><span class="o">=</span><span class="s">3000</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="从数据库连接池中获取连接" class="headerLink">
+    <a href="#%e4%bb%8e%e6%95%b0%e6%8d%ae%e5%ba%93%e8%bf%9e%e6%8e%a5%e6%b1%a0%e4%b8%ad%e8%8e%b7%e5%8f%96%e8%bf%9e%e6%8e%a5" class="header-mark"></a>从数据库连接池中获取连接</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Properties</span> <span class="n">prop</span><span class="o">=</span><span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">prop</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="k">new</span> <span class="n">FileInputStream</span><span class="o">(</span><span class="s">&#34;src/druid.properties&#34;</span><span class="o">));</span><span class="c1">//填写druid配置文件的路径
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DataSource</span> <span class="n">dataSource</span><span class="o">=</span> <span class="n">DruidDataSourceFactory</span><span class="o">.</span><span class="na">createDataSource</span><span class="o">(</span><span class="n">prop</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">Connection</span> <span class="n">conn</span><span class="o">=</span><span class="n">dataSource</span><span class="o">.</span><span class="na">getConnection</span><span class="o">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></div>
 
-  </div>
+        
 
-  <footer class="post-footer">
-<nav class="paginav">
-  <a class="prev" href="https://zeroy.site/articles/Golang-web1/">
-    <span class="title">« </span>
-    <br>
-    <span>Golang|Gin Web development for Beginners</span>
-  </a>
-  <a class="next" href="https://zeroy.site/articles/regular-expression/">
-    <span class="title"> »</span>
-    <br>
-    <span>正则表达式 For Beginner</span>
-  </a>
-  
-</nav>
+<div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-02-07</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span><a class="link-to-mardown" href=/articles/database-for-beginner/index.md target="_blank" rel="noopener noreferrer">阅读原始文档</a>
+                    </span></div>
+            <div class="post-info-share">
+                <span><a href="#" title="分享到 Twitter" data-sharer="twitter" data-url="http://zeroy.site/articles/database-for-beginner/" data-title="数据库基础|JDBC入门|Druid连接池的简单配置"><i class="fab fa-twitter fa-fw"></i></a><a href="#" title="分享到 微博" data-sharer="weibo" data-url="http://zeroy.site/articles/database-for-beginner/" data-title="数据库基础|JDBC入门|Druid连接池的简单配置"><i class="fab fa-weibo fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
 
-  </footer><script src="https://utteranc.es/client.js"
-        repo="zeroy0410/zeroy0410.github.io"
-        issue-term="pathname"
-        label="Comment"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://zeroy.site/">zeroy&#39;s blog</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
 
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
+    <div class="post-nav"><a href="/articles/regular-expression/" class="prev" rel="prev" title="正则表达式 For Beginner"><i class="fas fa-angle-left fa-fw"></i>正则表达式 For Beginner</a>
+            <a href="/articles/Golang-web1/" class="next" rel="next" title="Golang|Gin Web development for Beginners">Golang|Gin Web development for Beginners<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.111.3">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.3.0"><i class="far fa-edit fa-fw"></i> DoIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="zeroy.site" target="_blank" rel="noopener noreferrer">zeroy</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
-
-        function copyingDone() {
-            copybutton.innerText = 'copied!';
-            setTimeout(() => {
-                copybutton.innerText = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-<script type="text/javascript"
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script></body>
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div id="cookieconsent-container"></div><div class="assets"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":50,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js" defer></script><script type="text/javascript" src="/lib/katex/auto-render.min.js" defer></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js" defer></script><script type="text/javascript" src="/lib/katex/mhchem.min.js" defer></script><script type="text/javascript" src="/js/katex.min.js" defer></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script type="text/javascript" src="/js/cookieconsent.min.js" defer></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
 
 </html>

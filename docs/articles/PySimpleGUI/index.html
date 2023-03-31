@@ -1,563 +1,594 @@
 <!DOCTYPE html>
-<html lang="zh-cn" dir="auto">
+<html lang="zh-CN">
 
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>使用PySimpleGUI库构建简单的图形界面 | zeroy&#39;s blog</title>
-<meta name="keywords" content="" />
-<meta name="description" content="前言 python构建本地GUI程序有很多方式，比如Tkinter，wxPython，或是PyQT。但是对于学生而言，并不需要多么华丽的用户界面，只需要“能用”就行了，开发环节越省力越好。
-于是我找到了PySimpleGUI这个库。
-A introduction to PySimpleGUI
-这个库提供了一种近乎傻瓜化的方式，采用List来描述一个GUI界面，同时支持一个简单程序需要的全部特性，并且支持Win/Mac/Linux三大平台，十分适合拿来封装代码。
-安装 pip install PySimpleGUI在文件开头加上库引用：
-import PySimpleGUI as sg 元素 PySimpleGUI有着丰富的控件支持。
- 文本框（Text）  sg.Text(&#39;文本框&#39;,size=(12,1),key=&#39;output&#39;) &#39;文本框&#39;为框体显示的文字，size为框体的大小，key为框体标识，用于之后对文本框的定位。
-输入框（Input）  sg.Input(key=&#39;input&#39;) 按钮（Button）  sg.Button(&#39;Go&#39;) &#39;Go&#39;为按钮的名字。也可以另外设置key值。
-下拉框（Comobo）  [ sg.Text(&#34;City&#34;, size = (20, 1)), sg.Combo((&#34;北京&#34;, &#34;上海&#34;, &#34;深圳&#34;), size=(10, 1), default_value=&#34;上海&#34;, key = &#34;-CITY-&#34;)] 弹窗（Popup）  sg.Popup(&#39;弹窗1&#39;,&#39;This is the first one&#39;) sg.Popup(&#39;弹窗2&#39;,&#39;This is the second one&#39;) sg.Popup(&#39;弹窗3&#39;,&#39;This is the third one&#39;) 弹出一个窗口包含标题和内容。
-选择文件（FileBrowse）  sg.FileBrowse() 选择文件路径（FolderBrowse）  sg.">
-<meta name="author" content="zeroy">
-<link rel="canonical" href="https://zeroy.site/articles/PySimpleGUI/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://zeroy.site/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://zeroy.site/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://zeroy.site/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://zeroy.site/apple-touch-icon.png">
-<link rel="mask-icon" href="https://zeroy.site/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<meta name="generator" content="Hugo 0.92.0" />
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript><meta property="og:title" content="使用PySimpleGUI库构建简单的图形界面" />
-<meta property="og:description" content="前言 python构建本地GUI程序有很多方式，比如Tkinter，wxPython，或是PyQT。但是对于学生而言，并不需要多么华丽的用户界面，只需要“能用”就行了，开发环节越省力越好。
-于是我找到了PySimpleGUI这个库。
-A introduction to PySimpleGUI
-这个库提供了一种近乎傻瓜化的方式，采用List来描述一个GUI界面，同时支持一个简单程序需要的全部特性，并且支持Win/Mac/Linux三大平台，十分适合拿来封装代码。
-安装 pip install PySimpleGUI在文件开头加上库引用：
-import PySimpleGUI as sg 元素 PySimpleGUI有着丰富的控件支持。
- 文本框（Text）  sg.Text(&#39;文本框&#39;,size=(12,1),key=&#39;output&#39;) &#39;文本框&#39;为框体显示的文字，size为框体的大小，key为框体标识，用于之后对文本框的定位。
-输入框（Input）  sg.Input(key=&#39;input&#39;) 按钮（Button）  sg.Button(&#39;Go&#39;) &#39;Go&#39;为按钮的名字。也可以另外设置key值。
-下拉框（Comobo）  [ sg.Text(&#34;City&#34;, size = (20, 1)), sg.Combo((&#34;北京&#34;, &#34;上海&#34;, &#34;深圳&#34;), size=(10, 1), default_value=&#34;上海&#34;, key = &#34;-CITY-&#34;)] 弹窗（Popup）  sg.Popup(&#39;弹窗1&#39;,&#39;This is the first one&#39;) sg.Popup(&#39;弹窗2&#39;,&#39;This is the second one&#39;) sg.Popup(&#39;弹窗3&#39;,&#39;This is the third one&#39;) 弹出一个窗口包含标题和内容。
-选择文件（FileBrowse）  sg.FileBrowse() 选择文件路径（FolderBrowse）  sg." />
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>使用PySimpleGUI库构建简单的图形界面 - zeroy的网络小窝</title><meta name="Description" content="zeroy的碎碎念"><meta property="og:title" content="使用PySimpleGUI库构建简单的图形界面" />
+<meta property="og:description" content="前言python构建本地GUI程序有很多方式，比如Tkinter，wxPython，或是PyQT。但是对于学生而言，并不需要多么华丽的用户界" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://zeroy.site/articles/PySimpleGUI/" /><meta property="article:section" content="articles" />
-<meta property="article:published_time" content="2022-01-26T16:49:18&#43;08:00" />
-<meta property="article:modified_time" content="2022-01-26T16:49:18&#43;08:00" />
+<meta property="og:url" content="http://zeroy.site/articles/PySimpleGUI/" /><meta property="og:image" content="http://zeroy.site/ava.jpeg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-01-26T16:49:18+08:00" />
+<meta property="article:modified_time" content="2022-01-26T16:49:18+08:00" /><meta property="og:site_name" content="zeroy的网络小窝" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://zeroy.site/ava.jpeg"/>
 
-<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用PySimpleGUI库构建简单的图形界面"/>
-<meta name="twitter:description" content="前言 python构建本地GUI程序有很多方式，比如Tkinter，wxPython，或是PyQT。但是对于学生而言，并不需要多么华丽的用户界面，只需要“能用”就行了，开发环节越省力越好。
-于是我找到了PySimpleGUI这个库。
-A introduction to PySimpleGUI
-这个库提供了一种近乎傻瓜化的方式，采用List来描述一个GUI界面，同时支持一个简单程序需要的全部特性，并且支持Win/Mac/Linux三大平台，十分适合拿来封装代码。
-安装 pip install PySimpleGUI在文件开头加上库引用：
-import PySimpleGUI as sg 元素 PySimpleGUI有着丰富的控件支持。
- 文本框（Text）  sg.Text(&#39;文本框&#39;,size=(12,1),key=&#39;output&#39;) &#39;文本框&#39;为框体显示的文字，size为框体的大小，key为框体标识，用于之后对文本框的定位。
-输入框（Input）  sg.Input(key=&#39;input&#39;) 按钮（Button）  sg.Button(&#39;Go&#39;) &#39;Go&#39;为按钮的名字。也可以另外设置key值。
-下拉框（Comobo）  [ sg.Text(&#34;City&#34;, size = (20, 1)), sg.Combo((&#34;北京&#34;, &#34;上海&#34;, &#34;深圳&#34;), size=(10, 1), default_value=&#34;上海&#34;, key = &#34;-CITY-&#34;)] 弹窗（Popup）  sg.Popup(&#39;弹窗1&#39;,&#39;This is the first one&#39;) sg.Popup(&#39;弹窗2&#39;,&#39;This is the second one&#39;) sg.Popup(&#39;弹窗3&#39;,&#39;This is the third one&#39;) 弹出一个窗口包含标题和内容。
-选择文件（FileBrowse）  sg.FileBrowse() 选择文件路径（FolderBrowse）  sg."/>
+<meta name="twitter:description" content="前言python构建本地GUI程序有很多方式，比如Tkinter，wxPython，或是PyQT。但是对于学生而言，并不需要多么华丽的用户界"/>
+<meta name="application-name" content="DoIt">
+<meta name="apple-mobile-web-app-title" content="DoIt">
 
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://zeroy.site/articles/PySimpleGUI/" /><link rel="prev" href="http://zeroy.site/articles/Bilibili-send-and-receive/" /><link rel="next" href="http://zeroy.site/tallyapp1/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
     {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Articles",
-      "item": "https://zeroy.site/articles/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "使用PySimpleGUI库构建简单的图形界面",
-      "item": "https://zeroy.site/articles/PySimpleGUI/"
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "使用PySimpleGUI库构建简单的图形界面",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/zeroy.site\/articles\/PySimpleGUI\/"
+        },"genre": "posts","wordcount":  2055 ,
+        "url": "http:\/\/zeroy.site\/articles\/PySimpleGUI\/","datePublished": "2022-01-26T16:49:18+08:00","dateModified": "2022-01-26T16:49:18+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "zeroy"
+            },"description": ""
     }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "使用PySimpleGUI库构建简单的图形界面",
-  "name": "使用PySimpleGUI库构建简单的图形界面",
-  "description": "前言 python构建本地GUI程序有很多方式，比如Tkinter，wxPython，或是PyQT。但是对于学生而言，并不需要多么华丽的用户界面，只需要“能用”就行了，开发环节越省力越好。\n于是我找到了PySimpleGUI这个库。\nA introduction to PySimpleGUI\n这个库提供了一种近乎傻瓜化的方式，采用List来描述一个GUI界面，同时支持一个简单程序需要的全部特性，并且支持Win/Mac/Linux三大平台，十分适合拿来封装代码。\n安装 pip install PySimpleGUI\r在文件开头加上库引用：\nimport PySimpleGUI as sg 元素 PySimpleGUI有着丰富的控件支持。\n 文本框（Text）  sg.Text(\u0026#39;文本框\u0026#39;,size=(12,1),key=\u0026#39;output\u0026#39;) '文本框'为框体显示的文字，size为框体的大小，key为框体标识，用于之后对文本框的定位。\n输入框（Input）  sg.Input(key=\u0026#39;input\u0026#39;) 按钮（Button）  sg.Button(\u0026#39;Go\u0026#39;) 'Go'为按钮的名字。也可以另外设置key值。\n下拉框（Comobo）  [ sg.Text(\u0026#34;City\u0026#34;, size = (20, 1)), sg.Combo((\u0026#34;北京\u0026#34;, \u0026#34;上海\u0026#34;, \u0026#34;深圳\u0026#34;), size=(10, 1), default_value=\u0026#34;上海\u0026#34;, key = \u0026#34;-CITY-\u0026#34;)] 弹窗（Popup）  sg.Popup(\u0026#39;弹窗1\u0026#39;,\u0026#39;This is the first one\u0026#39;) sg.Popup(\u0026#39;弹窗2\u0026#39;,\u0026#39;This is the second one\u0026#39;) sg.Popup(\u0026#39;弹窗3\u0026#39;,\u0026#39;This is the third one\u0026#39;) 弹出一个窗口包含标题和内容。\n选择文件（FileBrowse）  sg.FileBrowse() 选择文件路径（FolderBrowse）  sg.",
-  "keywords": [
-    
-  ],
-  "articleBody": "前言 python构建本地GUI程序有很多方式，比如Tkinter，wxPython，或是PyQT。但是对于学生而言，并不需要多么华丽的用户界面，只需要“能用”就行了，开发环节越省力越好。\n于是我找到了PySimpleGUI这个库。\nA introduction to PySimpleGUI\n这个库提供了一种近乎傻瓜化的方式，采用List来描述一个GUI界面，同时支持一个简单程序需要的全部特性，并且支持Win/Mac/Linux三大平台，十分适合拿来封装代码。\n安装 pip install PySimpleGUI\r在文件开头加上库引用：\nimport PySimpleGUI as sg 元素 PySimpleGUI有着丰富的控件支持。\n 文本框（Text）  sg.Text('文本框',size=(12,1),key='output') '文本框'为框体显示的文字，size为框体的大小，key为框体标识，用于之后对文本框的定位。\n输入框（Input）  sg.Input(key='input') 按钮（Button）  sg.Button('Go') 'Go'为按钮的名字。也可以另外设置key值。\n下拉框（Comobo）  [ sg.Text(\"City\", size = (20, 1)), sg.Combo((\"北京\", \"上海\", \"深圳\"), size=(10, 1), default_value=\"上海\", key = \"-CITY-\")] 弹窗（Popup）  sg.Popup('弹窗1','This is the first one') sg.Popup('弹窗2','This is the second one') sg.Popup('弹窗3','This is the third one') 弹出一个窗口包含标题和内容。\n选择文件（FileBrowse）  sg.FileBrowse() 选择文件路径（FolderBrowse）  sg.InputText(size=(15,1)),sg.FolderBrowse() 多行列表文本（ListBox）  list = [1，2，3] layout = [ [sg.Listbox(values=list,size=(20,12),key='LIST',enable_events=True)] ] 多选框（Checkbox）  sg.Checkbox('多选框',default=True) 单选框（Radio）  # RADIO1 必有 sg.Radio('单选框','RADIO1',default=True) 大文本框（Multiline）  sg.Multiline(default_text='hello') 下拉列表框（InputCombo）  sg.InputCombo(['box_1','box_2'],size=(20,3)) 拖动按钮（Slider）  sg.Slider(range=(1,100),orientation='h',size=(34,20),default_value=85) # (range=(1, 100)：数值范围 # orientation=拖动方向 ‘h’ :横向 ‘v’：竖向 # size=(34, 20)：大小 # default_value=85默认值 下拉选项（InputOptionMenu）  sg.InputOptionMenu('Menu_1','Menu_2',size=(20,2)) 菜单（Menu）  sg.Menu(menu_def, tearoff=True) 控件（Column）  sg.Column(column1, background_color='') 进度条（ProgressBar）  sg.ProgressBar(10,orientation='h',size=()) # 10：进度条长度 # orientation=‘h’/v 方向 调试窗口  sg.Print('内容', text_color='', background_color='', font='') 自带按钮  sg.OK(), sg.Cancel(),sg.Submit()等 #这三个按钮是自带的，默认的，不需要单独定义其作用 当然，也可以单独设置 sg.Button('Ok'), sg.Button('Cancel') 自带按钮 sg.FolderBrowse()=sg.FileBrowse(), sg.Submit(), sg.Cancel() 构建窗口 使用PySimpleGUI构建一个窗口十分简单，你需要使用一个list描述元素之间的位置关系，然后系统便会自动生成布局。\n以我上一篇博文Bilibili直播弹幕收发小程序 | zeroy’s blog中的GUI界面为例：\nsg.theme('DarkAmber')#选择主题 layout = [ [sg.Listbox('',size=(75,20),key='-OUT-')], [sg.Text('发送弹幕: ', size=(8, 1)),sg.InputText('',key='-input-'),sg.Button(\"Go\"),sg.Button(\"Exit\"),sg.Button(\"Help\")], [sg.Text('',key='-error-')] ]#使用list描述元素之间的相对关系 window=sg.Window(\"Bilibili弹幕收发程序\",layout)生成窗口 怎么样，是不是很方便呢？\n窗口中内建了多种方法，用于描述窗口事件。\nwindow.close()#关闭窗口 window.read()#读取窗口内容 window['key名'].update('需要更新的内容') 掌握了这些基本的知识，构建一个简单的GUI程序应该没什么难的了。\n上面提到的收发弹幕的程序的GUI部分完整代码如下：\nimport PySimpleGUI as sg import send import receive sg.theme('DarkAmber') layout = [ [sg.Listbox('',size=(75,20),key='-OUT-')], [sg.Text('发送弹幕: ', size=(8, 1)),sg.InputText('',key='-input-'),sg.Button(\"Go\"),sg.Button(\"Exit\"),sg.Button(\"Help\")], [sg.Text('',key='-error-')] ] window=sg.Window(\"Bilibili弹幕收发程序\",layout) while True:#开启窗口事件 event,values=window.read(timeout=3)#为输入框设定超时 try: window['-OUT-'].update(receive.Receive())#更新输出框 except: sg.popup('error: ','请先配置好同一目录下的config.json文件')#异常信息处理 break if event in (None,'Exit'):#按到了退出 break if event=='Go':#发送弹幕 window['-error-'].update(send.Send(values['-input-'])) window['-input-'].update(\"\") if event=='Help':#帮助页面 sg.popup('帮助: ','请先配置好同一目录下的config.json文件') window.close() 更多的例子以及更高阶的应用指路：官方代码库\n总结 这个东西过于简洁，适合完全不会写GUI的程序员应急。\n",
-  "wordCount" : "201",
-  "inLanguage": "zh-cn",
-  "datePublished": "2022-01-26T16:49:18+08:00",
-  "dateModified": "2022-01-26T16:49:18+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "zeroy"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://zeroy.site/articles/PySimpleGUI/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "zeroy's blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://zeroy.site/favicon.ico"
-    }
-  }
-}
-</script>
+    </script><script src="//instant.page/5.1.1" defer type="module" integrity="sha384-MWfCL6g1OTGsbSwfuMHc8+8J2u71/LA8dzlIN3ycajckxuZZmF+DNjdm7O6H3PSq"></script>
 </head>
 
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://zeroy.site/" accesskey="h" title="zeroy&#39;s blog (Alt + H)">zeroy&#39;s blog</a>
-            <span class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </span>
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme; }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="zeroy的网络小窝"><img
+        class="logo"
+        loading="lazy"
+        src="/ava.jpeg"
+        srcset="/ava.jpeg, /ava.jpeg 1.5x, /ava.jpeg 2x"
+        sizes="auto"
+        alt="/ava.jpeg"
+        title="/ava.jpeg" >zeroy的网络小窝</a>
         </div>
-        <ul id="menu">
-            <li>
-                <a href="https://zeroy.site/" title="首页">
-                    <span>首页</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/archives/" title="归档">
-                    <span>归档</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/categories/" title="分类">
-                    <span>分类</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/about/" title="关于">
-                    <span>关于</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/search/" title="搜索 (Alt &#43; /)" accesskey=/>
-                    <span>搜索</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://zeroy.site/links/" title="友链">
-                    <span>友链</span>
-                </a>
-            </li>
-        </ul>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=80 src="//music.163.com/outchain/player?type=2&id=415904308&auto=1&height=66"></iframe>
-    </nav>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" class="menu-item theme-select" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                    <select class="color-theme-select" id="theme-select-desktop" title="切换主题">
+                        <option value="light">浅色</option>
+                        <option value="dark">深色</option>
+                        <option value="black">黑色</option>
+                        <option value="auto">跟随系统</option>
+                    </select>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="zeroy的网络小窝"><img
+        class="logo"
+        loading="lazy"
+        src="/ava.jpeg"
+        srcset="/ava.jpeg, /ava.jpeg 1.5x, /ava.jpeg 2x"
+        sizes="auto"
+        alt="/ava.jpeg"
+        title="/ava.jpeg" >zeroy的网络小窝</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about" title="">关于</a><a href="#" class="menu-item theme-select" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+                <select class="color-theme-select" id="theme-select-mobile" title="切换主题">
+                    <option value="light">浅色</option>
+                    <option value="dark">深色</option>
+                    <option value="black">黑色</option>
+                    <option value="auto">跟随系统</option>
+                </select>
+            </a></div>
+    </div>
 </header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
 <main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://zeroy.site/">Home</a>&nbsp;»&nbsp;<a href="https://zeroy.site/articles/">Articles</a></div>
-    <h1 class="post-title">
-      使用PySimpleGUI库构建简单的图形界面
-    </h1>
-    <div class="post-meta"><span title='2022-01-26 16:49:18 +0800 CST'>January 26, 2022</span>&nbsp;·&nbsp;zeroy
-
-</div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><ul>
-                <li>
-                    <a href="#%e5%89%8d%e8%a8%80" aria-label="前言">前言</a></li>
-                <li>
-                    <a href="#%e5%ae%89%e8%a3%85" aria-label="安装">安装</a></li>
-                <li>
-                    <a href="#%e5%85%83%e7%b4%a0" aria-label="元素">元素</a></li>
-                <li>
-                    <a href="#%e6%9e%84%e5%bb%ba%e7%aa%97%e5%8f%a3" aria-label="构建窗口">构建窗口</a></li>
-                <li>
-                    <a href="#%e6%80%bb%e7%bb%93" aria-label="总结">总结</a>
-                </li>
-            </ul>
-        </div>
-    </details>
-    
-</div>
-
-  <div class="post-content"><h4 id="前言">前言<a hidden class="anchor" aria-hidden="true" href="#前言">#</a></h4>
-<p>python构建本地GUI程序有很多方式，比如<strong>Tkinter</strong>，<strong>wxPython</strong>，或是<strong>PyQT</strong>。但是对于学生而言，并不需要多么华丽的用户界面，只需要“能用”就行了，开发环节越省力越好。</p>
+            <div class="container"><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "false")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">使用PySimpleGUI库构建简单的图形界面</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><i class="author fas fa-user-circle fa-fw"></i><a href="zeroy.site" title="Author" rel=" author" class="author">zeroy</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/python/"><i class="far fa-folder fa-fw"></i>python</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-01-26">2022-01-26</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2022-01-26">2022-01-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2055 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#前言">前言</a></li>
+            <li><a href="#安装">安装</a></li>
+            <li><a href="#元素">元素</a></li>
+            <li><a href="#构建窗口">构建窗口</a></li>
+            <li><a href="#总结">总结</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><div class="details admonition note open">
+                <div class="details-summary admonition-title">
+                    <i class="icon fas fa-pencil-alt fa-fwnote"></i>注意<i class="details-icon fas fa-angle-right fa-fw"></i>
+                </div>
+                <div class="details-content">
+                    <div class="admonition-content">
+                        本文最后更新于 <span class="timeago" datetime="2022-01-26T16:49:18" title="January 26, 2022">2022-01-26</span>，文中内容可能已过时。</div>
+                </div>
+            </div><h4 id="前言" class="headerLink">
+    <a href="#%e5%89%8d%e8%a8%80" class="header-mark"></a>前言</h4><p>python构建本地GUI程序有很多方式，比如<strong>Tkinter</strong>，<strong>wxPython</strong>，或是<strong>PyQT</strong>。但是对于学生而言，并不需要多么华丽的用户界面，只需要“能用”就行了，开发环节越省力越好。</p>
 <p>于是我找到了PySimpleGUI这个库。</p>
-<p><a href="https://www.youtube.com/watch?v=-_z2RPAH0Qk">A introduction to PySimpleGUI</a></p>
+<p><a href="https://www.youtube.com/watch?v=-_z2RPAH0Qk" target="_blank" rel="noopener noreferrer">A introduction to PySimpleGUI</a></p>
 <p>这个库提供了一种近乎傻瓜化的方式，采用List来描述一个GUI界面，同时支持一个简单程序需要的全部特性，并且支持Win/Mac/Linux三大平台，十分适合拿来封装代码。</p>
-<h4 id="安装">安装<a hidden class="anchor" aria-hidden="true" href="#安装">#</a></h4>
-<pre tabindex="0"><code>pip install PySimpleGUI
-</code></pre><p>在文件开头加上库引用：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> PySimpleGUI <span style="color:#66d9ef">as</span> sg
-</code></pre></div><h4 id="元素">元素<a hidden class="anchor" aria-hidden="true" href="#元素">#</a></h4>
-<p>PySimpleGUI有着丰富的控件支持。</p>
+<h4 id="安装" class="headerLink">
+    <a href="#%e5%ae%89%e8%a3%85" class="header-mark"></a>安装</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">pip install PySimpleGUI
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在文件开头加上库引用：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">PySimpleGUI</span> <span class="k">as</span> <span class="nn">sg</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="元素" class="headerLink">
+    <a href="#%e5%85%83%e7%b4%a0" class="header-mark"></a>元素</h4><p>PySimpleGUI有着丰富的控件支持。</p>
 <ol>
 <li><strong>文本框（Text）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>Text(<span style="color:#e6db74">&#39;文本框&#39;</span>,size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">12</span>,<span style="color:#ae81ff">1</span>),key<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;output&#39;</span>)
-</code></pre></div><p><code>'文本框'</code>为框体显示的文字，size为框体的大小，key为框体标识，用于之后对文本框的定位。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s1">&#39;文本框&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;output&#39;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>'文本框'</code>为框体显示的文字，size为框体的大小，key为框体标识，用于之后对文本框的定位。</p>
 <ol start="2">
 <li><strong>输入框（Input）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>Input(key<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;input&#39;</span>)
-</code></pre></div><ol start="3">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;input&#39;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
 <li><strong>按钮（Button）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>Button(<span style="color:#e6db74">&#39;Go&#39;</span>)
-</code></pre></div><p><code>'Go'</code>为按钮的名字。也可以另外设置key值。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s1">&#39;Go&#39;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>'Go'</code>为按钮的名字。也可以另外设置key值。</p>
 <ol start="4">
 <li><strong>下拉框（Comobo）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">[ sg<span style="color:#f92672">.</span>Text(<span style="color:#e6db74">&#34;City&#34;</span>, size <span style="color:#f92672">=</span> (<span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">1</span>)), sg<span style="color:#f92672">.</span>Combo((<span style="color:#e6db74">&#34;北京&#34;</span>, <span style="color:#e6db74">&#34;上海&#34;</span>, <span style="color:#e6db74">&#34;深圳&#34;</span>), size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">1</span>), default_value<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;上海&#34;</span>, key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;-CITY-&#34;</span>)]
-</code></pre></div><ol start="5">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="p">[</span> <span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s2">&#34;City&#34;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">sg</span><span class="o">.</span><span class="n">Combo</span><span class="p">((</span><span class="s2">&#34;北京&#34;</span><span class="p">,</span> <span class="s2">&#34;上海&#34;</span><span class="p">,</span> <span class="s2">&#34;深圳&#34;</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">default_value</span><span class="o">=</span><span class="s2">&#34;上海&#34;</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="s2">&#34;-CITY-&#34;</span><span class="p">)]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="5">
 <li><strong>弹窗（Popup）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>Popup(<span style="color:#e6db74">&#39;弹窗1&#39;</span>,<span style="color:#e6db74">&#39;This is the first one&#39;</span>)
-sg<span style="color:#f92672">.</span>Popup(<span style="color:#e6db74">&#39;弹窗2&#39;</span>,<span style="color:#e6db74">&#39;This is the second one&#39;</span>)
-sg<span style="color:#f92672">.</span>Popup(<span style="color:#e6db74">&#39;弹窗3&#39;</span>,<span style="color:#e6db74">&#39;This is the third one&#39;</span>)
-</code></pre></div><p>弹出一个窗口包含标题和内容。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="s1">&#39;弹窗1&#39;</span><span class="p">,</span><span class="s1">&#39;This is the first one&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="s1">&#39;弹窗2&#39;</span><span class="p">,</span><span class="s1">&#39;This is the second one&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="s1">&#39;弹窗3&#39;</span><span class="p">,</span><span class="s1">&#39;This is the third one&#39;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>弹出一个窗口包含标题和内容。</p>
 <ol start="6">
 <li><strong>选择文件（FileBrowse）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>FileBrowse()
-</code></pre></div><ol start="7">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">FileBrowse</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="7">
 <li><strong>选择文件路径（FolderBrowse）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>InputText(size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">15</span>,<span style="color:#ae81ff">1</span>)),sg<span style="color:#f92672">.</span>FolderBrowse()
-</code></pre></div><ol start="8">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">InputText</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span><span class="n">sg</span><span class="o">.</span><span class="n">FolderBrowse</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="8">
 <li><strong>多行列表文本（ListBox）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">list <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#ae81ff">3</span>]
-layout <span style="color:#f92672">=</span> [
-    [sg<span style="color:#f92672">.</span>Listbox(values<span style="color:#f92672">=</span>list,size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">20</span>,<span style="color:#ae81ff">12</span>),key<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;LIST&#39;</span>,enable_events<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)]
-]
-</code></pre></div><ol start="9">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="err">，</span><span class="mi">2</span><span class="err">，</span><span class="mi">3</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">layout</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Listbox</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;LIST&#39;</span><span class="p">,</span><span class="n">enable_events</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="9">
 <li><strong>多选框（Checkbox）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>Checkbox(<span style="color:#e6db74">&#39;多选框&#39;</span>,default<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
-</code></pre></div><ol start="10">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">Checkbox</span><span class="p">(</span><span class="s1">&#39;多选框&#39;</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="10">
 <li><strong>单选框（Radio）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># RADIO1 必有</span>
-sg<span style="color:#f92672">.</span>Radio(<span style="color:#e6db74">&#39;单选框&#39;</span>,<span style="color:#e6db74">&#39;RADIO1&#39;</span>,default<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
-</code></pre></div><ol start="11">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># RADIO1 必有</span>
+</span></span><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">Radio</span><span class="p">(</span><span class="s1">&#39;单选框&#39;</span><span class="p">,</span><span class="s1">&#39;RADIO1&#39;</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="11">
 <li><strong>大文本框（Multiline）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>Multiline(default_text<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;hello&#39;</span>)
-</code></pre></div><ol start="12">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">Multiline</span><span class="p">(</span><span class="n">default_text</span><span class="o">=</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="12">
 <li><strong>下拉列表框（InputCombo）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>InputCombo([<span style="color:#e6db74">&#39;box_1&#39;</span>,<span style="color:#e6db74">&#39;box_2&#39;</span>],size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">20</span>,<span style="color:#ae81ff">3</span>))
-</code></pre></div><ol start="13">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">InputCombo</span><span class="p">([</span><span class="s1">&#39;box_1&#39;</span><span class="p">,</span><span class="s1">&#39;box_2&#39;</span><span class="p">],</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="13">
 <li><strong>拖动按钮（Slider）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>Slider(range<span style="color:#f92672">=</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">100</span>),orientation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;h&#39;</span>,size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">34</span>,<span style="color:#ae81ff">20</span>),default_value<span style="color:#f92672">=</span><span style="color:#ae81ff">85</span>)
- <span style="color:#75715e"># (range=(1, 100)：数值范围</span>
- <span style="color:#75715e"># orientation=拖动方向 ‘h’ :横向 ‘v’：竖向</span>
- <span style="color:#75715e"># size=(34, 20)：大小</span>
- <span style="color:#75715e"># default_value=85默认值</span>
-</code></pre></div><ol start="14">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">Slider</span><span class="p">(</span><span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span><span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">34</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span><span class="n">default_value</span><span class="o">=</span><span class="mi">85</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"> <span class="c1"># (range=(1, 100)：数值范围</span>
+</span></span><span class="line"><span class="cl"> <span class="c1"># orientation=拖动方向 ‘h’ :横向 ‘v’：竖向</span>
+</span></span><span class="line"><span class="cl"> <span class="c1"># size=(34, 20)：大小</span>
+</span></span><span class="line"><span class="cl"> <span class="c1"># default_value=85默认值</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="14">
 <li><strong>下拉选项（InputOptionMenu）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>InputOptionMenu(<span style="color:#e6db74">&#39;Menu_1&#39;</span>,<span style="color:#e6db74">&#39;Menu_2&#39;</span>,size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">20</span>,<span style="color:#ae81ff">2</span>))
-</code></pre></div><ol start="15">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">InputOptionMenu</span><span class="p">(</span><span class="s1">&#39;Menu_1&#39;</span><span class="p">,</span><span class="s1">&#39;Menu_2&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="15">
 <li><strong>菜单（Menu）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>Menu(menu_def, tearoff<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
-</code></pre></div><ol start="16">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">Menu</span><span class="p">(</span><span class="n">menu_def</span><span class="p">,</span> <span class="n">tearoff</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="16">
 <li><strong>控件（Column）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>Column(column1, background_color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>)
-</code></pre></div><ol start="17">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">column1</span><span class="p">,</span> <span class="n">background_color</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="17">
 <li><strong>进度条（ProgressBar）</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>ProgressBar(<span style="color:#ae81ff">10</span>,orientation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;h&#39;</span>,size<span style="color:#f92672">=</span>())
-<span style="color:#75715e"># 10：进度条长度</span>
-<span style="color:#75715e"># orientation=‘h’/v 方向</span>
-</code></pre></div><ol start="18">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">ProgressBar</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;h&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 10：进度条长度</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># orientation=‘h’/v 方向</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="18">
 <li><strong>调试窗口</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>Print(<span style="color:#e6db74">&#39;内容&#39;</span>, text_color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>, background_color<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>, font<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>)
-</code></pre></div><ol start="19">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="s1">&#39;内容&#39;</span><span class="p">,</span> <span class="n">text_color</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">background_color</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="19">
 <li><strong>自带按钮</strong></li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>OK(), sg<span style="color:#f92672">.</span>Cancel(),sg<span style="color:#f92672">.</span>Submit()等 <span style="color:#75715e">#这三个按钮是自带的，默认的，不需要单独定义其作用</span>
-当然<span style="color:#960050;background-color:#1e0010">，</span>也可以单独设置
-sg<span style="color:#f92672">.</span>Button(<span style="color:#e6db74">&#39;Ok&#39;</span>), sg<span style="color:#f92672">.</span>Button(<span style="color:#e6db74">&#39;Cancel&#39;</span>)
-自带按钮
-sg<span style="color:#f92672">.</span>FolderBrowse()<span style="color:#f92672">=</span>sg<span style="color:#f92672">.</span>FileBrowse(), sg<span style="color:#f92672">.</span>Submit(), sg<span style="color:#f92672">.</span>Cancel()
-</code></pre></div><h4 id="构建窗口">构建窗口<a hidden class="anchor" aria-hidden="true" href="#构建窗口">#</a></h4>
-<p>使用PySimpleGUI构建一个窗口十分简单，你需要使用一个list描述元素之间的位置关系，然后系统便会自动生成布局。</p>
-<p>以我上一篇博文<a href="https://zeroy.site/articles/Bilibili-send-and-receive/">Bilibili直播弹幕收发小程序 | zeroy&rsquo;s blog</a>中的GUI界面为例：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sg<span style="color:#f92672">.</span>theme(<span style="color:#e6db74">&#39;DarkAmber&#39;</span>)<span style="color:#75715e">#选择主题</span>
-layout <span style="color:#f92672">=</span> [
-          [sg<span style="color:#f92672">.</span>Listbox(<span style="color:#e6db74">&#39;&#39;</span>,size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">75</span>,<span style="color:#ae81ff">20</span>),key<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-OUT-&#39;</span>)],
-          [sg<span style="color:#f92672">.</span>Text(<span style="color:#e6db74">&#39;发送弹幕: &#39;</span>, size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">1</span>)),sg<span style="color:#f92672">.</span>InputText(<span style="color:#e6db74">&#39;&#39;</span>,key<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-input-&#39;</span>),sg<span style="color:#f92672">.</span>Button(<span style="color:#e6db74">&#34;Go&#34;</span>),sg<span style="color:#f92672">.</span>Button(<span style="color:#e6db74">&#34;Exit&#34;</span>),sg<span style="color:#f92672">.</span>Button(<span style="color:#e6db74">&#34;Help&#34;</span>)],
-          [sg<span style="color:#f92672">.</span>Text(<span style="color:#e6db74">&#39;&#39;</span>,key<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-error-&#39;</span>)]
-         ]<span style="color:#75715e">#使用list描述元素之间的相对关系</span>
-window<span style="color:#f92672">=</span>sg<span style="color:#f92672">.</span>Window(<span style="color:#e6db74">&#34;Bilibili弹幕收发程序&#34;</span>,layout)生成窗口
-</code></pre></div><p>怎么样，是不是很方便呢？</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">OK</span><span class="p">(),</span> <span class="n">sg</span><span class="o">.</span><span class="n">Cancel</span><span class="p">(),</span><span class="n">sg</span><span class="o">.</span><span class="n">Submit</span><span class="p">()</span><span class="n">等</span> <span class="c1">#这三个按钮是自带的，默认的，不需要单独定义其作用</span>
+</span></span><span class="line"><span class="cl"><span class="n">当然</span><span class="err">，</span><span class="n">也可以单独设置</span>
+</span></span><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s1">&#39;Ok&#39;</span><span class="p">),</span> <span class="n">sg</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s1">&#39;Cancel&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">自带按钮</span>
+</span></span><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">FolderBrowse</span><span class="p">()</span><span class="o">=</span><span class="n">sg</span><span class="o">.</span><span class="n">FileBrowse</span><span class="p">(),</span> <span class="n">sg</span><span class="o">.</span><span class="n">Submit</span><span class="p">(),</span> <span class="n">sg</span><span class="o">.</span><span class="n">Cancel</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="构建窗口" class="headerLink">
+    <a href="#%e6%9e%84%e5%bb%ba%e7%aa%97%e5%8f%a3" class="header-mark"></a>构建窗口</h4><p>使用PySimpleGUI构建一个窗口十分简单，你需要使用一个list描述元素之间的位置关系，然后系统便会自动生成布局。</p>
+<p>以我上一篇博文<a href="https://zeroy.site/articles/Bilibili-send-and-receive/" target="_blank" rel="noopener noreferrer">Bilibili直播弹幕收发小程序 | zeroy&rsquo;s blog</a>中的GUI界面为例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">theme</span><span class="p">(</span><span class="s1">&#39;DarkAmber&#39;</span><span class="p">)</span><span class="c1">#选择主题</span>
+</span></span><span class="line"><span class="cl"><span class="n">layout</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">          <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Listbox</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;-OUT-&#39;</span><span class="p">)],</span>
+</span></span><span class="line"><span class="cl">          <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s1">&#39;发送弹幕: &#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span><span class="n">sg</span><span class="o">.</span><span class="n">InputText</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;-input-&#39;</span><span class="p">),</span><span class="n">sg</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s2">&#34;Go&#34;</span><span class="p">),</span><span class="n">sg</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s2">&#34;Exit&#34;</span><span class="p">),</span><span class="n">sg</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s2">&#34;Help&#34;</span><span class="p">)],</span>
+</span></span><span class="line"><span class="cl">          <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;-error-&#39;</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">         <span class="p">]</span><span class="c1">#使用list描述元素之间的相对关系</span>
+</span></span><span class="line"><span class="cl"><span class="n">window</span><span class="o">=</span><span class="n">sg</span><span class="o">.</span><span class="n">Window</span><span class="p">(</span><span class="s2">&#34;Bilibili弹幕收发程序&#34;</span><span class="p">,</span><span class="n">layout</span><span class="p">)</span><span class="n">生成窗口</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>怎么样，是不是很方便呢？</p>
 <p>窗口中内建了多种方法，用于描述窗口事件。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">window<span style="color:#f92672">.</span>close()<span style="color:#75715e">#关闭窗口</span>
-window<span style="color:#f92672">.</span>read()<span style="color:#75715e">#读取窗口内容</span>
-window[<span style="color:#e6db74">&#39;key名&#39;</span>]<span style="color:#f92672">.</span>update(<span style="color:#e6db74">&#39;需要更新的内容&#39;</span>)
-</code></pre></div><p>掌握了这些基本的知识，构建一个简单的GUI程序应该没什么难的了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span><span class="c1">#关闭窗口</span>
+</span></span><span class="line"><span class="cl"><span class="n">window</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="c1">#读取窗口内容</span>
+</span></span><span class="line"><span class="cl"><span class="n">window</span><span class="p">[</span><span class="s1">&#39;key名&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;需要更新的内容&#39;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>掌握了这些基本的知识，构建一个简单的GUI程序应该没什么难的了。</p>
 <p>上面提到的收发弹幕的程序的GUI部分完整代码如下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> PySimpleGUI <span style="color:#66d9ef">as</span> sg
-<span style="color:#f92672">import</span> send
-<span style="color:#f92672">import</span> receive
-sg<span style="color:#f92672">.</span>theme(<span style="color:#e6db74">&#39;DarkAmber&#39;</span>)
-layout <span style="color:#f92672">=</span> [
-          [sg<span style="color:#f92672">.</span>Listbox(<span style="color:#e6db74">&#39;&#39;</span>,size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">75</span>,<span style="color:#ae81ff">20</span>),key<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-OUT-&#39;</span>)],
-          [sg<span style="color:#f92672">.</span>Text(<span style="color:#e6db74">&#39;发送弹幕: &#39;</span>, size<span style="color:#f92672">=</span>(<span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">1</span>)),sg<span style="color:#f92672">.</span>InputText(<span style="color:#e6db74">&#39;&#39;</span>,key<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-input-&#39;</span>),sg<span style="color:#f92672">.</span>Button(<span style="color:#e6db74">&#34;Go&#34;</span>),sg<span style="color:#f92672">.</span>Button(<span style="color:#e6db74">&#34;Exit&#34;</span>),sg<span style="color:#f92672">.</span>Button(<span style="color:#e6db74">&#34;Help&#34;</span>)],
-          [sg<span style="color:#f92672">.</span>Text(<span style="color:#e6db74">&#39;&#39;</span>,key<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-error-&#39;</span>)]
-         ]
-window<span style="color:#f92672">=</span>sg<span style="color:#f92672">.</span>Window(<span style="color:#e6db74">&#34;Bilibili弹幕收发程序&#34;</span>,layout)
-<span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:<span style="color:#75715e">#开启窗口事件</span>
-    event,values<span style="color:#f92672">=</span>window<span style="color:#f92672">.</span>read(timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>)<span style="color:#75715e">#为输入框设定超时</span>
-    <span style="color:#66d9ef">try</span>:
-        window[<span style="color:#e6db74">&#39;-OUT-&#39;</span>]<span style="color:#f92672">.</span>update(receive<span style="color:#f92672">.</span>Receive())<span style="color:#75715e">#更新输出框</span>
-    <span style="color:#66d9ef">except</span>:
-        sg<span style="color:#f92672">.</span>popup(<span style="color:#e6db74">&#39;error: &#39;</span>,<span style="color:#e6db74">&#39;请先配置好同一目录下的config.json文件&#39;</span>)<span style="color:#75715e">#异常信息处理</span>
-        <span style="color:#66d9ef">break</span>
-    <span style="color:#66d9ef">if</span> event <span style="color:#f92672">in</span> (<span style="color:#66d9ef">None</span>,<span style="color:#e6db74">&#39;Exit&#39;</span>):<span style="color:#75715e">#按到了退出</span>
-        <span style="color:#66d9ef">break</span>
-    <span style="color:#66d9ef">if</span> event<span style="color:#f92672">==</span><span style="color:#e6db74">&#39;Go&#39;</span>:<span style="color:#75715e">#发送弹幕</span>
-        window[<span style="color:#e6db74">&#39;-error-&#39;</span>]<span style="color:#f92672">.</span>update(send<span style="color:#f92672">.</span>Send(values[<span style="color:#e6db74">&#39;-input-&#39;</span>]))
-        window[<span style="color:#e6db74">&#39;-input-&#39;</span>]<span style="color:#f92672">.</span>update(<span style="color:#e6db74">&#34;&#34;</span>)
-    <span style="color:#66d9ef">if</span> event<span style="color:#f92672">==</span><span style="color:#e6db74">&#39;Help&#39;</span>:<span style="color:#75715e">#帮助页面</span>
-        sg<span style="color:#f92672">.</span>popup(<span style="color:#e6db74">&#39;帮助: &#39;</span>,<span style="color:#e6db74">&#39;请先配置好同一目录下的config.json文件&#39;</span>)
-window<span style="color:#f92672">.</span>close()
-</code></pre></div><p>更多的例子以及更高阶的应用指路：<a href="https://github.com/PySimpleGUI/PySimpleGUI">官方代码库</a></p>
-<h4 id="总结">总结<a hidden class="anchor" aria-hidden="true" href="#总结">#</a></h4>
-<p>这个东西过于简洁，适合完全不会写GUI的程序员应急。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">PySimpleGUI</span> <span class="k">as</span> <span class="nn">sg</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">send</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">receive</span>
+</span></span><span class="line"><span class="cl"><span class="n">sg</span><span class="o">.</span><span class="n">theme</span><span class="p">(</span><span class="s1">&#39;DarkAmber&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">layout</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">          <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Listbox</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;-OUT-&#39;</span><span class="p">)],</span>
+</span></span><span class="line"><span class="cl">          <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s1">&#39;发送弹幕: &#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span><span class="n">sg</span><span class="o">.</span><span class="n">InputText</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;-input-&#39;</span><span class="p">),</span><span class="n">sg</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s2">&#34;Go&#34;</span><span class="p">),</span><span class="n">sg</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s2">&#34;Exit&#34;</span><span class="p">),</span><span class="n">sg</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="s2">&#34;Help&#34;</span><span class="p">)],</span>
+</span></span><span class="line"><span class="cl">          <span class="p">[</span><span class="n">sg</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;-error-&#39;</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">         <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">window</span><span class="o">=</span><span class="n">sg</span><span class="o">.</span><span class="n">Window</span><span class="p">(</span><span class="s2">&#34;Bilibili弹幕收发程序&#34;</span><span class="p">,</span><span class="n">layout</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="kc">True</span><span class="p">:</span><span class="c1">#开启窗口事件</span>
+</span></span><span class="line"><span class="cl">    <span class="n">event</span><span class="p">,</span><span class="n">values</span><span class="o">=</span><span class="n">window</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="c1">#为输入框设定超时</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">window</span><span class="p">[</span><span class="s1">&#39;-OUT-&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">receive</span><span class="o">.</span><span class="n">Receive</span><span class="p">())</span><span class="c1">#更新输出框</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sg</span><span class="o">.</span><span class="n">popup</span><span class="p">(</span><span class="s1">&#39;error: &#39;</span><span class="p">,</span><span class="s1">&#39;请先配置好同一目录下的config.json文件&#39;</span><span class="p">)</span><span class="c1">#异常信息处理</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">event</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="s1">&#39;Exit&#39;</span><span class="p">):</span><span class="c1">#按到了退出</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">event</span><span class="o">==</span><span class="s1">&#39;Go&#39;</span><span class="p">:</span><span class="c1">#发送弹幕</span>
+</span></span><span class="line"><span class="cl">        <span class="n">window</span><span class="p">[</span><span class="s1">&#39;-error-&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">send</span><span class="o">.</span><span class="n">Send</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;-input-&#39;</span><span class="p">]))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">window</span><span class="p">[</span><span class="s1">&#39;-input-&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">event</span><span class="o">==</span><span class="s1">&#39;Help&#39;</span><span class="p">:</span><span class="c1">#帮助页面</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sg</span><span class="o">.</span><span class="n">popup</span><span class="p">(</span><span class="s1">&#39;帮助: &#39;</span><span class="p">,</span><span class="s1">&#39;请先配置好同一目录下的config.json文件&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">window</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>更多的例子以及更高阶的应用指路：<a href="https://github.com/PySimpleGUI/PySimpleGUI" target="_blank" rel="noopener noreferrer">官方代码库</a></p>
+<h4 id="总结" class="headerLink">
+    <a href="#%e6%80%bb%e7%bb%93" class="header-mark"></a>总结</h4><p>这个东西过于简洁，适合完全不会写GUI的程序员应急。</p>
+</div>
 
+        
 
-  </div>
+<div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-01-26</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span><a class="link-to-mardown" href=/articles/PySimpleGUI/index.md target="_blank" rel="noopener noreferrer">阅读原始文档</a>
+                    </span></div>
+            <div class="post-info-share">
+                <span><a href="#" title="分享到 Twitter" data-sharer="twitter" data-url="http://zeroy.site/articles/PySimpleGUI/" data-title="使用PySimpleGUI库构建简单的图形界面"><i class="fab fa-twitter fa-fw"></i></a><a href="#" title="分享到 微博" data-sharer="weibo" data-url="http://zeroy.site/articles/PySimpleGUI/" data-title="使用PySimpleGUI库构建简单的图形界面"><i class="fab fa-weibo fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
 
-  <footer class="post-footer">
-<nav class="paginav">
-  <a class="prev" href="https://zeroy.site/articles/tallyapp1/">
-    <span class="title">« </span>
-    <br>
-    <span>Flask学习1 TallyApp beta 0.9</span>
-  </a>
-  <a class="next" href="https://zeroy.site/articles/Bilibili-send-and-receive/">
-    <span class="title"> »</span>
-    <br>
-    <span>Bilibili直播弹幕收发小程序</span>
-  </a>
-  
-</nav>
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
 
-  </footer><script src="https://utteranc.es/client.js"
-        repo="zeroy0410/zeroy0410.github.io"
-        issue-term="pathname"
-        label="Comment"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://zeroy.site/">zeroy&#39;s blog</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
+    <div class="post-nav"><a href="/articles/Bilibili-send-and-receive/" class="prev" rel="prev" title="Bilibili直播弹幕收发小程序"><i class="fas fa-angle-left fa-fw"></i>Bilibili直播弹幕收发小程序</a>
+            <a href="/tallyapp1/" class="next" rel="next" title="Flask学习1 TallyApp beta 0.9">Flask学习1 TallyApp beta 0.9<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.111.3">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.3.0"><i class="far fa-edit fa-fw"></i> DoIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="zeroy.site" target="_blank" rel="noopener noreferrer">zeroy</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
 
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerText = 'copy';
-
-        function copyingDone() {
-            copybutton.innerText = 'copied!';
-            setTimeout(() => {
-                copybutton.innerText = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-<script type="text/javascript"
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script></body>
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div id="cookieconsent-container"></div><div class="assets"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":50,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js" defer></script><script type="text/javascript" src="/lib/katex/auto-render.min.js" defer></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js" defer></script><script type="text/javascript" src="/lib/katex/mhchem.min.js" defer></script><script type="text/javascript" src="/js/katex.min.js" defer></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script type="text/javascript" src="/js/cookieconsent.min.js" defer></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
 
 </html>
