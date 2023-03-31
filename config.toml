@@ -451,9 +451,9 @@ theme = "DoIt"
         enable = false
       #  Utterances 评论系统设置
       [params.page.comment.utterances]
-        enable = false
+        enable = true
         # owner/repo
-        repo = "zeroy0410/zeroy0410.github.io"
+        repo = "zeroy0410/Blog-comments"
         issueTerm = "pathname"
         label = ""
         lightTheme = "github-light"
@@ -601,7 +601,7 @@ theme = "DoIt"
 
   #  Cookie 许可配置
   [params.cookieconsent]
-    enable = true
+    enable = false
     # 用于 Cookie 许可横幅的文本字符串
     [params.cookieconsent.content]
       message = ""
