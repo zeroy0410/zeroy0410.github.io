@@ -1,6 +1,0 @@
-# HelloWorld
-
-
-$$
-Hello World!
-$$
