@@ -1,7 +1,7 @@
 ---
 title: "《高性能并行编程与优化1 学C++从CMake学起》笔记"
 date: 2023-04-01T20:16:15+08:00
-draft: true
+draft: false
 url: "posts/parallels101_1"
 categories: ["计算机体系结构","高性能并行编程与优化"]
 ---
