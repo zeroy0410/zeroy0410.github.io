@@ -289,6 +289,46 @@ else query(ID[u],ID[v],1);
 
 ### 数学
 
+#### 莫比乌斯反演
+
+#### 定义
+
+$\mu$ 为莫比乌斯函数，定义为
+
+$$
+\mu(n)=
+\begin{cases}
+1&n=1\\
+0&n\text{ 含有平方因子}\\
+(-1)^k&k\text{ 为 }n\text{ 的本质不同质因子个数}\\
+\end{cases}
+$$
+
+```cpp
+void getMu() {
+  mu[1] = 1;
+  for (int i = 2; i <= n; ++i) {
+    if (!flg[i]) p[++tot] = i, mu[i] = -1;
+    for (int j = 1; j <= tot && i * p[j] <= n; ++j) {
+      flg[i * p[j]] = 1;
+      if (i % p[j] == 0) {
+        mu[i * p[j]] = 0;
+        break;
+      }
+      mu[i * p[j]] = -mu[i];
+    }
+  }
+}
+```
+
+#### 莫比乌斯变换
+
+设 $f(n),g(n)$ 为两个数论函数。
+
+形式一：如果有 $f(n)=\sum_{d\mid n}g(d)$，那么有 $g(n)=\sum_{d\mid n}\mu(d)f(\frac{n}{d})$。
+
+形式二：如果有 $f(n)=\sum_{n|d}g(d)$，那么有 $g(n)=\sum_{n|d}\mu(\frac{d}{n})f(d)$。
+
 #### 扩展欧几里得算法
 
 ```cpp
