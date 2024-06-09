@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Basic Tools on zeroy的网络小窝</title>
+    <link>http://localhost:1313/categories/basic-tools/</link>
+    <description>Recent content in Basic Tools on zeroy的网络小窝</description>
+    <image>
+      <url>http://localhost:1313/ava.jpeg</url>
+      <link>http://localhost:1313/ava.jpeg</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+    <webMaster>zeroy0410@gmail.com (zeroy)</webMaster>
+    <lastBuildDate>Thu, 03 Feb 2022 16:00:45 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/basic-tools/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>正则表达式 For Beginner</title>
+      <link>http://localhost:1313/articles/regular-expression/</link>
+      <pubDate>Thu, 03 Feb 2022 16:00:45 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/regular-expression/</guid>
+      <description>简介 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称正则表示式、正则表示法、规则表达式、</description>
+    </item>
+    
+  </channel>
+</rss>

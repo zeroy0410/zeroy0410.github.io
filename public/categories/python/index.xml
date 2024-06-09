@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Python on zeroy的网络小窝</title>
+    <link>http://localhost:1313/categories/python/</link>
+    <description>Recent content in Python on zeroy的网络小窝</description>
+    <image>
+      <url>http://localhost:1313/ava.jpeg</url>
+      <link>http://localhost:1313/ava.jpeg</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+    <webMaster>zeroy0410@gmail.com (zeroy)</webMaster>
+    <lastBuildDate>Wed, 26 Jan 2022 16:49:18 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用PySimpleGUI库构建简单的图形界面</title>
+      <link>http://localhost:1313/articles/PySimpleGUI/</link>
+      <pubDate>Wed, 26 Jan 2022 16:49:18 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/PySimpleGUI/</guid>
+      <description>前言 python构建本地GUI程序有很多方式，比如Tkinter，wxPython，或是PyQT。但是对于学生而言，并不需要多么华丽的用户界</description>
+    </item>
+    
+    <item>
+      <title>Bilibili直播弹幕收发小程序</title>
+      <link>http://localhost:1313/articles/Bilibili-send-and-receive/</link>
+      <pubDate>Tue, 18 Jan 2022 15:32:48 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/Bilibili-send-and-receive/</guid>
+      <description>项目地址 需求分析 在Linux下直播看不到弹幕，无法与观众互动。 实现过程 第一阶段 问题可拆分为收与发。 可行性分析 B站有API能够返回一个直播间最</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>DATABASE on zeroy的网络小窝</title>
+    <link>http://localhost:1313/categories/database/</link>
+    <description>Recent content in DATABASE on zeroy的网络小窝</description>
+    <image>
+      <url>http://localhost:1313/ava.jpeg</url>
+      <link>http://localhost:1313/ava.jpeg</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+    <webMaster>zeroy0410@gmail.com (zeroy)</webMaster>
+    <lastBuildDate>Mon, 07 Feb 2022 22:36:05 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/database/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>数据库基础|JDBC入门|Druid连接池的简单配置</title>
+      <link>http://localhost:1313/articles/database-for-beginner/</link>
+      <pubDate>Mon, 07 Feb 2022 22:36:05 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/database-for-beginner/</guid>
+      <description>数据库基础 增 新建数据库 1 CREATE DATABASE {{name}} 新建数据表 1 2 3 4 5 6 7 8 9 10 11 12 CREATE TABLE {{name}}( {{列名}} {{数据类型}} {{约束}}, ..... ); EXAMPLE: CREATE TABLE Users( id int primary key, name varchar(30) NOT NULL,</description>
+    </item>
+    
+  </channel>
+</rss>

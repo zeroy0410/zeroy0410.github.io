@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>《高性能并行编程与优化1 学C&#43;&#43;从CMake学起》笔记 | zeroy的网络小窝</title>
+<meta name="keywords" content="" />
+<meta name="description" content="课程作者：@彭于斌 课程网站：高性能并行编程与优化 CMake的命令行调用 读取当前目录的 CMakeLists.txt，并在 build 文件夹下生成 buil">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/parallels101_1/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.127.0">
+<link rel="alternate" type="text/plain" href="http://localhost:1313/posts/parallels101_1/index.md">
+<link rel="alternate" hreflang="zh-cn" href="http://localhost:1313/posts/parallels101_1/" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="zeroy的网络小窝 (Alt + H)">zeroy的网络小窝</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+        </ul>
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=80 src="//music.163.com/outchain/player?type=2&id=415904308&auto=1&height=66"></iframe>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      《高性能并行编程与优化1 学C&#43;&#43;从CMake学起》笔记
+    </h1>
+    <div class="post-meta">&lt;span title=&#39;2023-04-01 20:16:15 &#43;0800 CST&#39;&gt;2023-04-01&lt;/span&gt;
+
+</div>
+  </header> 
+  <div class="post-content"><h4 id="课程作者彭于斌"><strong>课程作者：@彭于斌</strong><a hidden class="anchor" aria-hidden="true" href="#课程作者彭于斌">#</a></h4>
+<p>课程网站：<a href="https://github.com/parallel101/course">高性能并行编程与优化</a></p>
+<h4 id="cmake的命令行调用">CMake的命令行调用<a hidden class="anchor" aria-hidden="true" href="#cmake的命令行调用">#</a></h4>
+<p>读取当前目录的 CMakeLists.txt，并在 build 文件夹下生成 build/Makefile：</p>
+<blockquote>
+<p>cmake -B build
+让 make 读取 build/Makefile，并开始构建 a.out：
+make -C build
+以下命令和上一个等价，但更跨平台：
+cmake &ndash;build build
+执行生成的 a.out：
+build/a.out</p>
+</blockquote>
+<h4 id="cmake中的静态库与动态库">CMake中的静态库与动态库<a hidden class="anchor" aria-hidden="true" href="#cmake中的静态库与动态库">#</a></h4>
+<p>CMake 除了 <code>add_executable</code> 可以生成可执行文件外，还可以通过 <code>add_library</code> 生成库文件。
+<code>add_library </code>的语法与 <code>add_executable</code> 大致相同，除了他需要指定是动态库还是静态库：
+<code>add_library(test STATIC source1.cpp source2.cpp) </code> # 生成静态库 libtest.a
+<code>add_library(test SHARED source1.cpp source2.cpp) </code> # 生成动态库 libtest.so
+动态库有很多坑，特别是 Windows 环境下，初学者自己创建库时，建议使用静态库。
+创建库以后，要在某个可执行文件中使用该库，只需要：
+<code>target_link_libraries(myexec PUBLIC test) </code> # 为 myexec 链接刚刚制作的库 libtest.a</p>
+<h4 id="为什么c需要声明">为什么C++需要声明？<a hidden class="anchor" aria-hidden="true" href="#为什么c需要声明">#</a></h4>
+<p>C++ 是一种强烈依赖<strong>上下文</strong>信息的编程语言。</p>
+<p>vector &lt; MyClass &gt; a;  // 声明一个由 MyClass 组成的数组</p>
+<p>如果编译器不知道 vector 是个模板类，那他完全可以把 vector 看做一个变量名，把 &lt; 解释为小于号，从而理解成判断‘vector’这个变量的值是否小于‘MyClass’这个变量的值。</p>
+<p>正因如此，我们常常可以在 C++ 代码中看见这样的写法：typename decay<T>::type</p>
+<p>因为 T 是不确定的，导致编译器无法确定 decay<T> 的 type 是一个<strong>类型</strong>，还是一个<strong>值</strong>。因此用 typename 修饰来让编译器确信这是一个类型名……</p>
+<h4 id="为什么需要头文件">为什么需要头文件？<a hidden class="anchor" aria-hidden="true" href="#为什么需要头文件">#</a></h4>
+<p>便于声明与实现分开，不用在每个文件里都声明一遍，只需include相应头文件就好了。</p>
+<h4 id="cmake中的子模块">CMake中的子模块<a hidden class="anchor" aria-hidden="true" href="#cmake中的子模块">#</a></h4>
+<p>复杂的工程中，我们需要划分子模块，通常一个库一个目录，比如：
+这里我们把 hellolib 库的东西移到 hellolib 文件夹下了，里面的 CMakeLists.txt 定义了 hellolib 的生成规则。
+要在根目录使用他，可以用 CMake 的 add_subdirectory 添加子目录，子目录也包含一个 CMakeLists.txt，其中定义的库在 add_subdirectory 之后就可以在外面使用。
+子目录的 CMakeLists.txt 里路径名（比如 hello.cpp）都是相对路径，这也是很方便的一点。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">-
+</span></span><span class="line"><span class="cl">  - hellolib
+</span></span><span class="line"><span class="cl">    - CMakeLists.txt
+</span></span><span class="line"><span class="cl">    - hello.cpp
+</span></span><span class="line"><span class="cl">    - hello.h
+</span></span><span class="line"><span class="cl">  - CMakeLists.txt
+</span></span><span class="line"><span class="cl">  - main.cpp
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>hellolib/CMakeLists.txt</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">add_library</span><span class="p">(</span><span class="s">hellolib</span> <span class="s">STATIC</span> <span class="s">hello.cpp</span><span class="p">)</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>CMakeLists.txt</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.12</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">project</span><span class="p">(</span><span class="s">hellocmake</span> <span class="s">LANGUAGES</span> <span class="s">CXX</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">hellolib</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">add_executable</span><span class="p">(</span><span class="s">a.out</span> <span class="s">main.cpp</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">a.out</span> <span class="s">PUBLIC</span> <span class="s">hellolib</span><span class="p">)</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="子模块的头文件如何处理">子模块的头文件如何处理<a hidden class="anchor" aria-hidden="true" href="#子模块的头文件如何处理">#</a></h4>
+<p>因为 hello.h 被移到了 hellolib 子文件夹里，因此 main.cpp 里也要改成：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;hellolib/hello.h&#34;</span><span class="cp">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>如果要避免修改代码，我们可以通过 target_include_directories 指定 a.out 的头文件搜索目录（第一个是库名，第二个是目录）。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.12</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">project</span><span class="p">(</span><span class="s">hellocmake</span> <span class="s">LANGUAGES</span> <span class="s">CXX</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">hellolib</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">add_executable</span><span class="p">(</span><span class="s">a.out</span> <span class="s">main.cpp</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">a.out</span> <span class="s">PUBLIC</span> <span class="s">hellolib</span><span class="p">)</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样甚至可以用 &lt;hello.h&gt; 来引用这个头文件了，因为通过 target_include_directories 指定的路径会被视为与系统路径等价。</p>
+<p>但是这样如果另一个 b.out 也需要用 hellolib 这个库，难道也得再指定一遍搜索路径吗？</p>
+<p>不需要，其实我们只需要定义 hellolib 的头文件搜索路径，引用他的可执行文件 CMake 会<strong>自动添加这个路径</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">add_library</span><span class="p">(</span><span class="s">hellolib</span> <span class="s">STATIC</span> <span class="s">hello.cpp</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">hellolib</span> <span class="s">PUBLIC</span> <span class="s">.</span><span class="p">)</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里用了 . 表示当前路径，因为子目录里的路径是相对路径，类似还有 .. 表示上一层目录。</p>
+<p>此外，如果不希望让引用 hellolib 的可执行文件自动添加这个路径，把 <strong>PUBLIC</strong> 改成<strong>PRIVATE</strong> 即可。这就是他们的用途：决定一个属性要不要在被 link 的时候传播。</p>
+<h4 id="cmake的一些其他选项">CMake的一些其他选项<a hidden class="anchor" aria-hidden="true" href="#cmake的一些其他选项">#</a></h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="err">除了头文件搜索目录以外，还有这些选项，PUBLIC</span> <span class="err">和</span> <span class="err">PRIVATE</span> <span class="err">对他们同理：
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">myapp</span> <span class="s">PUBLIC</span> <span class="s">/usr/include/eigen3</span><span class="p">)</span>  <span class="c"># 添加头文件搜索目录
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myapp</span> <span class="s">PUBLIC</span> <span class="s">hellolib</span><span class="p">)</span>                               <span class="c"># 添加要链接的库
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="nb">target_add_definitions</span><span class="p">(</span><span class="s">myapp</span> <span class="s">PUBLIC</span> <span class="s">MY_MACRO=1</span><span class="p">)</span>             <span class="c"># 添加一个宏定义
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="nb">target_add_definitions</span><span class="p">(</span><span class="s">myapp</span> <span class="s">PUBLIC</span> <span class="s">-DMY_MACRO=1</span><span class="p">)</span>         <span class="c"># 与 MY_MACRO=1 等价
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="nb">target_compile_options</span><span class="p">(</span><span class="s">myapp</span> <span class="s">PUBLIC</span> <span class="s">-fopenmp</span><span class="p">)</span>                     <span class="c"># 添加编译器命令行选项
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="nb">target_sources</span><span class="p">(</span><span class="s">myapp</span> <span class="s">PUBLIC</span> <span class="s">hello.cpp</span> <span class="s">other.cpp</span><span class="p">)</span>                    <span class="c"># 添加要编译的源文件
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="err">以及可以通过下列指令（不推荐使用），把选项加到所有接下来的目标去：
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">include_directories</span><span class="p">(</span><span class="s">/opt/cuda/include</span><span class="p">)</span>     <span class="c"># 添加头文件搜索目录
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="nb">link_directories</span><span class="p">(</span><span class="s">/opt/cuda</span><span class="p">)</span>                       <span class="c"># 添加库文件的搜索路径
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="nb">add_definitions</span><span class="p">(</span><span class="s">MY_MACRO=1</span><span class="p">)</span>             <span class="c"># 添加一个宏定义
+</span></span></span><span class="line"><span class="cl"><span class="c"></span><span class="nb">add_compile_options</span><span class="p">(</span><span class="s">-fopenmp</span><span class="p">)</span>             <span class="c"># 添加编译器命令行选项
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="第三方库---作为纯头文件引入">第三方库 - 作为纯头文件引入<a hidden class="anchor" aria-hidden="true" href="#第三方库---作为纯头文件引入">#</a></h4>
+<ol>
+<li>
+<p>nothings/stb - 大名鼎鼎的 stb_image 系列，涵盖图像，声音，字体等，只需单头文件！</p>
+</li>
+<li>
+<p>Neargye/magic_enum - 枚举类型的反射，如枚举转字符串等（实现方式很巧妙）</p>
+</li>
+<li>
+<p>g-truc/glm - 模仿 GLSL 语法的数学矢量/矩阵库（附带一些常用函数，随机数生成等）</p>
+</li>
+<li>
+<p>Tencent/rapidjson - 单纯的 JSON 库，甚至没依赖 STL（可定制性高，工程美学经典）</p>
+</li>
+<li>
+<p>ericniebler/range-v3 - C++20 ranges 库就是受到他启发（完全是头文件组成）</p>
+</li>
+<li>
+<p>fmtlib/fmt - 格式化库，提供 std::format 的替代品（需要 -DFMT_HEADER_ONLY）</p>
+</li>
+<li>
+<p>gabime/spdlog - 能适配控制台，安卓等多后端的日志库（和 fmt 冲突！）</p>
+</li>
+</ol>
+<p>只需要把他们的 include 目录或头文件下载下来，然后 include_directories(spdlog/include) 即可。</p>
+<p>缺点：函数直接实现在头文件里，没有提前编译，从而需要重复编译同样内容，编译时间长。</p>
+<h4 id="第三方库---作为子模块引入">第三方库 - 作为子模块引入<a hidden class="anchor" aria-hidden="true" href="#第三方库---作为子模块引入">#</a></h4>
+<p>第二友好的方式则是作为 CMake 子模块引入，也就是通过 add_subdirectory。</p>
+<p>方法就是把那个项目（以fmt为例）的源码放到你工程的根目录：</p>
+<p>这些库能够很好地支持作为子模块引入：</p>
+<ol>
+<li>
+<p>fmtlib/fmt - 格式化库，提供 std::format 的替代品</p>
+</li>
+<li>
+<p>gabime/spdlog - 能适配控制台，安卓等多后端的日志库</p>
+</li>
+<li>
+<p>ericniebler/range-v3 - C++20 ranges 库就是受到他启发</p>
+</li>
+<li>
+<p>g-truc/glm - 模仿 GLSL 语法的数学矢量/矩阵库</p>
+</li>
+<li>
+<p>abseil/abseil-cpp - 旨在补充标准库没有的常用功能</p>
+</li>
+<li>
+<p>bombela/backward-cpp - 实现了 C++ 的堆栈回溯便于调试</p>
+</li>
+<li>
+<p>google/googletest - 谷歌单元测试框架</p>
+</li>
+<li>
+<p>google/benchmark - 谷歌性能评估框架</p>
+</li>
+<li>
+<p>glfw/glfw - OpenGL 窗口和上下文管理</p>
+</li>
+<li>
+<p>libigl/libigl - 各种图形学算法大合集</p>
+</li>
+</ol>
+<h4 id="引用系统中预安装的第三方库">引用系统中预安装的第三方库<a hidden class="anchor" aria-hidden="true" href="#引用系统中预安装的第三方库">#</a></h4>
+<p>可以通过 find_package 命令寻找系统中的包/库：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">find_package</span><span class="p">(</span><span class="s">fmt</span> <span class="s">REQUIRED</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myexec</span> <span class="s">PUBLIC</span> <span class="s">fmt::fmt</span><span class="p">)</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>为什么是 fmt::fmt 而不是简单的 fmt？</p>
+<p>现代 CMake 认为一个<strong>包</strong> (package) 可以提供多个<strong>库</strong>，又称<strong>组件</strong> (components)，比如 TBB 这个包，就包含了 tbb, tbbmalloc, tbbmalloc_proxy 这三个组件。</p>
+<p>因此为避免冲突，每个包都享有一个独立的名字空间，以 :: 的分割（和 C++ 还挺像的）。</p>
+<p>你可以指定要用哪几个组件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">find_package</span><span class="p">(</span><span class="s">TBB</span> <span class="s">REQUIRED</span> <span class="s">COMPONENTS</span> <span class="s">tbb</span> <span class="s">tbbmalloc</span> <span class="s">REQUIRED</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myexec</span> <span class="s">PUBLIC</span> <span class="s">TBB::tbb</span> <span class="s">TBB::tbbmalloc</span><span class="p">)</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="还可以使用包管理器安装第三方库">还可以使用包管理器安装第三方库<a hidden class="anchor" aria-hidden="true" href="#还可以使用包管理器安装第三方库">#</a></h4>
+<h4 id="实战-安装并使用rapidjson库">实战 安装并使用RapidJSON库<a hidden class="anchor" aria-hidden="true" href="#实战-安装并使用rapidjson库">#</a></h4>
+<p>将RapidJSON库放在include目录下，主文件夹CMakeLists.txt如下图所示：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.12</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">project</span><span class="p">(</span><span class="s">main</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">add_executable</span><span class="p">(</span><span class="s">main</span> <span class="s">main.cpp</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_compile_features</span><span class="p">(</span><span class="s">main</span> <span class="s">PUBLIC</span> <span class="s">cxx_std_11</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">main</span> <span class="s">PUBLIC</span> <span class="o">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="s">/include</span><span class="p">)</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="实战-引入fmtlibfmt库">实战 引入fmtlib/fmt库<a hidden class="anchor" aria-hidden="true" href="#实战-引入fmtlibfmt库">#</a></h4>
+<p>使用子模块的方法导入即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">fmt</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">main</span> <span class="s">PUBLIC</span> <span class="s">fmt</span><span class="p">)</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="扩展-使用现代工具xmake">扩展 使用现代工具XMake<a hidden class="anchor" aria-hidden="true" href="#扩展-使用现代工具xmake">#</a></h4>
+<p><a href="https://xmake.io/#/">xmake</a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">zeroy的网络小窝</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script></body>
+
+</html>

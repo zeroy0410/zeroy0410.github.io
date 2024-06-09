@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>计算机体系结构 on zeroy的网络小窝</title>
+    <link>http://localhost:1313/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</link>
+    <description>Recent content in 计算机体系结构 on zeroy的网络小窝</description>
+    <image>
+      <url>http://localhost:1313/ava.jpeg</url>
+      <link>http://localhost:1313/ava.jpeg</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+    <webMaster>zeroy0410@gmail.com (zeroy)</webMaster>
+    <lastBuildDate>Sat, 01 Apr 2023 20:16:15 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>《高性能并行编程与优化1 学C&#43;&#43;从CMake学起》笔记</title>
+      <link>http://localhost:1313/posts/parallels101_1/</link>
+      <pubDate>Sat, 01 Apr 2023 20:16:15 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/posts/parallels101_1/</guid>
+      <description>课程作者：@彭于斌 课程网站：高性能并行编程与优化 CMake的命令行调用 读取当前目录的 CMakeLists.txt，并在 build 文件夹下生成 buil</description>
+    </item>
+    
+    <item>
+      <title>实现一个自己的shell（操作系统Lab2）</title>
+      <link>http://localhost:1313/posts/oslab2/</link>
+      <pubDate>Fri, 31 Mar 2023 21:00:58 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/posts/oslab2/</guid>
+      <description>实验题目 Project 1—UNIX Shell and History Feature This project consists of designing a C program to serve as a shell interface that accepts user commands and then executes each command in a separate process. This project can be completed on any Linux, UNIX, or Mac OS X system. A shell interface gives the user a prompt, after which the next command is</description>
+    </item>
+    
+  </channel>
+</rss>

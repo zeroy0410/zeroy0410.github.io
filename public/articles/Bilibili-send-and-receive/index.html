@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Bilibili直播弹幕收发小程序 | zeroy的网络小窝</title>
+<meta name="keywords" content="" />
+<meta name="description" content="项目地址 需求分析 在Linux下直播看不到弹幕，无法与观众互动。 实现过程 第一阶段 问题可拆分为收与发。 可行性分析 B站有API能够返回一个直播间最">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/articles/Bilibili-send-and-receive/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.127.0">
+<link rel="alternate" type="text/plain" href="http://localhost:1313/articles/Bilibili-send-and-receive/index.md">
+<link rel="alternate" hreflang="zh-cn" href="http://localhost:1313/articles/Bilibili-send-and-receive/" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="zeroy的网络小窝 (Alt + H)">zeroy的网络小窝</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+        </ul>
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=80 src="//music.163.com/outchain/player?type=2&id=415904308&auto=1&height=66"></iframe>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      Bilibili直播弹幕收发小程序
+    </h1>
+    <div class="post-meta">&lt;span title=&#39;2022-01-18 15:32:48 &#43;0800 CST&#39;&gt;2022-01-18&lt;/span&gt;
+
+</div>
+  </header> 
+  <div class="post-content"><p><a href="https://github.com/zeroy0410/BiliBili-live-barrage-transceiver">项目地址</a></p>
+<h2 id="需求分析">需求分析<a hidden class="anchor" aria-hidden="true" href="#需求分析">#</a></h2>
+<p>在Linux下直播看不到弹幕，无法与观众互动。</p>
+<h2 id="实现过程">实现过程<a hidden class="anchor" aria-hidden="true" href="#实现过程">#</a></h2>
+<h3 id="第一阶段">第一阶段<a hidden class="anchor" aria-hidden="true" href="#第一阶段">#</a></h3>
+<p>问题可拆分为收与发。</p>
+<h4 id="可行性分析">可行性分析<a hidden class="anchor" aria-hidden="true" href="#可行性分析">#</a></h4>
+<p>B站有API能够返回一个直播间最近的10条弹幕，可以依赖这个API接收弹幕。</p>
+<p>抓包可知一次发送弹幕的行为即为一次POST请求，可以使用python脚本实现发送信息。</p>
+<p>分别编写发送和接收弹幕的程序。开两个终端使用。</p>
+<h3 id="第二阶段">第二阶段<a hidden class="anchor" aria-hidden="true" href="#第二阶段">#</a></h3>
+<p>开两个终端切换较为麻烦，于是萌生了把两个程序整合成一个的想法，想实现类似网页的上方是弹幕下方是输入框的效果。</p>
+<h4 id="可行性分析-1">可行性分析<a hidden class="anchor" aria-hidden="true" href="#可行性分析-1">#</a></h4>
+<p>弹幕的动态捕捉依赖间隔固定时间地获取最近10条弹幕，提取出新的弹幕，显示在终端上，但是如果整合进输入程序，输入方法会阻塞进程，如果一直不输入就没有办法获取新的弹幕，所以需要为输入设定超时。</p>
+<p>查阅资料得知，为输入方法设定超时需要使用多线程，或者异步异常信息处理，刚学py，不会这些。。。</p>
+<p>查阅英文资料和pypi得知，python有个inputimeout库可以处理超时输入的问题，所以就整上了。</p>
+<p>但是在现在这一流程中，每次输入超时都需要清屏，这样每次更新弹幕的时候都会闪一下，体验非常不好。</p>
+<h3 id="第三阶段">第三阶段<a hidden class="anchor" aria-hidden="true" href="#第三阶段">#</a></h3>
+<p>有没有办法实现一个terminal中分屏显示都个session呢？</p>
+<h4 id="可行性分析-2">可行性分析<a hidden class="anchor" aria-hidden="true" href="#可行性分析-2">#</a></h4>
+<p>结合我个人的Linux使用经验，可以使用tmux这个工具实现分屏操作，所以第二阶段的工作就白做了。。。</p>
+<h2 id="最终效果">最终效果<a hidden class="anchor" aria-hidden="true" href="#最终效果">#</a></h2>
+<p><img loading="lazy" src="/screenshot.png" alt=""  />
+</p>
+<h2 id="不足与提升空间">不足与提升空间<a hidden class="anchor" aria-hidden="true" href="#不足与提升空间">#</a></h2>
+<p>冷启动时需要较多的步骤，不够优雅。</p>
+<p>未来可以尝试使用GUI框架封装代码，实现一个输出框一个输入框收发代码。</p>
+<h3 id="125-update">1/25 Update<a hidden class="anchor" aria-hidden="true" href="#125-update">#</a></h3>
+<p>采用PysimpleGUI这个最简单的GUI库封装了代码，现在很好用（）</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">zeroy的网络小窝</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script></body>
+
+</html>

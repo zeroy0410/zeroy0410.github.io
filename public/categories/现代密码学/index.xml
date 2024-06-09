@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>现代密码学 on zeroy的网络小窝</title>
+    <link>http://localhost:1313/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/</link>
+    <description>Recent content in 现代密码学 on zeroy的网络小窝</description>
+    <image>
+      <url>http://localhost:1313/ava.jpeg</url>
+      <link>http://localhost:1313/ava.jpeg</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+    <webMaster>zeroy0410@gmail.com (zeroy)</webMaster>
+    <lastBuildDate>Thu, 05 Oct 2023 15:04:05 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>现代密码学 大作业 1</title>
+      <link>http://localhost:1313/posts/cryptography-programing-homework1/</link>
+      <pubDate>Thu, 05 Oct 2023 15:04:05 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/posts/cryptography-programing-homework1/</guid>
+      <description>CBC Padding Oracle 适用条件 已知iv 使用PKCS7来Padding 解密时检测到Padding错误会有回显 攻击过程 首先回顾CBC的解密过程： 不难发现，当我们</description>
+    </item>
+    
+    <item>
+      <title>mysterytwisterc3-challenge-AES key — encoded in the machine readable zone of a European ePassport</title>
+      <link>http://localhost:1313/posts/mysterytwisterc3-challenge-AES/</link>
+      <pubDate>Mon, 02 Oct 2023 15:56:57 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/posts/mysterytwisterc3-challenge-AES/</guid>
+      <description>题目大意 你收到了一个AES加密的消息（使用CBC模式，零初始化向量和01-00填充）。此外，你还收到了相应的密钥，但不幸的是，密钥的形式并不</description>
+    </item>
+    
+  </channel>
+</rss>

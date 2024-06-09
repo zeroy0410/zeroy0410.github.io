@@ -1,0 +1,1051 @@
+# 
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noodp" />
+    <title>现代密码学 大作业 1 - zeroy的网络小窝</title><meta name="Description" content="zeroy的碎碎念"><meta property="og:title" content="现代密码学 大作业 1" />
+<meta property="og:description" content="CBC Padding Oracle 适用条件 已知iv 使用PKCS7来Padding 解密时检测到Padding错误会有回显 攻击过程首先回顾CBC的解密过程： 不难发现，当我们" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/posts/cryptography-programing-homework1/" /><meta property="og:image" content="http://localhost:1313/ava.jpeg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-10-05T15:04:05+08:00" />
+<meta property="article:modified_time" content="2023-10-05T15:04:05+08:00" /><meta property="og:site_name" content="zeroy的网络小窝" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://localhost:1313/ava.jpeg"/>
+
+<meta name="twitter:title" content="现代密码学 大作业 1"/>
+<meta name="twitter:description" content="CBC Padding Oracle 适用条件 已知iv 使用PKCS7来Padding 解密时检测到Padding错误会有回显 攻击过程首先回顾CBC的解密过程： 不难发现，当我们"/>
+<meta name="application-name" content="DoIt">
+<meta name="apple-mobile-web-app-title" content="DoIt">
+
+<meta name="theme-color" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://localhost:1313/posts/cryptography-programing-homework1/" /><link rel="prev" href="http://localhost:1313/posts/mysterytwisterc3-challenge-AES/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/color.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/fontawesome-free/all.min.css">
+        <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"></noscript><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/animate/animate.min.css">
+        <noscript><link rel="stylesheet" href="/lib/animate/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "现代密码学 大作业 1",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "http:\/\/localhost:1313\/posts\/cryptography-programing-homework1\/"
+        },"genre": "posts","wordcount":  2363 ,
+        "url": "http:\/\/localhost:1313\/posts\/cryptography-programing-homework1\/","datePublished": "2023-10-05T15:04:05+08:00","dateModified": "2023-10-05T15:04:05+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "zeroy"
+            },"description": ""
+    }
+    </script><script src="//instant.page/5.1.1" defer type="module" integrity="sha384-MWfCL6g1OTGsbSwfuMHc8+8J2u71/LA8dzlIN3ycajckxuZZmF+DNjdm7O6H3PSq"></script>
+</head>
+
+<body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">
+        function setTheme(theme) {document.body.setAttribute('theme', theme); document.documentElement.style.setProperty('color-scheme', theme === 'light' ? 'light' : 'dark'); window.theme = theme; }
+        function saveTheme(theme) {window.localStorage && localStorage.setItem('theme', theme);}
+        function getMeta(metaName) {const metas = document.getElementsByTagName('meta'); for (let i = 0; i < metas.length; i++) if (metas[i].getAttribute('name') === metaName) return metas[i]; return '';}
+        if (window.localStorage && localStorage.getItem('theme')) {let theme = localStorage.getItem('theme');theme === 'light' || theme === 'dark' || theme === 'black' ? setTheme(theme) : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light')); } else { if ('auto' === 'light' || 'auto' === 'dark' || 'auto' === 'black') setTheme('auto'), saveTheme('auto'); else saveTheme('auto'), window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? setTheme('dark') : setTheme('light');}
+        let metaColors = {'light': '#f8f8f8','dark': '#252627','black': '#000000'}
+        getMeta('theme-color').content = metaColors[document.body.getAttribute('theme')];
+    </script>
+    <div id="back-to-top"></div>
+    <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="zeroy的网络小窝"><img
+        class="logo"
+        loading="lazy"
+        src="/ava.jpeg"
+        srcset="/ava.jpeg, /ava.jpeg 1.5x, /ava.jpeg 2x"
+        sizes="auto"
+        alt="/ava.jpeg"
+        title="/ava.jpeg" >zeroy的网络小窝</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="#" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="#" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="zeroy的网络小窝"><img
+        class="logo"
+        loading="lazy"
+        src="/ava.jpeg"
+        srcset="/ava.jpeg, /ava.jpeg 1.5x, /ava.jpeg 2x"
+        sizes="auto"
+        alt="/ava.jpeg"
+        title="/ava.jpeg" >zeroy的网络小窝</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="#" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="#" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="#" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about" title="">关于</a><a href="#" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+            <div class="container"><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle", "normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC", "false")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">现代密码学 大作业 1</h1><div class="post-meta">
+            <div class="post-meta-line">
+                <span class="post-author"><i class="author fas fa-user-circle fa-fw"></i><a href="zeroy.site" title="Author" rel=" author" class="author">zeroy</a>
+                </span>&nbsp;<span class="post-category">收录于 </span>&nbsp;<span class="post-category">类别 <a href="/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/"><i class="far fa-folder fa-fw"></i>现代密码学</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2023-10-05">2023-10-05</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime="2023-10-05">2023-10-05</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2363 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#cbc-padding-oracle">CBC Padding Oracle</a>
+          <ul>
+            <li><a href="#适用条件">适用条件</a></li>
+            <li><a href="#攻击过程">攻击过程</a></li>
+            <li><a href="#特殊情况">特殊情况</a></li>
+            <li><a href="#代码">代码</a></li>
+          </ul>
+        </li>
+        <li><a href="#break-random-access-readwrite-aes-ctr">Break &ldquo;random access read/write&rdquo; AES CTR</a>
+          <ul>
+            <li><a href="#适用条件-1">适用条件</a></li>
+            <li><a href="#攻击过程-1">攻击过程</a></li>
+            <li><a href="#代码-1">代码</a></li>
+          </ul>
+        </li>
+        <li><a href="#ctr-bitflipping">CTR bitflipping</a>
+          <ul>
+            <li><a href="#适用场景">适用场景</a></li>
+            <li><a href="#场景流程">场景流程</a></li>
+            <li><a href="#攻击流程">攻击流程</a></li>
+            <li><a href="#代码cbc">代码（CBC）</a></li>
+            <li><a href="#代码ctr">代码（CTR）</a></li>
+          </ul>
+        </li>
+        <li><a href="#recover-the-key-from-cbc-with-ivkey">Recover the key from CBC with IV=Key</a>
+          <ul>
+            <li><a href="#前提条件">前提条件</a></li>
+            <li><a href="#攻击流程-1">攻击流程</a></li>
+            <li><a href="#代码-2">代码</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h3 id="cbc-padding-oracle" class="headerLink">
+    <a href="#cbc-padding-oracle" class="header-mark"></a>CBC Padding Oracle</h3><h4 id="适用条件" class="headerLink">
+    <a href="#%e9%80%82%e7%94%a8%e6%9d%a1%e4%bb%b6" class="header-mark"></a>适用条件</h4><ol>
+<li>已知iv</li>
+<li>使用PKCS7来Padding</li>
+<li>解密时检测到Padding错误会有回显</li>
+</ol>
+<h4 id="攻击过程" class="headerLink">
+    <a href="#%e6%94%bb%e5%87%bb%e8%bf%87%e7%a8%8b" class="header-mark"></a>攻击过程</h4><p>首先回顾CBC的解密过程：</p>
+<p><figure><a class="lightgallery" href="cbc_decryption.png" title="cbc_decryption.png" data-thumbnail="cbc_decryption.png">
+        <img
+            
+            loading="lazy"
+            src="cbc_decryption.png"
+            srcset="cbc_decryption.png, cbc_decryption.png 1.5x, cbc_decryption.png 2x"
+            sizes="auto"
+            alt="cbc_decryption.png">
+    </a></figure></p>
+<p>不难发现，当我们可以控制当前Block的上一个Ciphertext时，有以下式子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">plaintext_block = AES_DEC(ciphertext_block) XOR user_controlled_value
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>又由于plaintext_block合法时末尾仅可能为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">01
+</span></span><span class="line"><span class="cl">02 02
+</span></span><span class="line"><span class="cl">03 03 03
+</span></span><span class="line"><span class="cl">04 04 04 04
+</span></span><span class="line"><span class="cl">05 05 05 05 05
+</span></span><span class="line"><span class="cl">...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>因此，可以采用<strong>逐位试探</strong>的方法，从低位到高位，调整user_controlled_value，使得plaintext_block通过PKCS7校验。</p>
+<p>然后，对于当前这位，假设目前试到了01，那么有：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">01 = AES_DEC(ciphertext_block) XOR user_controlled_bytes
+</span></span><span class="line"><span class="cl">=&gt; 
+</span></span><span class="line"><span class="cl">real_plaintext_block = AES_DEC(ciphertext_block) XOR user_controlled_bytes XOR user_controlled_bytes XOR real_iv = 01 XOR user_controlled_bytes XOR real_iv
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其它位以此类推即可。</p>
+<h4 id="特殊情况" class="headerLink">
+    <a href="#%e7%89%b9%e6%ae%8a%e6%83%85%e5%86%b5" class="header-mark"></a>特殊情况</h4><p>需要注意的是，还可能存在特殊情况，假设在试01的时候，这串字符串的后三位是这样的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">04 04 04 ?
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>那么这位数最后解密的结果为01和04都能够通过PKCS7校验。遇到这种情况就要一个个试，假设是01或者04，再往后找一位，如果后一位能找到合法解，就采用当前解。</p>
+<h4 id="代码" class="headerLink">
+    <a href="#%e4%bb%a3%e7%a0%81" class="header-mark"></a>代码</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto</span> <span class="kn">import</span> <span class="n">Random</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Cipher.AES</span> <span class="kn">import</span> <span class="n">block_size</span><span class="p">,</span> <span class="n">key_size</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">base64</span> <span class="kn">import</span> <span class="n">b64decode</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">strings</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;MDAwMDAwTm93IHRoYXQgdGhlIHBhcnR5IGlzIGp1bXBpbmc=&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;MDAwMDAxV2l0aCB0aGUgYmFzcyBraWNrZWQgaW4gYW5kIHRoZSBWZWdhJ3MgYXJlIHB1bXBpbic=&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;MDAwMDAyUXVpY2sgdG8gdGhlIHBvaW50LCB0byB0aGUgcG9pbnQsIG5vIGZha2luZw==&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;MDAwMDAzQ29va2luZyBNQydzIGxpa2UgYSBwb3VuZCBvZiBiYWNvbg==&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;MDAwMDA0QnVybmluZyAnZW0sIGlmIHlvdSBhaW4ndCBxdWljayBhbmQgbmltYmxl&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;MDAwMDA1SSBnbyBjcmF6eSB3aGVuIEkgaGVhciBhIGN5bWJhbA==&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;MDAwMDA2QW5kIGEgaGlnaCBoYXQgd2l0aCBhIHNvdXBlZCB1cCB0ZW1wbw==&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;MDAwMDA3SSdtIG9uIGEgcm9sbCwgaXQncyB0aW1lIHRvIGdvIHNvbG8=&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;MDAwMDA4b2xsaW4nIGluIG15IGZpdmUgcG9pbnQgb2g=&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;MDAwMDA5aXRoIG15IHJhZy10b3AgZG93biBzbyBteSBoYWlyIGNhbiBibG93&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Oracle</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">possible_inputs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">iv</span> <span class="o">=</span> <span class="n">Random</span><span class="o">.</span><span class="n">new</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">block_size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">Random</span><span class="o">.</span><span class="n">new</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">key_size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_possible_inputs</span> <span class="o">=</span> <span class="n">possible_inputs</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">get_encrypted_message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">chosen_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_possible_inputs</span><span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_possible_inputs</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">aes_cbc_encrypt</span><span class="p">(</span><span class="n">chosen_input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">iv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">decrypt_and_check_padding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">,</span> <span class="n">iv</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">plaintext</span> <span class="o">=</span> <span class="n">aes_cbc_decrypt</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">,</span> <span class="n">iv</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">is_pkcs7_padded</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">create_forced_previous_block</span><span class="p">(</span><span class="n">iv</span><span class="p">,</span> <span class="n">guessed_byte</span><span class="p">,</span> <span class="n">padding_len</span><span class="p">,</span> <span class="n">found_plaintext</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">index_of_forced_char</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">iv</span><span class="p">)</span> <span class="o">-</span> <span class="n">padding_len</span>
+</span></span><span class="line"><span class="cl">    <span class="n">forced_character</span> <span class="o">=</span> <span class="n">iv</span><span class="p">[</span><span class="n">index_of_forced_char</span><span class="p">]</span> <span class="o">^</span> <span class="n">guessed_byte</span> <span class="o">^</span> <span class="n">padding_len</span>
+</span></span><span class="line"><span class="cl">    <span class="n">output</span> <span class="o">=</span> <span class="n">iv</span><span class="p">[:</span><span class="n">index_of_forced_char</span><span class="p">]</span> <span class="o">+</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">forced_character</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">m</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">block_size</span> <span class="o">-</span> <span class="n">padding_len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">block_size</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">forced_character</span> <span class="o">=</span> <span class="n">iv</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">^</span> <span class="n">found_plaintext</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">^</span> <span class="n">padding_len</span>
+</span></span><span class="line"><span class="cl">        <span class="n">output</span> <span class="o">+=</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">forced_character</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">m</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">output</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">attack_padding_oracle</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="n">oracle</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">plaintext</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext_blocks</span> <span class="o">=</span> <span class="p">[</span><span class="n">oracle</span><span class="o">.</span><span class="n">iv</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">ciphertext</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">block_size</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">),</span> <span class="n">block_size</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ciphertext_blocks</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">plaintext_block</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span> 
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">block_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">padding_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">plaintext_block</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">            <span class="n">possible_last_bytes</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="n">forced_iv</span> <span class="o">=</span> <span class="n">create_forced_previous_block</span><span class="p">(</span><span class="n">ciphertext_blocks</span><span class="p">[</span><span class="n">c</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">j</span><span class="p">,</span> <span class="n">padding_len</span><span class="p">,</span> <span class="n">plaintext_block</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="n">oracle</span><span class="o">.</span><span class="n">decrypt_and_check_padding</span><span class="p">(</span><span class="n">ciphertext_blocks</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">forced_iv</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">possible_last_bytes</span> <span class="o">+=</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">j</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">possible_last_bytes</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">for</span> <span class="n">byte</span> <span class="ow">in</span> <span class="n">possible_last_bytes</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">forced_iv</span> <span class="o">=</span> <span class="n">create_forced_previous_block</span><span class="p">(</span><span class="n">ciphertext_blocks</span><span class="p">[</span><span class="n">c</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">j</span><span class="p">,</span> <span class="n">padding_len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                                                                 <span class="nb">bytes</span><span class="p">([</span><span class="n">byte</span><span class="p">])</span> <span class="o">+</span> <span class="n">plaintext_block</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                        <span class="k">if</span> <span class="n">oracle</span><span class="o">.</span><span class="n">decrypt_and_check_padding</span><span class="p">(</span><span class="n">ciphertext_blocks</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">forced_iv</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">possible_last_bytes</span> <span class="o">=</span> <span class="p">[</span><span class="n">byte</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">                            <span class="k">break</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">plaintext_block</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">possible_last_bytes</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> <span class="o">+</span> <span class="n">plaintext_block</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">plaintext</span> <span class="o">+=</span> <span class="n">plaintext_block</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">pkcs7_unpad</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">strings</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">oracle</span> <span class="o">=</span> <span class="n">Oracle</span><span class="p">([</span><span class="n">string</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span> <span class="o">=</span> <span class="n">attack_padding_oracle</span><span class="p">(</span><span class="n">oracle</span><span class="o">.</span><span class="n">get_encrypted_message</span><span class="p">(),</span> <span class="n">oracle</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">b64decode</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">decode</span><span class="p">()))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="break-random-access-readwrite-aes-ctr" class="headerLink">
+    <a href="#break-random-access-readwrite-aes-ctr" class="header-mark"></a>Break &ldquo;random access read/write&rdquo; AES CTR</h3><h4 id="适用条件-1" class="headerLink">
+    <a href="#%e9%80%82%e7%94%a8%e6%9d%a1%e4%bb%b6-1" class="header-mark"></a>适用条件</h4><p>由于CTR模式的特性，导致CTR模式的加解密算法是相同的，同时，CTR模式是可并行化处理的，也就意味着CTR模式可以访问其中任意一个块进行加密或者解密。</p>
+<ol>
+<li>多次的加密解密</li>
+</ol>
+<h4 id="攻击过程-1" class="headerLink">
+    <a href="#%e6%94%bb%e5%87%bb%e8%bf%87%e7%a8%8b-1" class="header-mark"></a>攻击过程</h4><p>核心：将Ciphertext再跑一遍算法，得到的就是Plaintext。</p>
+<p>注意使用offset计算首块和尾块的处理细节。</p>
+<h4 id="代码-1" class="headerLink">
+    <a href="#%e4%bb%a3%e7%a0%81-1" class="header-mark"></a>代码</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">base64</span> <span class="kn">import</span> <span class="n">b64decode</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto</span> <span class="kn">import</span> <span class="n">Random</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">AES</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Oracle</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">Random</span><span class="o">.</span><span class="n">new</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">AES</span><span class="o">.</span><span class="n">key_size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">aes_ctr</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">edit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">new_text</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">start_block</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">offset</span> <span class="o">/</span> <span class="n">AES</span><span class="o">.</span><span class="n">block_size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">end_block</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">offset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_text</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">AES</span><span class="o">.</span><span class="n">block_size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">keystream</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_ECB</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_block</span><span class="p">,</span> <span class="n">end_block</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="n">keystream</span> <span class="o">+=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s1">&#39;&lt;QQ&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">block</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">key_offset</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">%</span> <span class="n">AES</span><span class="o">.</span><span class="n">block_size</span>
+</span></span><span class="line"><span class="cl">        <span class="n">keystream</span> <span class="o">=</span> <span class="n">keystream</span><span class="p">[</span><span class="n">key_offset</span><span class="p">:</span><span class="n">key_offset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_text</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">insert</span> <span class="o">=</span> <span class="n">xor_data</span><span class="p">(</span><span class="n">new_text</span><span class="p">,</span> <span class="n">keystream</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">ciphertext</span><span class="p">[:</span><span class="n">offset</span><span class="p">]</span> <span class="o">+</span> <span class="n">insert</span> <span class="o">+</span> <span class="n">ciphertext</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">insert</span><span class="p">):]</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">break_random_access_read_write_aes_ctr</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="n">encryption_oracle</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">encryption_oracle</span><span class="o">.</span><span class="n">edit</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;25.txt&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">input_file</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">binary_data</span> <span class="o">=</span> <span class="n">b64decode</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">plaintext</span> <span class="o">=</span> <span class="n">aes_ecb_decrypt</span><span class="p">(</span><span class="n">binary_data</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;YELLOW SUBMARINE&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">oracle</span> <span class="o">=</span> <span class="n">Oracle</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">oracle</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cracked_plaintext</span> <span class="o">=</span> <span class="n">break_random_access_read_write_aes_ctr</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="n">oracle</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="n">plaintext</span> <span class="o">==</span> <span class="n">cracked_plaintext</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">cracked_plaintext</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="ctr-bitflipping" class="headerLink">
+    <a href="#ctr-bitflipping" class="header-mark"></a>CTR bitflipping</h3><p>它的前身是CBC bitflipping，会CBC bitflipping，自然会这个，所以下面先讲CBC bitflipping。</p>
+<h4 id="适用场景" class="headerLink">
+    <a href="#%e9%80%82%e7%94%a8%e5%9c%ba%e6%99%af" class="header-mark"></a>适用场景</h4><p>改变字符串中的特定字符。</p>
+<h4 id="场景流程" class="headerLink">
+    <a href="#%e5%9c%ba%e6%99%af%e6%b5%81%e7%a8%8b" class="header-mark"></a>场景流程</h4><p>生成随机 AES 密钥。</p>
+<p>将填充代码和 CBC 代码结合起来编写两个函数。</p>
+<p>第一个函数应该接受任意输入字符串，并在字符串前面添加：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">comment1=cooking%20MCs;userdata=
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>后面添加：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">;comment2=%20like%20a%20pound%20of%20bacon
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>该函数应该去除“;” 和“=”字符。</p>
+<p>然后，该函数应将输入填充为 16 字节 AES 块长度，并使用随机 AES 密钥对其进行加密。</p>
+<p>第二个函数应该解密字符串并查找字符“;admin=true;” 。</p>
+<p>根据字符串是否存在返回 true 或 false。</p>
+<h4 id="攻击流程" class="headerLink">
+    <a href="#%e6%94%bb%e5%87%bb%e6%b5%81%e7%a8%8b" class="header-mark"></a>攻击流程</h4><p>攻击的关键在于，插入的字符串中不能含有&quot;;&ldquo;和&rdquo;=&quot;，因此只能想办法绕过。</p>
+<p>方法是，先将&quot;?admin?true&quot;加密，由于我们可以控制iv，并且已知明文为&quot;?&quot;，那么只需要将</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">iv XOR &#34;?&#34; XOR &#34;?&#34;/&#34;=&#34;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>就可以得到我们想要的解密结果。</p>
+<h4 id="代码cbc" class="headerLink">
+    <a href="#%e4%bb%a3%e7%a0%81cbc" class="header-mark"></a>代码（CBC）</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">aes_cbc_encrypt</span><span class="p">,</span> <span class="n">aes_cbc_decrypt</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto</span> <span class="kn">import</span> <span class="n">Random</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">AES</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Oracle</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">Random</span><span class="o">.</span><span class="n">new</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">AES</span><span class="o">.</span><span class="n">key_size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_iv</span> <span class="o">=</span> <span class="n">Random</span><span class="o">.</span><span class="n">new</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">AES</span><span class="o">.</span><span class="n">block_size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span> <span class="o">=</span> <span class="s2">&#34;comment1=cooking%20MCs;userdata=&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span> <span class="o">=</span> <span class="s2">&#34;;comment2=</span><span class="si">%20li</span><span class="s2">ke</span><span class="si">%20a</span><span class="s2">%20pound</span><span class="si">%20o</span><span class="s2">f%20bacon&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">        <span class="n">plaintext</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span> <span class="o">+</span> <span class="n">data</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">aes_cbc_encrypt</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">decrypt_and_check_admin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data</span> <span class="o">=</span> <span class="n">aes_cbc_decrypt</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="sa">b</span><span class="s1">&#39;;admin=true;&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;You have successfully logged in!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Something wrong!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">cbc_bit_flip</span><span class="p">(</span><span class="n">encryption_oracle</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">block_length</span> <span class="o">=</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">    <span class="n">prefix_length</span> <span class="o">=</span> <span class="mi">32</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">additional_prefix_bytes</span> <span class="o">=</span> <span class="p">(</span><span class="n">block_length</span> <span class="o">-</span> <span class="p">(</span><span class="n">prefix_length</span> <span class="o">%</span> <span class="n">block_length</span><span class="p">))</span> <span class="o">%</span> <span class="n">block_length</span>
+</span></span><span class="line"><span class="cl">    <span class="n">total_prefix_length</span> <span class="o">=</span> <span class="n">prefix_length</span> <span class="o">+</span> <span class="n">additional_prefix_bytes</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">plaintext</span> <span class="o">=</span> <span class="s2">&#34;?admin?true&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">additional_plaintext_bytes</span> <span class="o">=</span> <span class="p">(</span><span class="n">block_length</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span> <span class="o">%</span> <span class="n">block_length</span><span class="p">))</span> <span class="o">%</span> <span class="n">block_length</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">final_plaintext</span> <span class="o">=</span> <span class="n">additional_plaintext_bytes</span> <span class="o">*</span> <span class="s1">&#39;?&#39;</span> <span class="o">+</span> <span class="n">plaintext</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">encryption_oracle</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">additional_prefix_bytes</span> <span class="o">*</span> <span class="s1">&#39;?&#39;</span> <span class="o">+</span> <span class="n">final_plaintext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;ciphertext: &#34;</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">semicolon</span> <span class="o">=</span> <span class="n">ciphertext</span><span class="p">[</span><span class="n">total_prefix_length</span> <span class="o">-</span> <span class="mi">11</span><span class="p">]</span> <span class="o">^</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">)</span> <span class="o">^</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">equals</span> <span class="o">=</span> <span class="n">ciphertext</span><span class="p">[</span><span class="n">total_prefix_length</span> <span class="o">-</span> <span class="mi">5</span><span class="p">]</span> <span class="o">^</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">)</span> <span class="o">^</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">forced_ciphertext</span> <span class="o">=</span> <span class="n">ciphertext</span><span class="p">[:</span><span class="n">total_prefix_length</span> <span class="o">-</span> <span class="mi">11</span><span class="p">]</span> <span class="o">+</span> <span class="nb">bytes</span><span class="p">([</span><span class="n">semicolon</span><span class="p">])</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="cl">                        <span class="n">ciphertext</span><span class="p">[</span><span class="n">total_prefix_length</span> <span class="o">-</span> <span class="mi">10</span><span class="p">:</span> <span class="n">total_prefix_length</span> <span class="o">-</span> <span class="mi">5</span><span class="p">]</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="cl">                        <span class="nb">bytes</span><span class="p">([</span><span class="n">equals</span><span class="p">])</span> <span class="o">+</span> <span class="n">ciphertext</span><span class="p">[</span><span class="n">total_prefix_length</span> <span class="o">-</span> <span class="mi">4</span><span class="p">:]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">forced_ciphertext</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">encryption_oracle</span> <span class="o">=</span> <span class="n">Oracle</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">forced_ciphertext</span> <span class="o">=</span> <span class="n">cbc_bit_flip</span><span class="p">(</span><span class="n">encryption_oracle</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">encryption_oracle</span><span class="o">.</span><span class="n">decrypt_and_check_admin</span><span class="p">(</span><span class="n">forced_ciphertext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="代码ctr" class="headerLink">
+    <a href="#%e4%bb%a3%e7%a0%81ctr" class="header-mark"></a>代码（CTR）</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">aes_ctr</span><span class="p">,</span> <span class="n">xor_data</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto</span> <span class="kn">import</span> <span class="n">Random</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">AES</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Oracle</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">Random</span><span class="o">.</span><span class="n">new</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">AES</span><span class="o">.</span><span class="n">key_size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_nonce</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">32</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>        
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span> <span class="o">=</span> <span class="s2">&#34;comment1=cooking%20MCs;userdata=&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span> <span class="o">=</span> <span class="s2">&#34;;comment2=</span><span class="si">%20li</span><span class="s2">ke</span><span class="si">%20a</span><span class="s2">%20pound</span><span class="si">%20o</span><span class="s2">f%20bacon&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">plaintext</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span> <span class="o">+</span> <span class="n">data</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">aes_ctr</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nonce</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">decrypt_and_check_admin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data</span> <span class="o">=</span> <span class="n">aes_ctr</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nonce</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="sa">b</span><span class="s1">&#39;;admin=true;&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;You have successfully logged in!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Something wrong!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">ctr_bit_flip</span><span class="p">(</span><span class="n">encryption_oracle</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">block_length</span> <span class="o">=</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">    <span class="n">prefix_length</span> <span class="o">=</span> <span class="mi">32</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">plaintext</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;?admin?true&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">encryption_oracle</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">goal_text</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;;admin=true&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">insert</span> <span class="o">=</span> <span class="n">xor_data</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="n">goal_text</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">forced_ciphertext</span> <span class="o">=</span> <span class="n">ciphertext</span><span class="p">[:</span><span class="n">prefix_length</span><span class="p">]</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="cl">                        <span class="n">xor_data</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">[</span><span class="n">prefix_length</span><span class="p">:</span><span class="n">prefix_length</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)],</span> <span class="n">insert</span><span class="p">)</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="cl">                        <span class="n">ciphertext</span><span class="p">[</span><span class="n">prefix_length</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">):]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">forced_ciphertext</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">encryption_oracle</span> <span class="o">=</span> <span class="n">Oracle</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">forced_ciphertext</span> <span class="o">=</span> <span class="n">ctr_bit_flip</span><span class="p">(</span><span class="n">encryption_oracle</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">encryption_oracle</span><span class="o">.</span><span class="n">decrypt_and_check_admin</span><span class="p">(</span><span class="n">forced_ciphertext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="recover-the-key-from-cbc-with-ivkey" class="headerLink">
+    <a href="#recover-the-key-from-cbc-with-ivkey" class="header-mark"></a>Recover the key from CBC with IV=Key</h3><p><a href="https://bernardoamc.com/ecb-iv-as-key/" target="_blank" rel="noopener noreferrer">参考链接</a></p>
+<h4 id="前提条件" class="headerLink">
+    <a href="#%e5%89%8d%e6%8f%90%e6%9d%a1%e4%bb%b6" class="header-mark"></a>前提条件</h4><ol>
+<li>加密程序使用相同的IV和KEY</li>
+<li>解密失败时，服务器抛出错误，并将解码的消息反映给攻击者</li>
+</ol>
+<h4 id="攻击流程-1" class="headerLink">
+    <a href="#%e6%94%bb%e5%87%bb%e6%b5%81%e7%a8%8b-1" class="header-mark"></a>攻击流程</h4><ol>
+<li>制作长度至少为3个块大小的明文</li>
+<li>加密明文，得到密文</li>
+<li>让密文的第二个块全0</li>
+<li>让密文的第三个块和第一个块一样</li>
+<li>解密该密文，得到认证失败的明文</li>
+<li>将第一段得到的明文和第三段得到的明文XOR</li>
+<li>得到KEY！</li>
+</ol>
+<p><figure><a class="lightgallery" href="cbc_decryption.png" title="cbc_decryption.png" data-thumbnail="cbc_decryption.png">
+        <img
+            
+            loading="lazy"
+            src="cbc_decryption.png"
+            srcset="cbc_decryption.png, cbc_decryption.png 1.5x, cbc_decryption.png 2x"
+            sizes="auto"
+            alt="cbc_decryption.png">
+    </a></figure></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">first_block_ciphertext = AES_Decrypt(first_block_ciphertext, KEY) XOR KEY
+</span></span><span class="line"><span class="cl">third_block_ciphertext = AES_Decrypt(first_block_ciphertext, KEY) XOR second_block_ciphertext
+</span></span><span class="line"><span class="cl">=&gt;
+</span></span><span class="line"><span class="cl">KEY = AES_Decrypt(first_block_ciphertext, KEY) XOR KEY XOR AES_Decrypt(third_block_ciphertext, KEY) XOR second_block_ciphertext
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="代码-2" class="headerLink">
+    <a href="#%e4%bb%a3%e7%a0%81-2" class="header-mark"></a>代码</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto</span> <span class="kn">import</span> <span class="n">Random</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Oracle</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">Random</span><span class="o">.</span><span class="n">new</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">AES</span><span class="o">.</span><span class="n">key_size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_iv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span> <span class="o">=</span> <span class="s2">&#34;comment1=cooking%20MCs;userdata=&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span> <span class="o">=</span> <span class="s2">&#34;;comment2=</span><span class="si">%20li</span><span class="s2">ke</span><span class="si">%20a</span><span class="s2">%20pound</span><span class="si">%20o</span><span class="s2">f%20bacon&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">        <span class="n">plaintext</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span> <span class="o">+</span> <span class="n">data</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">aes_cbc_encrypt</span><span class="p">(</span><span class="n">plaintext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">decrypt_and_check_admin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">plaintext</span> <span class="o">=</span> <span class="n">aes_cbc_decrypt</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">c</span> <span class="o">&lt;</span> <span class="mi">128</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&#34;The message is not valid&#34;</span><span class="p">,</span> <span class="n">plaintext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="sa">b</span><span class="s1">&#39;;admin=true;&#39;</span> <span class="ow">in</span> <span class="n">plaintext</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;You have successfully logged in!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Something wrong!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_key_from_insecure_cbc</span><span class="p">(</span><span class="n">encryption_oracle</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">block_length</span> <span class="o">=</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">    <span class="n">prefix_length</span> <span class="o">=</span> <span class="mi">32</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">p_1</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span> <span class="o">*</span> <span class="n">block_length</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p_2</span> <span class="o">=</span> <span class="s1">&#39;B&#39;</span> <span class="o">*</span> <span class="n">block_length</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p_3</span> <span class="o">=</span> <span class="s1">&#39;C&#39;</span> <span class="o">*</span> <span class="n">block_length</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">encryption_oracle</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">p_1</span> <span class="o">+</span> <span class="n">p_2</span> <span class="o">+</span> <span class="n">p_3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">forced_ciphertext</span> <span class="o">=</span> <span class="n">ciphertext</span><span class="p">[</span><span class="n">prefix_length</span><span class="p">:</span><span class="n">prefix_length</span> <span class="o">+</span> <span class="n">block_length</span><span class="p">]</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span> <span class="o">*</span> <span class="n">block_length</span> <span class="o">+</span> \
+</span></span><span class="line"><span class="cl">                        <span class="n">ciphertext</span><span class="p">[</span><span class="n">prefix_length</span><span class="p">:</span><span class="n">prefix_length</span> <span class="o">+</span> <span class="n">block_length</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">encryption_oracle</span><span class="o">.</span><span class="n">decrypt_and_check_admin</span><span class="p">(</span><span class="n">forced_ciphertext</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">forced_plaintext</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">xor_data</span><span class="p">(</span><span class="n">forced_plaintext</span><span class="p">[:</span><span class="n">block_length</span><span class="p">],</span> <span class="n">forced_plaintext</span><span class="p">[</span><span class="o">-</span><span class="n">block_length</span><span class="p">:])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&#34;Was not able to hack the key&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">encryption_oracle</span> <span class="o">=</span> <span class="n">Oracle</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">hacked_key</span> <span class="o">=</span> <span class="n">get_key_from_insecure_cbc</span><span class="p">(</span><span class="n">encryption_oracle</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">encryption_oracle</span><span class="o">.</span><span class="n">_key</span> <span class="o">==</span> <span class="n">hacked_key</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Hacked!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Something Wrong!&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">assert</span> <span class="n">encryption_oracle</span><span class="o">.</span><span class="n">_key</span> <span class="o">==</span> <span class="n">hacked_key</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></div>
+
+        
+
+<div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2023-10-05</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span><a class="link-to-mardown" href=/posts/cryptography-programing-homework1/index.md target="_blank" rel="noopener noreferrer">阅读原始文档</a>
+                    </span></div>
+            <div class="post-info-share">
+                <span><a href="#" title="分享到 Twitter" data-sharer="twitter" data-url="http://localhost:1313/posts/cryptography-programing-homework1/" data-title="现代密码学 大作业 1"><i class="fab fa-twitter fa-fw"></i></a><a href="#" title="分享到 微博" data-sharer="weibo" data-url="http://localhost:1313/posts/cryptography-programing-homework1/" data-title="现代密码学 大作业 1"><i class="fab fa-weibo fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/mysterytwisterc3-challenge-AES/" class="prev" rel="prev" title="mysterytwisterc3-challenge-AES key — encoded in the machine readable zone of a European ePassport"><i class="fas fa-angle-left fa-fw"></i>mysterytwisterc3-challenge-AES key — encoded in the machine readable zone of a European ePassport</a></div>
+</div>
+</article></div>
+        </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">
+                    由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer" title="Hugo 0.111.3">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href="https://github.com/HEIGE-PCloud/DoIt" target="_blank" rel="noopener noreferrer" title="DoIt 0.3.0"><i class="far fa-edit fa-fw"></i> DoIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="zeroy.site" target="_blank" rel="noopener noreferrer">zeroy</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+            <div class="footer-line"></div>
+            <div class="footer-line">
+            </div>
+        </div></footer></div>
+
+    <div id="fixed-buttons"><a href="#back-to-top" id="back-to-top-button" class="fixed-button" title="回到顶部">
+            <i class="fas fa-arrow-up fa-fw"></i>
+        </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+            <i class="fas fa-comment fa-fw"></i>
+        </a>
+    </div><div class="assets"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/lib/katex/copy-tex.min.css">
+        <noscript><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"></noscript><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/index.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"没有找到结果","snippetLength":50,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"sharerjs":true,"table":{"sort":true}};</script><script type="text/javascript" src="/lib/tablesort/tablesort.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js" defer></script><script type="text/javascript" src="/lib/katex/auto-render.min.js" defer></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js" defer></script><script type="text/javascript" src="/lib/katex/mhchem.min.js" defer></script><script type="text/javascript" src="/js/katex.min.js" defer></script><script type="text/javascript" src="/js/theme.min.js" defer></script></div>
+</body>
+
+</html>

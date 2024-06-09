@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Golang-Web on zeroy的网络小窝</title>
+    <link>http://localhost:1313/categories/golang-web/</link>
+    <description>Recent content in Golang-Web on zeroy的网络小窝</description>
+    <image>
+      <url>http://localhost:1313/ava.jpeg</url>
+      <link>http://localhost:1313/ava.jpeg</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+    <webMaster>zeroy0410@gmail.com (zeroy)</webMaster>
+    <lastBuildDate>Fri, 11 Feb 2022 16:31:25 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/golang-web/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Golang|Gin Web development for Beginners</title>
+      <link>http://localhost:1313/articles/Golang-web1/</link>
+      <pubDate>Fri, 11 Feb 2022 16:31:25 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/Golang-web1/</guid>
+      <description>自带的net/http库的使用 http库提供了HTTP服务的用户端和服务端的实现。 官方文档 Go语言基础之net/http | 李文周的博客 (liwenzhou.com) 示例</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>高性能并行编程与优化 on zeroy的网络小窝</title>
+    <link>http://localhost:1313/categories/%E9%AB%98%E6%80%A7%E8%83%BD%E5%B9%B6%E8%A1%8C%E7%BC%96%E7%A8%8B%E4%B8%8E%E4%BC%98%E5%8C%96/</link>
+    <description>Recent content in 高性能并行编程与优化 on zeroy的网络小窝</description>
+    <image>
+      <url>http://localhost:1313/ava.jpeg</url>
+      <link>http://localhost:1313/ava.jpeg</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+    <webMaster>zeroy0410@gmail.com (zeroy)</webMaster>
+    <lastBuildDate>Sat, 01 Apr 2023 20:16:15 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/%E9%AB%98%E6%80%A7%E8%83%BD%E5%B9%B6%E8%A1%8C%E7%BC%96%E7%A8%8B%E4%B8%8E%E4%BC%98%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>《高性能并行编程与优化1 学C&#43;&#43;从CMake学起》笔记</title>
+      <link>http://localhost:1313/posts/parallels101_1/</link>
+      <pubDate>Sat, 01 Apr 2023 20:16:15 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/posts/parallels101_1/</guid>
+      <description>课程作者：@彭于斌 课程网站：高性能并行编程与优化 CMake的命令行调用 读取当前目录的 CMakeLists.txt，并在 build 文件夹下生成 buil</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>zeroy的网络小窝</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on zeroy的网络小窝</description>
+    <image>
+      <url>http://localhost:1313/ava.jpeg</url>
+      <link>http://localhost:1313/ava.jpeg</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+    <webMaster>zeroy0410@gmail.com (zeroy)</webMaster>
+    <lastBuildDate>Sun, 09 Jun 2024 15:57:39 +0800</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go逆向研究</title>
+      <link>http://localhost:1313/go%E9%80%86%E5%90%91%E7%A0%94%E7%A9%B6/</link>
+      <pubDate>Sun, 09 Jun 2024 15:57:39 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/go%E9%80%86%E5%90%91%E7%A0%94%E7%A9%B6/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>现代密码学 大作业 1</title>
+      <link>http://localhost:1313/posts/cryptography-programing-homework1/</link>
+      <pubDate>Thu, 05 Oct 2023 15:04:05 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/posts/cryptography-programing-homework1/</guid>
+      <description>CBC Padding Oracle 适用条件 已知iv 使用PKCS7来Padding 解密时检测到Padding错误会有回显 攻击过程 首先回顾CBC的解密过程： 不难发现，当我们</description>
+    </item>
+    
+    <item>
+      <title>mysterytwisterc3-challenge-AES key — encoded in the machine readable zone of a European ePassport</title>
+      <link>http://localhost:1313/posts/mysterytwisterc3-challenge-AES/</link>
+      <pubDate>Mon, 02 Oct 2023 15:56:57 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/posts/mysterytwisterc3-challenge-AES/</guid>
+      <description>题目大意 你收到了一个AES加密的消息（使用CBC模式，零初始化向量和01-00填充）。此外，你还收到了相应的密钥，但不幸的是，密钥的形式并不</description>
+    </item>
+    
+    <item>
+      <title>GPT讲操作系统概念</title>
+      <link>http://localhost:1313/gpttallos/</link>
+      <pubDate>Sun, 18 Jun 2023 21:17:00 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/gpttallos/</guid>
+      <description>系统调用消息传递 系统调用是用户程序和操作系统内核之间的接口，用于向内核发出请求，获取系统资源和执行特权操作。系统调用通常需要传递一些参数，以</description>
+    </item>
+    
+    <item>
+      <title>《高性能并行编程与优化1 学C&#43;&#43;从CMake学起》笔记</title>
+      <link>http://localhost:1313/posts/parallels101_1/</link>
+      <pubDate>Sat, 01 Apr 2023 20:16:15 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/posts/parallels101_1/</guid>
+      <description>课程作者：@彭于斌 课程网站：高性能并行编程与优化 CMake的命令行调用 读取当前目录的 CMakeLists.txt，并在 build 文件夹下生成 buil</description>
+    </item>
+    
+    <item>
+      <title>实现一个自己的shell（操作系统Lab2）</title>
+      <link>http://localhost:1313/posts/oslab2/</link>
+      <pubDate>Fri, 31 Mar 2023 21:00:58 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/posts/oslab2/</guid>
+      <description>实验题目 Project 1—UNIX Shell and History Feature This project consists of designing a C program to serve as a shell interface that accepts user commands and then executes each command in a separate process. This project can be completed on any Linux, UNIX, or Mac OS X system. A shell interface gives the user a prompt, after which the next command is</description>
+    </item>
+    
+    <item>
+      <title>编译原理大作业报告</title>
+      <link>http://localhost:1313/articles/GraphCompiler/</link>
+      <pubDate>Tue, 22 Nov 2022 16:37:21 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/GraphCompiler/</guid>
+      <description>1. 上机题目简介 上机实验的目的 通过做上机题加深对编译器构造原理和方法的理解，巩固所学知识。 会用正规式和产生式设计简单语言的语法； 会用递归下降子</description>
+    </item>
+    
+    <item>
+      <title>Templates</title>
+      <link>http://localhost:1313/articles/templates/</link>
+      <pubDate>Fri, 20 May 2022 22:40:09 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/templates/</guid>
+      <description>@zeroy.site 读入输出挂 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 inline int read(){ char c=getchar(); int num=0,fl=1; while(c&amp;lt;48 || c&amp;gt;57){if(c==&amp;#39;-&amp;#39;)fl=-1;c=getchar();} while(c&amp;gt;=48 &amp;amp;&amp;amp; c&amp;lt;=57){num=(num&amp;lt;&amp;lt;1)+(num&amp;lt;&amp;lt;3)+(c^48);c=getchar();} return num*fl; } inline void write(int x){ if(x&amp;lt;0){ putchar(&amp;#39;-&amp;#39;); x=-x; } if(x&amp;gt;9)write(x/10); putchar(x%10+&amp;#39;0&amp;#39;); } 正向表 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 int tot=0,h[M]; struct edge{</description>
+    </item>
+    
+    <item>
+      <title>攻防世界reverse练习区WP</title>
+      <link>http://localhost:1313/articles/reverse-exercise-area/</link>
+      <pubDate>Tue, 19 Apr 2022 08:36:18 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/reverse-exercise-area/</guid>
+      <description>0x00. simple-unpack 使用exeinfope脱壳，拖进IDA shift+F12搜索字符串。 0x01. logmein 反编译得到如下代码： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22</description>
+    </item>
+    
+    <item>
+      <title>RSA算法详解</title>
+      <link>http://localhost:1313/articles/basic_RSA/</link>
+      <pubDate>Thu, 31 Mar 2022 23:09:02 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/basic_RSA/</guid>
+      <description>前置知识：欧拉定理 进阶知识：Miller Rabin算法（用于生成大素数），蒙哥马利算法（用于加快大数相乘再取模运算） 引入 历史上常规的密码加解</description>
+    </item>
+    
+    <item>
+      <title>写在Apple2022年春季发布会之后</title>
+      <link>http://localhost:1313/articles/Appleevent2022/</link>
+      <pubDate>Thu, 10 Mar 2022 20:08:25 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/Appleevent2022/</guid>
+      <description>Apple 活动 - 2022 年 3 月 - Apple (中国大陆) 2022年3月9日凌晨2点，我以当天的工图考试考爆为代价（虽然不看也会考爆），看了这场发布会。 本场发布会苹果</description>
+    </item>
+    
+    <item>
+      <title>[PWN.0x01]canary|partial overwrite|ret2libc</title>
+      <link>http://localhost:1313/articles/CTFpwn2/</link>
+      <pubDate>Mon, 07 Mar 2022 22:25:31 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/CTFpwn2/</guid>
+      <description>canary绕过 什么是canary？ canary是一种防止栈溢出的保护机制，可以在终端中使用checksec命令检查ELF文件是否开启了ca</description>
+    </item>
+    
+    <item>
+      <title>[PWN.0x00]函数调用栈结构与栈迁移</title>
+      <link>http://localhost:1313/articles/CTFpwn1/</link>
+      <pubDate>Sat, 05 Mar 2022 20:30:31 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/CTFpwn1/</guid>
+      <description>前置知识：汇编语言（第4版）前半本 注：本文适用于32位程序，示意图中上为高地址区，下为低地址区。若方框中字体为蓝色表示此处内存的地址，为黑色</description>
+    </item>
+    
+    <item>
+      <title>基于go-cqhttp的机器人NoyaBot</title>
+      <link>http://localhost:1313/articles/noya/</link>
+      <pubDate>Thu, 03 Mar 2022 10:04:25 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/noya/</guid>
+      <description>前言 2月14情人节过于孤独，于是萌生了写个qqbot玩的想法。 概述 项目地址：zeroy0410/NoyaBot (github.com) 配置完go-cqhttp的基</description>
+    </item>
+    
+    <item>
+      <title>高等数学（上） 不定积分 总结</title>
+      <link>http://localhost:1313/articles/math-integrate/</link>
+      <pubDate>Wed, 16 Feb 2022 15:38:32 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/math-integrate/</guid>
+      <description>高等数学上册(微积分)必背公式总结 - 知乎 (zhihu.com) 导数： $$ \begin{align} &amp;amp;[\cos(\omega x+\varphi)]^{(n)}=\omega^n\cos(\omega x+\frac{n\pi}{2}+\varphi)\\ &amp;amp;[\sin(\omega x+\varphi)]^{(n)}=\omega^n\sin(\omega x+\frac{n\pi}{2}+\varphi)\\ \end{align} $$ 重难点公式： $$ \begin{align} &amp;amp;\int\frac{1}{a^2+x^2}dx=\frac{1}{a}arctan\frac{x}{a}+C\\ &amp;amp;\int\frac{1}{a^2-x^2}dx=\frac{1}{2a}ln|\frac{a+x}{a-x}|+C\\ &amp;amp;\int\frac{1}{\sqrt{a^2-x^2}}dx=arcsin\frac{x}{a}+C\\ &amp;amp;\int\frac{1}{\sqrt{x^2\pm a^2}}dx=ln|x+\sqrt{x^2\pm a^2}|+C\\ &amp;amp;\int{tan\ x}dx=-ln|cos\ x|+C\\ &amp;amp;\int{cot\ x}dx=ln|sin\ x|+C\\ &amp;amp;\int{csc\ x}dx=ln|csc\ x-cot\ x|+C\\ &amp;amp;\int{sec\ x}dx=ln|sec\ x+tan\ x|+C\\ &amp;amp;\int{sec^2\ x}dx=tan\ x+C\\ &amp;amp;\int{csc^2\ x}dx=-cot\ x+C\\ &amp;amp;\int{sec\ x*tan\</description>
+    </item>
+    
+    <item>
+      <title>Golang|Gin Web development for Beginners</title>
+      <link>http://localhost:1313/articles/Golang-web1/</link>
+      <pubDate>Fri, 11 Feb 2022 16:31:25 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/Golang-web1/</guid>
+      <description>自带的net/http库的使用 http库提供了HTTP服务的用户端和服务端的实现。 官方文档 Go语言基础之net/http | 李文周的博客 (liwenzhou.com) 示例</description>
+    </item>
+    
+    <item>
+      <title>数据库基础|JDBC入门|Druid连接池的简单配置</title>
+      <link>http://localhost:1313/articles/database-for-beginner/</link>
+      <pubDate>Mon, 07 Feb 2022 22:36:05 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/database-for-beginner/</guid>
+      <description>数据库基础 增 新建数据库 1 CREATE DATABASE {{name}} 新建数据表 1 2 3 4 5 6 7 8 9 10 11 12 CREATE TABLE {{name}}( {{列名}} {{数据类型}} {{约束}}, ..... ); EXAMPLE: CREATE TABLE Users( id int primary key, name varchar(30) NOT NULL,</description>
+    </item>
+    
+    <item>
+      <title>正则表达式 For Beginner</title>
+      <link>http://localhost:1313/articles/regular-expression/</link>
+      <pubDate>Thu, 03 Feb 2022 16:00:45 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/regular-expression/</guid>
+      <description>简介 正则表达式（英语：Regular Expression，常简写为regex、regexp或RE），又称正则表示式、正则表示法、规则表达式、</description>
+    </item>
+    
+    <item>
+      <title>Flask学习1 TallyApp beta 0.9</title>
+      <link>http://localhost:1313/tallyapp1/</link>
+      <pubDate>Tue, 01 Feb 2022 19:35:39 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/tallyapp1/</guid>
+      <description>功能描述 支持注册和登录 支持简单的分类记账 支持以饼图的形式展现各个分类占总体收支的数目 支持增删改数据 支持以一定的xlsx格式导入导出数据 基本结</description>
+    </item>
+    
+    <item>
+      <title>使用PySimpleGUI库构建简单的图形界面</title>
+      <link>http://localhost:1313/articles/PySimpleGUI/</link>
+      <pubDate>Wed, 26 Jan 2022 16:49:18 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/PySimpleGUI/</guid>
+      <description>前言 python构建本地GUI程序有很多方式，比如Tkinter，wxPython，或是PyQT。但是对于学生而言，并不需要多么华丽的用户界</description>
+    </item>
+    
+    <item>
+      <title>Bilibili直播弹幕收发小程序</title>
+      <link>http://localhost:1313/articles/Bilibili-send-and-receive/</link>
+      <pubDate>Tue, 18 Jan 2022 15:32:48 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/Bilibili-send-and-receive/</guid>
+      <description>项目地址 需求分析 在Linux下直播看不到弹幕，无法与观众互动。 实现过程 第一阶段 问题可拆分为收与发。 可行性分析 B站有API能够返回一个直播间最</description>
+    </item>
+    
+    <item>
+      <title>怪罪于爱的孤独 《霍乱时期的爱情》书评</title>
+      <link>http://localhost:1313/articles/El-Amor-En-Los-Tiempos-Del-Colera/</link>
+      <pubDate>Tue, 18 Jan 2022 12:32:52 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/El-Amor-En-Los-Tiempos-Del-Colera/</guid>
+      <description>引言 我是不配谈“爱”的，因为我只是个18岁的“小孩”，并没有情感经历。 但是这本在标题就明目张胆地写着爱情的书，写书评又绕不过对”爱情“的讨论</description>
+    </item>
+    
+    <item>
+      <title>分享一些看过的书</title>
+      <link>http://localhost:1313/articles/share-books/</link>
+      <pubDate>Tue, 18 Jan 2022 12:30:40 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/share-books/</guid>
+      <description>前言 今天与人聊起看过的书，发现多年来虽然阅读量不少，却从没做过系统的整理，所以就有了这篇文章。初高中因为客观条件的限制，只能阅读纸质书，只记</description>
+    </item>
+    
+    <item>
+      <title>KKLEEEE（Unity入门项目总结）</title>
+      <link>http://localhost:1313/articles/KKLEEEE/</link>
+      <pubDate>Tue, 18 Jan 2022 12:27:17 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/KKLEEEE/</guid>
+      <description>项目构思与简介 套壳飞机大战加上模拟网络条件不佳的情况下产生的延迟（XDU校园网直呼内行）。 把飞机大战的壳换成了可莉发射蹦蹦炸弹打丘丘人（? 因</description>
+    </item>
+    
+    <item>
+      <title>友链</title>
+      <link>http://localhost:1313/links/</link>
+      <pubDate>Tue, 18 Jan 2022 12:23:38 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/links/</guid>
+      <description>翼哥哥 我的老博客 果果 Frank神 qzx神 arcturus神 Dimole神</description>
+    </item>
+    
+    <item>
+      <title>关于我</title>
+      <link>http://localhost:1313/about/</link>
+      <pubDate>Tue, 18 Jan 2022 12:10:17 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/about/</guid>
+      <description>老家浙江温州乐清市，现在在西安电子科技大学读书。 QQ：2020150384 博客园：https://www.cnblogs.com/zeroy</description>
+    </item>
+    
+    <item>
+      <title>攻防世界web前11题WP</title>
+      <link>http://localhost:1313/articles/XCTF-WEB-1/</link>
+      <pubDate>Tue, 18 Jan 2022 11:26:31 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/XCTF-WEB-1/</guid>
+      <description>baby_web 进去之后发现是/1.php,根据提示“初始页面”，用burpsuite截获index.php，获得flag。 知识点：网页初始页面的文件名一</description>
+    </item>
+    
+    <item>
+      <title>HelloWorld</title>
+      <link>http://localhost:1313/articles/hello-world/</link>
+      <pubDate>Tue, 18 Jan 2022 11:24:21 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/hello-world/</guid>
+      <description>$$ Hello World! $$</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://localhost:1313/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6-%E5%A4%A7%E4%BD%9C%E4%B8%9A-1-zeroy%E7%9A%84%E7%BD%91%E7%BB%9C%E5%B0%8F%E7%AA%9D/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6-%E5%A4%A7%E4%BD%9C%E4%B8%9A-1-zeroy%E7%9A%84%E7%BD%91%E7%BB%9C%E5%B0%8F%E7%AA%9D/</guid>
+      <description>&lt;!DOCTYPE html&gt; 现代密码学 大作业 1 - zeroy的网络小窝 zeroy的网络小窝 文章 分类 关于 zeroy的网络小窝 取消 文章分类关于 现代密码学 大作业 1 zeroy &amp;nbs</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://localhost:1313/rsa%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/rsa%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/</guid>
+      <description>前置知识：欧拉定理 进阶知识：Miller Rabin算法（用于生成大素数），蒙哥马利算法（用于加快大数相乘再取模运算） 引入 历史上常规的密码加解</description>
+    </item>
+    
+    
+    
+  </channel>
+</rss>

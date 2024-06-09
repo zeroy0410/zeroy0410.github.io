@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>文学 on zeroy的网络小窝</title>
+    <link>http://localhost:1313/categories/%E6%96%87%E5%AD%A6/</link>
+    <description>Recent content in 文学 on zeroy的网络小窝</description>
+    <image>
+      <url>http://localhost:1313/ava.jpeg</url>
+      <link>http://localhost:1313/ava.jpeg</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+    <webMaster>zeroy0410@gmail.com (zeroy)</webMaster>
+    <lastBuildDate>Tue, 18 Jan 2022 12:32:52 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/%E6%96%87%E5%AD%A6/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>怪罪于爱的孤独 《霍乱时期的爱情》书评</title>
+      <link>http://localhost:1313/articles/El-Amor-En-Los-Tiempos-Del-Colera/</link>
+      <pubDate>Tue, 18 Jan 2022 12:32:52 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/El-Amor-En-Los-Tiempos-Del-Colera/</guid>
+      <description>引言 我是不配谈“爱”的，因为我只是个18岁的“小孩”，并没有情感经历。 但是这本在标题就明目张胆地写着爱情的书，写书评又绕不过对”爱情“的讨论</description>
+    </item>
+    
+    <item>
+      <title>分享一些看过的书</title>
+      <link>http://localhost:1313/articles/share-books/</link>
+      <pubDate>Tue, 18 Jan 2022 12:30:40 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/share-books/</guid>
+      <description>前言 今天与人聊起看过的书，发现多年来虽然阅读量不少，却从没做过系统的整理，所以就有了这篇文章。初高中因为客观条件的限制，只能阅读纸质书，只记</description>
+    </item>
+    
+  </channel>
+</rss>

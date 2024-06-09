@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Categories on zeroy的网络小窝</title>
+    <link>http://localhost:1313/categories/</link>
+    <description>Recent content in Categories on zeroy的网络小窝</description>
+    <image>
+      <url>http://localhost:1313/ava.jpeg</url>
+      <link>http://localhost:1313/ava.jpeg</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+    <webMaster>zeroy0410@gmail.com (zeroy)</webMaster>
+    <lastBuildDate>Thu, 05 Oct 2023 15:04:05 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>现代密码学</title>
+      <link>http://localhost:1313/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/</link>
+      <pubDate>Thu, 05 Oct 2023 15:04:05 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>操作系统</title>
+      <link>http://localhost:1313/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
+      <pubDate>Sun, 18 Jun 2023 21:17:00 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>高性能并行编程与优化</title>
+      <link>http://localhost:1313/categories/%E9%AB%98%E6%80%A7%E8%83%BD%E5%B9%B6%E8%A1%8C%E7%BC%96%E7%A8%8B%E4%B8%8E%E4%BC%98%E5%8C%96/</link>
+      <pubDate>Sat, 01 Apr 2023 20:16:15 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/%E9%AB%98%E6%80%A7%E8%83%BD%E5%B9%B6%E8%A1%8C%E7%BC%96%E7%A8%8B%E4%B8%8E%E4%BC%98%E5%8C%96/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>计算机体系结构</title>
+      <link>http://localhost:1313/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</link>
+      <pubDate>Sat, 01 Apr 2023 20:16:15 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CTF</title>
+      <link>http://localhost:1313/categories/ctf/</link>
+      <pubDate>Tue, 19 Apr 2022 08:36:18 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CTF-Reverse</title>
+      <link>http://localhost:1313/categories/ctf-reverse/</link>
+      <pubDate>Tue, 19 Apr 2022 08:36:18 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/ctf-reverse/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CTF-Crypto</title>
+      <link>http://localhost:1313/categories/ctf-crypto/</link>
+      <pubDate>Thu, 31 Mar 2022 23:09:02 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/ctf-crypto/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>科技杂谈</title>
+      <link>http://localhost:1313/categories/%E7%A7%91%E6%8A%80%E6%9D%82%E8%B0%88/</link>
+      <pubDate>Thu, 10 Mar 2022 20:08:25 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/%E7%A7%91%E6%8A%80%E6%9D%82%E8%B0%88/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>PWN</title>
+      <link>http://localhost:1313/categories/pwn/</link>
+      <pubDate>Mon, 07 Mar 2022 22:25:31 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/pwn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>WEB</title>
+      <link>http://localhost:1313/categories/web/</link>
+      <pubDate>Thu, 03 Mar 2022 10:04:25 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/web/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Math</title>
+      <link>http://localhost:1313/categories/math/</link>
+      <pubDate>Wed, 16 Feb 2022 15:38:32 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/math/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>文化课</title>
+      <link>http://localhost:1313/categories/%E6%96%87%E5%8C%96%E8%AF%BE/</link>
+      <pubDate>Wed, 16 Feb 2022 15:38:32 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/%E6%96%87%E5%8C%96%E8%AF%BE/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Golang-Web</title>
+      <link>http://localhost:1313/categories/golang-web/</link>
+      <pubDate>Fri, 11 Feb 2022 16:31:25 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/golang-web/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DATABASE</title>
+      <link>http://localhost:1313/categories/database/</link>
+      <pubDate>Mon, 07 Feb 2022 22:36:05 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/database/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Basic Tools</title>
+      <link>http://localhost:1313/categories/basic-tools/</link>
+      <pubDate>Thu, 03 Feb 2022 16:00:45 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/basic-tools/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python-Flask</title>
+      <link>http://localhost:1313/categories/python-flask/</link>
+      <pubDate>Tue, 01 Feb 2022 19:35:39 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/python-flask/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>http://localhost:1313/categories/python/</link>
+      <pubDate>Wed, 26 Jan 2022 16:49:18 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>文学</title>
+      <link>http://localhost:1313/categories/%E6%96%87%E5%AD%A6/</link>
+      <pubDate>Tue, 18 Jan 2022 12:32:52 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/%E6%96%87%E5%AD%A6/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Unity</title>
+      <link>http://localhost:1313/categories/unity/</link>
+      <pubDate>Tue, 18 Jan 2022 12:27:17 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/unity/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CTF-WEB</title>
+      <link>http://localhost:1313/categories/ctf-web/</link>
+      <pubDate>Tue, 18 Jan 2022 11:26:31 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/ctf-web/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hello World</title>
+      <link>http://localhost:1313/categories/hello-world/</link>
+      <pubDate>Tue, 18 Jan 2022 11:24:21 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/categories/hello-world/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

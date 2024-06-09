@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>GPT讲操作系统概念 | zeroy的网络小窝</title>
+<meta name="keywords" content="" />
+<meta name="description" content="系统调用消息传递 系统调用是用户程序和操作系统内核之间的接口，用于向内核发出请求，获取系统资源和执行特权操作。系统调用通常需要传递一些参数，以">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/gpttallos/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c88963fe2d79462000fd0fb1b3737783c32855d340583e4523343f8735c787f0.css" integrity="sha256-yIlj/i15RiAA/Q&#43;xs3N3g8MoVdNAWD5FIzQ/hzXHh/A=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.2eadbb982468c11a433a3e291f01326f2ba43f065e256bf792dbd79640a92316.js" integrity="sha256-Lq27mCRowRpDOj4pHwEybyukPwZeJWv3ktvXlkCpIxY="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.127.0">
+<link rel="alternate" type="text/plain" href="http://localhost:1313/gpttallos/index.md">
+<link rel="alternate" hreflang="zh-cn" href="http://localhost:1313/gpttallos/" />
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="zeroy的网络小窝 (Alt + H)">zeroy的网络小窝</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="关于">
+                    <span>关于</span>
+                </a>
+            </li>
+        </ul>
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=80 src="//music.163.com/outchain/player?type=2&id=415904308&auto=1&height=66"></iframe>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      GPT讲操作系统概念
+    </h1>
+    <div class="post-meta">&lt;span title=&#39;2023-06-18 21:17:00 &#43;0800 CST&#39;&gt;2023-06-18&lt;/span&gt;
+
+</div>
+  </header> 
+  <div class="post-content"><h2 id="系统调用消息传递">系统调用消息传递<a hidden class="anchor" aria-hidden="true" href="#系统调用消息传递">#</a></h2>
+<p>系统调用是用户程序和操作系统内核之间的接口，用于向内核发出请求，获取系统资源和执行特权操作。系统调用通常需要传递一些参数，以告知内核需要执行的具体操作和相关数据。常见的系统调用参数传递方法有以下几种：</p>
+<ol>
+<li>
+<p>寄存器传递：一些系统调用参数可以直接通过CPU寄存器传递。例如，在x86架构中，系统调用号通常存储在eax寄存器中，其他参数则存储在ebx、ecx、edx等寄存器中。</p>
+</li>
+<li>
+<p>栈传递：一些系统调用参数无法通过寄存器传递，需要通过栈来传递。在栈传递中，用户程序会将系统调用参数压入栈中，然后调用相应的系统调用函数。内核会从栈中提取参数，并根据参数执行相应的操作。</p>
+</li>
+<li>
+<p>共享内存传递：在一些需要传递大量数据的系统调用中，使用栈传递可能会导致栈溢出或性能下降。此时可以使用共享内存传递参数，即在用户程序和内核之间共享一块内存区域，用户程序将参数写入共享内存中，内核从共享内存中读取参数并执行相应的操作。</p>
+</li>
+<li>
+<p>端口传递：在一些特定的硬件平台上，可以使用端口传递方式来传递系统调用参数。在端口传递中，用户程序将参数写入指定的端口，在内核中通过相应的端口地址读取参数。</p>
+</li>
+</ol>
+<p>总的来说，系统调用参数的传递方式可以根据具体的操作系统和硬件平台来选择合适的方法。不同的传递方式各有优缺点，需要根据实际需求进行选择和权衡。</p>
+<h2 id="过程调用与系统调用">过程调用与系统调用<a hidden class="anchor" aria-hidden="true" href="#过程调用与系统调用">#</a></h2>
+<p>过程调用和系统调用都是程序中常用的调用方式，但它们的作用、实现和使用方式各不相同。</p>
+<ol>
+<li>过程调用</li>
+</ol>
+<p>过程调用是指在程序中调用另外一个子程序（函数或过程）的过程。过程调用通常是在用户程序内部进行的，可以通过栈来传递参数和返回值。过程调用的主要目的是将程序分解成多个独立的模块，方便代码的编写和维护。过程调用的实现通常由编译器或解释器负责，不需要操作系统的支持。</p>
+<ol start="2">
+<li>系统调用</li>
+</ol>
+<p>系统调用是指在程序中向操作系统内核发出请求，获取系统资源和执行特权操作的过程。系统调用通常是在用户程序和操作系统内核之间进行的，需要操作系统的支持。系统调用可以完成一些用户程序无法完成的特权操作，例如读写磁盘、访问网络、修改系统时间等。系统调用的实现需要使用特定的指令和机制，例如中断、陷阱、系统调用表等。</p>
+<p>总的来说，过程调用和系统调用在调用方式、作用和实现上都有一定的差异。过程调用主要用于程序内部的模块化设计和实现，而系统调用主要用于访问操作系统内核提供的特权操作和系统资源。在实际应用中，程序员需要根据具体的需求和场景来选择合适的调用方式。</p>
+<h2 id="操作系统结构">操作系统结构<a hidden class="anchor" aria-hidden="true" href="#操作系统结构">#</a></h2>
+<p>操作系统结构是指操作系统的组织形式和内部模块之间的关系。常见的操作系统结构包括单体内核、分层结构、微内核等。</p>
+<ol>
+<li>单体内核结构</li>
+</ol>
+<p>单体内核是指将操作系统的所有模块集中在一个单一的内核中，包括进程管理、内存管理、文件系统等，所有的模块都运行在同一个地址空间中。单体内核结构的优点是简单、高效、易于实现和调试，但是缺点是模块之间的耦合度较高，系统扩展性较差，容易出现内核崩溃和安全漏洞。</p>
+<ol start="2">
+<li>分层结构</li>
+</ol>
+<p>分层结构是指将操作系统的不同模块分层，每一层都提供一个特定的抽象接口，上层模块通过接口调用下层模块的功能。分层结构的优点是模块之间的耦合度较低，系统扩展性较好，容易实现模块的独立性和可移植性，但是缺点是层次结构较为复杂，模块之间的接口调用会导致额外的性能开销。</p>
+<ol start="3">
+<li>微内核结构</li>
+</ol>
+<p>微内核是指将操作系统的核心功能和基本服务抽象出来，实现在微内核中，而将其他功能和服务实现为独立的用户进程，通过进程间通信来完成各种操作。微内核结构的优点是模块化程度高，易于扩展和维护，能够保证系统的稳定性和安全性，但是缺点是模块之间的通信会导致额外的性能开销，实现复杂度较高。</p>
+<p>总的来说，操作系统结构的选择需要根据具体的需求和场景来进行权衡。微内核结构具有很强的模块化和可扩展性，是一种现代操作系统结构的重要实现方式。</p>
+<h2 id="程序-vs-进程">程序 VS 进程<a hidden class="anchor" aria-hidden="true" href="#程序-vs-进程">#</a></h2>
+<p>程序和进程是计算机中常见的两个概念，它们有一些共同点，但也有明显的区别。</p>
+<ol>
+<li>程序</li>
+</ol>
+<p>程序是指存储在计算机磁盘上的可执行代码，是一组指令的集合。程序通常被编译成机器代码，可以在计算机上运行。程序本身是静态的，不会占用计算机的CPU和内存资源，只有在被调用执行时才会占用这些资源。</p>
+<ol start="2">
+<li>进程</li>
+</ol>
+<p>进程是指正在运行的程序的实例，是一段正在执行的代码和数据的集合。进程是动态的，它需要占用计算机的CPU、内存和其他资源，可以执行多个任务和线程。每个进程都有自己的内存空间、寄存器、栈等资源，可以独立地执行任务，与其他进程隔离开来。</p>
+<p>区别：</p>
+<ul>
+<li>程序是静态的，进程是动态的。</li>
+<li>程序只是存储在磁盘上的可执行代码，进程是正在运行的程序的实例。</li>
+<li>程序不占用计算机的CPU和内存资源，进程需要占用这些资源。</li>
+<li>程序只有一个，进程可以有多个实例。</li>
+<li>程序不能执行多个任务和线程，进程可以执行多个任务和线程。</li>
+</ul>
+<p>总的来说，程序和进程虽然有一些相似之处，但是它们的本质和作用是不同的，程序是执行的指令集合，而进程则是正在执行的程序的实例，它需要占用计算机资源并可以执行多个任务和线程。</p>
+<h2 id="僵尸进程与孤儿进程">僵尸进程与孤儿进程<a hidden class="anchor" aria-hidden="true" href="#僵尸进程与孤儿进程">#</a></h2>
+<p>僵尸进程和孤儿进程是操作系统中的两种进程状态，它们分别表示不同的进程状态。</p>
+<ol>
+<li>僵尸进程</li>
+</ol>
+<p>当一个进程完成执行后，它的状态会变成“僵尸进程”状态，这时它已经不能执行任何操作，但是进程控制块（PCB）和其他资源仍然存在于系统中。僵尸进程通常是由于父进程没有及时回收子进程的资源而导致的。僵尸进程会占用系统资源，如果系统中存在大量的僵尸进程，会导致系统性能下降。</p>
+<ol start="2">
+<li>孤儿进程</li>
+</ol>
+<p>孤儿进程是指父进程已经退出，但是子进程仍然在运行的进程。孤儿进程通常是由于父进程异常终止或者没有正确回收子进程资源而导致的，这时子进程会成为孤儿进程。孤儿进程会被init进程接管，并成为init进程的子进程。因为孤儿进程没有父进程，所以它的父进程ID会被设置成1，即init进程的进程ID。</p>
+<p>总的来说，僵尸进程和孤儿进程都是进程状态中的异常情况。如果系统中存在大量的僵尸进程或孤儿进程，会导致系统性能下降，因此需要及时处理这些进程，回收它们的资源。</p>
+<h2 id="直接消息传递与间接消息传递">直接消息传递与间接消息传递<a hidden class="anchor" aria-hidden="true" href="#直接消息传递与间接消息传递">#</a></h2>
+<p>直接消息传递和间接消息传递是消息传递机制中的两种不同的实现方式。</p>
+<ol>
+<li>直接消息传递</li>
+</ol>
+<p>在直接消息传递中，发送进程直接将消息发送给接收进程，发送进程和接收进程之间需要建立一个直接的通信通道，这个通道可以是管道、共享内存等。直接消息传递的特点是实现简单、速度快，但是通道容易受到网络延迟、带宽等因素的影响，同时需要进行同步和互斥操作以避免数据冲突和竞态条件。</p>
+<ol start="2">
+<li>间接消息传递</li>
+</ol>
+<p>在间接消息传递中，发送进程将消息发送给一个中间进程，中间进程再将消息传递给接收进程。中间进程通常是一个系统进程或系统服务，它负责接收来自发送进程的消息，并将消息转发给接收进程。间接消息传递的特点是可靠性高、安全性强，因为中间进程可以对消息进行检查和过滤，同时可以进行流量控制、错误检测等操作，但是实现复杂，需要考虑进程间的安全性和可靠性问题。</p>
+<p>总的来说，直接消息传递和间接消息传递都是消息传递机制中常见的实现方式，两者各自具有优点和缺点，需要根据具体的应用场景来选择合适的方式。直接消息传递适合于速度快、数据量小的场景，而间接消息传递适合于大量数据传输、安全性高、可靠性要求高的场景。</p>
+<h2 id="匿名管道与命名管道">匿名管道与命名管道<a hidden class="anchor" aria-hidden="true" href="#匿名管道与命名管道">#</a></h2>
+<p>匿名管道和命名管道（FIFO）都是进程间通信机制中的一种，它们有一些相似之处，但也有一些不同。</p>
+<ol>
+<li>匿名管道</li>
+</ol>
+<p>匿名管道是一种进程间通信机制，它可以在两个相关进程之间传递数据。匿名管道是一种半双工通信方式，即数据只能在一个方向上传输。匿名管道是由操作系统创建和管理的，它只能用于具有亲缘关系的进程之间通信，例如父进程和子进程之间。匿名管道的优点是实现简单、易于使用，但是它只能在两个进程之间传递数据，而且数据传输是单向的。</p>
+<ol start="2">
+<li>命名管道（FIFO）</li>
+</ol>
+<p>命名管道（FIFO）是一种具有名称的管道，它可以在不相关的进程之间传递数据。命名管道是一种半双工通信方式，和匿名管道类似，数据只能在一个方向上传输。命名管道可以像文件一样被打开和关闭，它可以被多个进程共享，从而实现多个进程之间的通信。命名管道的优点是可以在不相关进程之间进行通信，而且实现比较灵活，但是需要考虑进程并发访问的问题，同时需要进行同步和互斥操作以避免数据冲突和竞态条件。</p>
+<p>总的来说，匿名管道和命名管道都是进程间通信机制中常见的实现方式，它们各自具有优点和缺点，需要根据具体的应用场景来选择合适的方式。如果只需要在两个具有亲缘关系的进程之间传递数据，可以选择匿名管道；如果需要在不相关进程之间进行通信，可以选择命名管道。</p>
+<h2 id="数据并行与任务并行">数据并行与任务并行<a hidden class="anchor" aria-hidden="true" href="#数据并行与任务并行">#</a></h2>
+<p>数据并行和任务并行是并行计算中的两种常见的并行方式，它们分别适用于不同的并行计算场景。</p>
+<ol>
+<li>数据并行</li>
+</ol>
+<p>数据并行是指将一个计算任务分成多个子任务，每个子任务处理不同的数据子集，从而加速计算过程。数据并行通常用于需要处理大量数据的计算任务，例如图像处理、数据挖掘、机器学习等领域。数据并行的优点是可以充分利用多核CPU和GPU等硬件资源，同时可以提高计算效率和吞吐量，但是需要考虑数据之间的依赖关系和通信开销。</p>
+<ol start="2">
+<li>任务并行</li>
+</ol>
+<p>任务并行是指将一个计算任务分成多个子任务，每个子任务处理不同的计算步骤或者不同的计算函数，从而加速计算过程。任务并行通常用于需要处理复杂计算任务的场景，例如大规模模拟、数值计算、图形渲染等领域。任务并行的优点是可以充分利用多台计算机或者多个处理器，同时可以提高计算效率和可伸缩性，但是需要考虑任务之间的依赖关系和通信开销。</p>
+<p>总的来说，数据并行和任务并行都是并行计算中常见的实现方式，它们各自适用于不同的计算场景。如果需要处理大量数据的计算任务，可以选择数据并行；如果需要处理复杂计算任务，可以选择任务并行。在实际应用中，通常需要综合考虑数据并行和任务并行的优缺点，选择合适的并行计算策略。</p>
+<h2 id="用户线程与内核线程">用户线程与内核线程<a hidden class="anchor" aria-hidden="true" href="#用户线程与内核线程">#</a></h2>
+<p>用户线程和内核线程都是操作系统中的线程实现方式，它们在实现方式、调度方式和性能等方面有一些区别。</p>
+<ol>
+<li>用户线程</li>
+</ol>
+<p>用户线程是由用户程序或者用户级别的库函数实现的线程，它们的创建、调度和管理都由用户程序或者用户级别的库函数完成。用户线程与操作系统内核没有直接关系，它们只是在操作系统的进程上下文中运行。用户线程的优点是实现简单、灵活性高，可以根据需要动态创建、销毁和调度线程，但是它们的并发性受到操作系统进程调度的限制，无法利用多核CPU的性能优势。</p>
+<ol start="2">
+<li>内核线程</li>
+</ol>
+<p>内核线程是由操作系统内核实现的线程，它们的创建、调度和管理都由操作系统内核完成。内核线程与操作系统内核直接关联，可以利用操作系统的多任务调度机制实现线程的并发执行。内核线程的优点是可以利用操作系统的多任务调度机制，充分利用多核CPU的性能优势，但是实现较为复杂，需要考虑线程的同步、互斥和调度等问题。</p>
+<p>总的来说，用户线程和内核线程都是操作系统中的线程实现方式，它们各自具有优点和缺点，需要根据具体的应用场景来选择合适的线程实现方式。如果需要实现简单、灵活性高的线程，可以选择用户线程；如果需要实现高并发、高性能的线程，可以选择内核线程。在实际应用中，通常需要综合考虑线程的实现方式、调度策略和性能等因素，选择合适的线程实现方式。</p>
+<h2 id="线程模型">线程模型<a hidden class="anchor" aria-hidden="true" href="#线程模型">#</a></h2>
+<p>线程模型是指操作系统中线程的实现方式，常见的线程模型包括多对一模型、一对一模型和多对多模型。</p>
+<ol>
+<li>多对一模型</li>
+</ol>
+<p>多对一模型是指多个用户线程共享一个内核线程，多个用户线程通过库函数或者系统调用来访问内核线程，内核线程负责调度和管理所有的用户线程。多对一模型的优点是实现简单、轻量级，不需要频繁的上下文切换和线程切换，但是由于所有的用户线程共享一个内核线程，如果某个用户线程阻塞或者发生异常，会影响所有的用户线程。</p>
+<ol start="2">
+<li>一对一模型</li>
+</ol>
+<p>一对一模型是指每个用户线程对应一个内核线程，每个用户线程通过库函数或者系统调用来访问相应的内核线程，内核线程负责调度和管理对应的用户线程。一对一模型的优点是每个用户线程都有独立的内核线程，不会相互影响，同时可以利用操作系统的多任务调度机制实现线程的并发执行，但是由于每个用户线程都需要一个对应的内核线程，线程的创建和销毁开销较大。</p>
+<ol start="3">
+<li>多对多模型</li>
+</ol>
+<p>多对多模型是指多个用户线程对应多个内核线程，多个用户线程通过库函数或者系统调用来访问相应的内核线程，内核线程负责调度和管理对应的用户线程。多对多模型的优点是可以充分利用多核CPU的性能优势，同时可以灵活地创建、销毁和调度线程，但是由于需要维护多个用户线程和内核线程之间的映射关系，实现较为复杂。</p>
+<p>总的来说，多对一模型、一对一模型和多对多模型都是操作系统中常见的线程模型，它们各自具有优点和缺点，需要根据具体的应用场景来选择合适的线程模型。如果需要实现简单、轻量级的线程，可以选择多对一模型；如果需要实现高并发、高性能的线程，可以选择一对一模型或者多对多模型。在实际应用中，通常需要综合考虑线程模型的优缺点、应用场景和性能等因素，选择合适的线程模型。</p>
+<h2 id="临界区问题互斥同步有限等待">临界区问题，互斥、同步、有限等待<a hidden class="anchor" aria-hidden="true" href="#临界区问题互斥同步有限等待">#</a></h2>
+<p>临界区问题是指多个进程或者线程同时访问共享资源时可能引发的问题，例如数据竞争、死锁等。为了解决临界区问题，可以采用互斥、同步和有限等待等技术。</p>
+<ol>
+<li>互斥</li>
+</ol>
+<p>互斥是指在临界区内部对共享资源进行加锁，只有获得锁的进程或者线程才能访问共享资源，其他进程或者线程需要等待锁的释放。互斥可以避免多个进程或者线程同时访问共享资源的问题，从而避免数据竞争和其他相关问题。</p>
+<ol start="2">
+<li>同步</li>
+</ol>
+<p>同步是指在多个进程或者线程之间进行协调，以确保它们按照一定的顺序执行。同步可以避免多个进程或者线程之间的资源竞争和死锁问题，从而保证程序的正确性和稳定性。常见的同步技术包括信号量、条件变量、屏障等。</p>
+<ol start="3">
+<li>有限等待</li>
+</ol>
+<p>有限等待是指在多个进程或者线程之间进行协调，以确保它们在等待资源时不会无限期地等待。有限等待可以避免死锁问题，从而提高程序的可靠性。常见的有限等待技术包括超时机制、资源预分配等。</p>
+<p>总的来说，互斥、同步和有限等待是解决临界区问题的常见技术。在实际应用中，需要根据具体的应用场景和性能要求综合考虑选择合适的技术。</p>
+<h2 id="非抢占式内核与抢占式内核">非抢占式内核与抢占式内核<a hidden class="anchor" aria-hidden="true" href="#非抢占式内核与抢占式内核">#</a></h2>
+<p>非抢占式内核和抢占式内核是操作系统内核的两种调度方式，它们在调度策略、性能等方面有一些区别。</p>
+<ol>
+<li>非抢占式内核</li>
+</ol>
+<p>非抢占式内核是指内核不会主动剥夺正在运行中的进程或者线程的CPU时间片，除非它们主动放弃CPU或者发生阻塞等特殊情况。在非抢占式内核中，进程或者线程可以长时间占用CPU，从而可能导致其他进程或者线程无法及时得到CPU时间片，进而影响系统的响应性和吞吐量。</p>
+<ol start="2">
+<li>抢占式内核</li>
+</ol>
+<p>抢占式内核是指内核具有主动剥夺正在运行中的进程或者线程的CPU时间片的能力，以便及时地调度其他进程或者线程。在抢占式内核中，内核可以根据一定的调度策略主动剥夺正在运行中的进程或者线程的CPU时间片，以便让其他进程或者线程能够及时得到CPU时间片，提高系统的响应性和吞吐量。</p>
+<p>总的来说，非抢占式内核和抢占式内核都是操作系统内核的调度方式，它们各自具有优点和缺点，需要根据具体的应用场景来选择合适的调度方式。如果需要实现高性能、高吞吐量的系统，可以选择抢占式内核；如果需要实现稳定、可靠的系统，可以选择非抢占式内核。在实际应用中，通常需要综合考虑内核的调度策略、性能和稳定性等因素，选择合适的内核调度方式。</p>
+<h2 id="互斥锁与自旋锁">互斥锁与自旋锁<a hidden class="anchor" aria-hidden="true" href="#互斥锁与自旋锁">#</a></h2>
+<p>互斥锁和自旋锁都是多线程编程中常用的同步技术，它们的主要区别在于实现方式和性能等方面。</p>
+<ol>
+<li>互斥锁</li>
+</ol>
+<p>互斥锁是一种同步机制，它可以用来保护共享资源，避免多个线程同时访问和修改共享资源。在使用互斥锁的时候，线程需要先申请锁，如果锁已经被其他线程占用，则线程需要等待锁的释放。互斥锁的实现通常依赖于操作系统提供的原子操作和系统调用，可以保证并发访问共享资源的正确性和可靠性，但是在高并发的情况下，互斥锁的性能可能较低。</p>
+<ol start="2">
+<li>自旋锁</li>
+</ol>
+<p>自旋锁是一种特殊的互斥锁，它在等待锁的时候不会进行阻塞，而是通过循环等待的方式来尝试获取锁。如果锁已经被其他线程占用，则当前线程会一直循环等待，直到锁被释放或者超时。自旋锁的实现通常依赖于硬件提供的原子操作，可以避免线程的上下文切换和阻塞，从而提高并发访问共享资源的性能。但是在高并发和长时间等待的情况下，自旋锁的性能可能会下降。</p>
+<p>总的来说，互斥锁和自旋锁都是多线程编程中常用的同步技术，它们各自具有优点和缺点，需要根据具体的应用场景来选择合适的同步技术。如果需要保证并发访问共享资源的正确性和可靠性，可以选择互斥锁；如果需要提高并发访问共享资源的性能，可以选择自旋锁。在实际应用中，通常需要综合考虑同步技术的性能、正确性和可靠性等因素，选择合适的同步技术。</p>
+<h2 id="信号量">信号量<a hidden class="anchor" aria-hidden="true" href="#信号量">#</a></h2>
+<p>信号量是一种用于同步和互斥的机制，可以用来控制多个进程或线程对共享资源的访问。</p>
+<ol>
+<li>二进制信号量</li>
+</ol>
+<p>二进制信号量是一种最简单的信号量，它只有两个取值：0和1。当二进制信号量的值为0时，表示资源已经被占用，需要等待；当二进制信号量的值为1时，表示资源没有被占用，可以访问。二进制信号量通常用于实现互斥操作，即只允许一个进程或线程访问共享资源。</p>
+<ol start="2">
+<li>计数信号量</li>
+</ol>
+<p>计数信号量是一种可以取多个值的信号量，它的值可以大于等于0。当计数信号量的值为0时，表示资源已经被占用，需要等待；当计数信号量的值大于0时，表示资源没有被占用，可以访问。计数信号量通常用于实现多个进程或线程同时访问共享资源，例如线程池中的任务队列。</p>
+<p>总的来说，信号量是一种常用的同步和互斥机制，可以用于控制多个进程或线程对共享资源的访问。二进制信号量适用于实现互斥操作，计数信号量适用于实现多个进程或线程同时访问共享资源。在实际应用中，通常需要根据具体的应用场景和需求来选择合适的信号量类型。</p>
+<h2 id="优先级反转与优先级继承协议">优先级反转与优先级继承协议<a hidden class="anchor" aria-hidden="true" href="#优先级反转与优先级继承协议">#</a></h2>
+<p>优先级反转和优先级继承协议是多线程编程中用于解决优先级倒置问题的技术。</p>
+<ol>
+<li>优先级反转</li>
+</ol>
+<p>优先级反转是指一个低优先级的线程持有了一个高优先级的线程需要的资源，从而导致高优先级的线程被阻塞，无法及时得到CPU时间片。为了避免优先级反转问题，可以采用抢占式调度或者优先级继承协议。</p>
+<ol start="2">
+<li>优先级继承协议</li>
+</ol>
+<p>优先级继承协议是指当一个低优先级的线程持有了一个高优先级的线程需要的资源时，系统会将低优先级的线程的优先级提升到需要该资源的最高优先级线程的优先级，以便高优先级线程能够及时得到CPU时间片，避免优先级反转问题。当低优先级的线程释放了资源后，它的优先级会恢复到原来的值。</p>
+<p>总的来说，优先级反转和优先级继承协议是多线程编程中用于解决优先级倒置问题的技术。采用优先级继承协议可以避免优先级反转问题，提高系统的可靠性和稳定性。在实际应用中，需要根据具体的应用场景和性能要求综合考虑选择合适的技术。</p>
+<h2 id="生产者-消费者读者-写者">生产者-消费者，读者-写者<a hidden class="anchor" aria-hidden="true" href="#生产者-消费者读者-写者">#</a></h2>
+<p>wait和signal原语可以用来实现信号量，进而解决生产者-消费者问题和读者写者问题。</p>
+<ol>
+<li>生产者-消费者问题</li>
+</ol>
+<p>生产者-消费者问题是指多个生产者和消费者共享一个缓冲区。为了避免生产者在缓冲区已满时继续生产，或者消费者在缓冲区为空时继续消费，可以使用两个信号量实现：一个表示缓冲区中空余的数量，一个表示缓冲区中已有物品的数量。</p>
+<p>下面是使用wait和signal原语实现生产者-消费者问题的示例代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">// 缓冲区结构体
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="nc">buffer</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">data</span><span class="p">[</span><span class="n">MAX_SIZE</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">head</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">tail</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">semaphore_t</span> <span class="n">mutex</span><span class="p">;</span>   <span class="c1">// 互斥信号量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">semaphore_t</span> <span class="n">empty</span><span class="p">;</span>   <span class="c1">// 空缓冲区信号量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">semaphore_t</span> <span class="n">full</span><span class="p">;</span>    <span class="c1">// 满缓冲区信号量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 生产者线程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="o">*</span><span class="nf">producer</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">buffer</span> <span class="o">*</span><span class="n">buf</span> <span class="o">=</span> <span class="p">(</span><span class="n">buffer</span> <span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">item</span> <span class="o">=</span> <span class="n">produce_item</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">empty</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">buf</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">[</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">tail</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">buf</span><span class="o">-&gt;</span><span class="n">tail</span> <span class="o">=</span> <span class="p">(</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">tail</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MAX_SIZE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sem_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sem_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">full</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 消费者线程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="o">*</span><span class="nf">consumer</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">buffer</span> <span class="o">*</span><span class="n">buf</span> <span class="o">=</span> <span class="p">(</span><span class="n">buffer</span> <span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">full</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">item</span> <span class="o">=</span> <span class="n">buf</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">[</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="n">buf</span><span class="o">-&gt;</span><span class="n">head</span> <span class="o">=</span> <span class="p">(</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">head</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">MAX_SIZE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sem_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sem_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">buf</span><span class="o">-&gt;</span><span class="n">empty</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">consume_item</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在上面的代码中，我们定义了一个缓冲区结构体，包含一个数组data来存储物品，头指针head和尾指针tail来指示缓冲区的状态，以及三个信号量：互斥信号量mutex、空缓冲区信号量empty和满缓冲区信号量full。在生产者线程中，我们先生产物品，然后等待空缓冲区信号量empty和互斥信号量mutex，如果缓冲区已经满了，则等待；如果有其他线程正在访问缓冲区，则等待。如果可以进入缓冲区，则将物品存入缓冲区，并更新尾指针tail。最后发送互斥信号量mutex和满缓冲区信号量full，表示缓冲区中已经有物品了。在消费者线程中，我们先等待满缓冲区信号量full和互斥信号量mutex，如果缓冲区为空，则等待；如果有其他线程正在访问缓冲区，则等待。如果可以从缓冲区中取出物品，则更新头指针head，并将空缓冲区信号量empty和互斥信号量mutex发送出去，表示缓冲区中有空闲位置了。最后消费物品。</p>
+<ol start="2">
+<li>读者-写者问题</li>
+</ol>
+<p>读者-写者问题是指多个读者和一个写者共享一个资源，读者可以同时读取资源，但是一次只能有一个写者修改资源。为了避免写者被多个读者同时访问，可以使用两个信号量实现：一个表示读者数量的信号量，一个表示写者数量的信号量。</p>
+<p>下面是使用wait和signal原语实现读者-写者问题的示例代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">// 数据结构
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="nc">data</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">semaphore_t</span> <span class="n">mutex</span><span class="p">;</span>   <span class="c1">// 互斥信号量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">semaphore_t</span> <span class="n">wrt</span><span class="p">;</span>     <span class="c1">// 写者信号量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">readcnt</span><span class="p">;</span>         <span class="c1">// 读者数量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 读者线程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="o">*</span><span class="nf">reader</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span> <span class="o">*</span><span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>  <span class="c1">// 进入临界区
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">d</span><span class="o">-&gt;</span><span class="n">readcnt</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">readcnt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>    <span class="c1">// 如果是第一个读者
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">wrt</span><span class="p">);</span>    <span class="c1">// 阻塞写者
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sem_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>    <span class="c1">// 离开临界区
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        
+</span></span><span class="line"><span class="cl">        <span class="c1">// 读取数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">read_data</span><span class="p">(</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>  <span class="c1">// 进入临界区
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">d</span><span class="o">-&gt;</span><span class="n">readcnt</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">readcnt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>    <span class="c1">// 如果是最后一个读者
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">sem_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">wrt</span><span class="p">);</span>  <span class="c1">// 释放写者
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sem_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>    <span class="c1">// 离开临界区
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 写者线程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="o">*</span><span class="nf">writer</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span> <span class="o">*</span><span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">wrt</span><span class="p">);</span>  <span class="c1">// 阻塞其他写者和读者
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        
+</span></span><span class="line"><span class="cl">        <span class="c1">// 写入数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">write_data</span><span class="p">(</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="n">sem_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">wrt</span><span class="p">);</span>  <span class="c1">// 释放其他写者和读者
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在上面的代码中，我们定义了一个数据结构，包含一个整型value表示共享的数据，一个互斥信号量mutex用于保护数据的访问，一个写者信号量wrt用于阻塞写者和读者，以及一个整型readcnt表示读者数量。在读者线程中，我们先进入临界区，将读者数量加1，并判断是否是第一个读者，如果是，则阻塞写者。然后读取数据，并离开临界区。最后再次进入临界区，将读者数量减1，并判断是否是最后一个读者，如果是，则释放写者。在写者线程中，我们先阻塞其他写者和读者，然后写入数据，并释放其他写者和读者。</p>
+<p>总的来说，wait和signal原语可以用来实现信号量，进而解决生产者-消费者问题和读者写者问题。在实际应用中，需要根据具体的需求和操作系统的支持来选择合适的信号量实现方式。</p>
+<h2 id="什么是cpu利用率吞吐量周转时间等待时间响应时间">什么是CPU利用率、吞吐量、周转时间、等待时间、响应时间<a hidden class="anchor" aria-hidden="true" href="#什么是cpu利用率吞吐量周转时间等待时间响应时间">#</a></h2>
+<p>CPU利用率、吞吐量、周转时间、等待时间和响应时间是计算机系统中常用的性能指标，它们分别表示不同方面的系统性能。</p>
+<ol>
+<li>CPU利用率</li>
+</ol>
+<p>CPU利用率是指CPU在某个时间段内处于工作状态的时间占总时间的比例，通常用百分比表示。CPU利用率越高，表示CPU被充分利用的程度越高，系统的性能也越好。但是，如果CPU利用率过高，可能会导致系统响应变慢，甚至出现死机等问题。</p>
+<ol start="2">
+<li>吞吐量</li>
+</ol>
+<p>吞吐量是指在某个时间段内系统完成的任务数量，通常用每秒完成的任务数表示。吞吐量越高，表示系统的处理能力越强，可以同时处理更多的任务。但是，如果系统过度追求吞吐量，可能会导致任务响应时间变慢，用户体验变差。</p>
+<ol start="3">
+<li>周转时间</li>
+</ol>
+<p>周转时间是指从提交一个任务到完成该任务所需的时间，包括等待时间和执行时间。周转时间越短，表示任务的响应速度越快，用户体验越好。但是，如果系统中存在大量的等待时间，可能会导致周转时间变长，用户体验变差。</p>
+<ol start="4">
+<li>等待时间</li>
+</ol>
+<p>等待时间是指任务在系统中等待被执行的时间。等待时间越短，表示任务的响应速度越快，用户体验越好。但是，如果系统中存在大量的等待时间，可能会导致任务响应时间变长，用户体验变差。</p>
+<ol start="5">
+<li>响应时间</li>
+</ol>
+<p>响应时间是指任务从提交到开始执行的时间间隔，即用户等待任务开始执行的时间。响应时间越短，表示用户等待的时间越短，用户体验越好。但是，如果系统中存在大量的等待时间，可能会导致响应时间变长，用户体验变差。</p>
+<p>总的来说，CPU利用率、吞吐量、周转时间、等待时间和响应时间是计算机系统中常用的性能指标，可以用来评估系统的性能和优化系统的性能。不同的指标适用于不同的场景，需要根据具体的需求和应用场景来选择合适的指标。</p>
+<h2 id="多处理器调度-非对称多处理与对称多处理-优缺点">多处理器调度 非对称多处理与对称多处理 优缺点<a hidden class="anchor" aria-hidden="true" href="#多处理器调度-非对称多处理与对称多处理-优缺点">#</a></h2>
+<p>多处理器调度是指在多处理器系统中，对多个进程或线程进行任务调度，使得多个处理器可以协同工作，提高系统的性能和吞吐量。多处理器系统可以分为对称多处理（Symmetric Multiprocessing，SMP）和非对称多处理（Asymmetric Multiprocessing，AMP）两种类型。</p>
+<ol>
+<li>对称多处理（SMP）</li>
+</ol>
+<p>对称多处理是指多个处理器共享同一物理内存，并且可以相互访问和操作系统资源。在对称多处理系统中，所有的处理器都具有相同的地位，每个处理器都可以执行任何任务，任务的分配和调度由操作系统自动完成。对称多处理系统的优点是易于扩展和管理，处理器之间的通信和协调简单，可以充分利用系统的资源。但是，对称多处理系统的缺点是存在竞争和冲突，需要采用锁和同步机制来避免数据的竞争和冲突，处理器之间的通信和同步可能会影响系统的性能。</p>
+<ol start="2">
+<li>非对称多处理（AMP）</li>
+</ol>
+<p>非对称多处理是指多个处理器分别运行不同的任务，并且各自拥有独立的资源和内存空间。在非对称多处理系统中，每个处理器具有不同的地位和功能，它们之间可能存在主从关系或者协作关系。任务的分配和调度通常由应用程序或者用户手动完成。非对称多处理系统的优点是可以充分利用各个处理器的特性和优势，可以提高系统的可靠性和容错性。但是，非对称多处理系统的缺点是存在任务负载不均衡和资源浪费的问题，需要进行精细的任务分配和调度。</p>
+<p>综上所述，对称多处理和非对称多处理各有优缺点，需要根据具体的需求和应用场景来选择合适的多处理器系统。对称多处理适用于需要充分利用系统资源和提高系统性能的场景，非对称多处理适用于需要提高系统的可靠性和容错性的场景。</p>
+<h2 id="处理器亲和性-负载均衡">处理器亲和性 负载均衡<a hidden class="anchor" aria-hidden="true" href="#处理器亲和性-负载均衡">#</a></h2>
+<p>多处理器调度是指在多处理器系统中，对多个进程或线程进行任务调度，使得多个处理器可以协同工作，提高系统的性能和吞吐量。多处理器系统可以分为对称多处理（Symmetric Multiprocessing，SMP）和非对称多处理（Asymmetric Multiprocessing，AMP）两种类型。</p>
+<ol>
+<li>对称多处理（SMP）</li>
+</ol>
+<p>对称多处理是指多个处理器共享同一物理内存，并且可以相互访问和操作系统资源。在对称多处理系统中，所有的处理器都具有相同的地位，每个处理器都可以执行任何任务，任务的分配和调度由操作系统自动完成。对称多处理系统的优点是易于扩展和管理，处理器之间的通信和协调简单，可以充分利用系统的资源。但是，对称多处理系统的缺点是存在竞争和冲突，需要采用锁和同步机制来避免数据的竞争和冲突，处理器之间的通信和同步可能会影响系统的性能。</p>
+<ol start="2">
+<li>非对称多处理（AMP）</li>
+</ol>
+<p>非对称多处理是指多个处理器分别运行不同的任务，并且各自拥有独立的资源和内存空间。在非对称多处理系统中，每个处理器具有不同的地位和功能，它们之间可能存在主从关系或者协作关系。任务的分配和调度通常由应用程序或者用户手动完成。非对称多处理系统的优点是可以充分利用各个处理器的特性和优势，可以提高系统的可靠性和容错性。但是，非对称多处理系统的缺点是存在任务负载不均衡和资源浪费的问题，需要进行精细的任务分配和调度。</p>
+<p>综上所述，对称多处理和非对称多处理各有优缺点，需要根据具体的需求和应用场景来选择合适的多处理器系统。对称多处理适用于需要充分利用系统资源和提高系统性能的场景，非对称多处理适用于需要提高系统的可靠性和容错性的场景。</p>
+<h2 id="死锁概念与死锁示例">死锁概念与死锁示例<a hidden class="anchor" aria-hidden="true" href="#死锁概念与死锁示例">#</a></h2>
+<p>死锁（Deadlock）是指在多个并发进程或线程之间，由于彼此互相等待对方释放资源而无法继续执行的一种状态。在死锁状态下，所有的进程或线程都被阻塞，无法进行任何操作，从而导致系统的停滞和崩溃。</p>
+<p>死锁通常由以下四个必要条件引起：</p>
+<ol>
+<li>
+<p>互斥条件：一个资源一次只能被一个进程或线程占用。</p>
+</li>
+<li>
+<p>请求并持有条件：一个进程或线程占用了一个资源，同时又请求另一个被其它进程或线程占用的资源。</p>
+</li>
+<li>
+<p>不可抢占条件：一个进程或线程占用的资源不能被其它进程或线程抢占，只能由该进程或线程主动释放。</p>
+</li>
+<li>
+<p>循环等待条件：多个进程或线程之间存在一个资源的循环等待链，即每个进程或线程都在等待其它进程或线程持有的资源。</p>
+</li>
+</ol>
+<p>以下是一个简单的死锁示例：</p>
+<p>假设有两个进程 A 和 B，它们需要占用两个资源 X 和 Y。进程 A 占用了资源 X，同时请求资源 Y，而进程 B 占用了资源 Y，同时请求资源 X。由于资源 X 和 Y 一次只能被一个进程占用，因此进程 A 和 B 都无法获得它们需要的资源，从而进入死锁状态。此时，进程 A 和 B 都无法继续执行，系统陷入停滞状态。</p>
+<p>为了避免死锁，通常可以采用以下几种方法：</p>
+<ol>
+<li>
+<p>破坏互斥条件：可以将某些资源设计为可共享的，从而避免资源的独占。</p>
+</li>
+<li>
+<p>破坏请求并持有条件：可以要求进程在请求资源之前先释放已经占用的资源。</p>
+</li>
+<li>
+<p>破坏不可抢占条件：可以允许进程在必要时抢占其它进程的资源。</p>
+</li>
+<li>
+<p>破坏循环等待条件：可以规定所有的资源按相同的顺序请求，从而避免循环等待链的出现。</p>
+</li>
+</ol>
+<p>以上方法可以单独或者组合使用，以避免死锁的发生。</p>
+<h2 id="使用资源分配图检测死锁">使用资源分配图检测死锁<a hidden class="anchor" aria-hidden="true" href="#使用资源分配图检测死锁">#</a></h2>
+<p>资源分配图是一种用于描述多个进程或线程之间资源占用和请求关系的图形表示方法，可以用于死锁检测和避免。</p>
+<p>使用资源分配图进行死锁检测的一般步骤如下：</p>
+<ol>
+<li>
+<p>绘制进程和资源的节点：将每个进程和资源分别用节点表示，并用箭头表示进程对资源的请求和占用关系。</p>
+</li>
+<li>
+<p>绘制资源分配边和请求边：将进程对资源的请求和占用关系分别用资源分配边和请求边表示。</p>
+</li>
+<li>
+<p>检测循环等待：检查资源分配图中是否存在循环等待链，即是否存在一个进程和资源的闭合环路。如果存在循环等待链，则说明可能存在死锁。</p>
+</li>
+<li>
+<p>分析死锁：如果存在循环等待链，则需要进行死锁的分析和处理。通常可以采用资源抢占或者资源回收等方法解除死锁状态。</p>
+</li>
+</ol>
+<p>以下是一个简单的资源分配图：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">    P1       P2
+</span></span><span class="line"><span class="cl">   /  \     /  \
+</span></span><span class="line"><span class="cl">  R1   R2  R2   R1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在上述资源分配图中，进程 P1 占用了资源 R1，同时请求资源 R2；进程 P2 占用了资源 R2，同时请求资源 R1。由于需要互斥使用资源 R1 和 R2，进程 P1 和 P2 之间存在循环等待链，因此可能存在死锁。</p>
+<p>通过资源分配图进行死锁检测可以帮助我们识别潜在的死锁问题，并采取相应的预防措施。</p>
+<h2 id="死锁的处理方法">死锁的处理方法<a hidden class="anchor" aria-hidden="true" href="#死锁的处理方法">#</a></h2>
+<p>死锁是多进程或多线程并发执行时可能出现的一种严重问题。当多个进程或线程相互等待对方释放所占用的资源时，就会出现死锁的情况。为了解决死锁问题，可以采用以下几种方法：</p>
+<ol>
+<li>预防死锁</li>
+</ol>
+<p>预防死锁是指在设计和实现系统时，通过破坏死锁必要条件来预防死锁的发生。具体方法包括：破坏互斥条件、破坏请求并持有条件、破坏不可抢占条件和破坏循环等待条件等。</p>
+<ol start="2">
+<li>避免死锁</li>
+</ol>
+<p>避免死锁是指在运行时避免死锁的发生。具体方法包括：银行家算法、资源分配图算法等。这些算法在资源分配的过程中，通过动态地判断是否会出现死锁，来避免死锁的发生。</p>
+<ol start="3">
+<li>检测和恢复死锁</li>
+</ol>
+<p>检测和恢复死锁是指在出现死锁后，通过检测死锁的状态和位置，并采取相应的措施来解除死锁。具体方法包括：死锁检测算法和死锁解除算法等。在检测到死锁后，可以采用资源抢占或者资源回收等方法来解除死锁状态。</p>
+<ol start="4">
+<li>放弃死锁</li>
+</ol>
+<p>放弃死锁是指通过终止进程或线程来解除死锁。这种方法虽然能够快速解除死锁，但是会造成资源浪费和进程中断等问题。</p>
+<p>综上所述，预防死锁和避免死锁是最好的解决死锁问题的方法，其次是检测和恢复死锁，最后是放弃死锁。在实际应用中，应该根据具体的情况选择合适的处理方法。</p>
+<h2 id="安全状态不安全状态死锁状态">安全状态、不安全状态、死锁状态<a hidden class="anchor" aria-hidden="true" href="#安全状态不安全状态死锁状态">#</a></h2>
+<p>安全状态（Safe state）是指在当前系统状态下，所有进程都能够按照其所需的资源顺利执行完毕，并最终释放所占用的资源，而不会发生死锁。</p>
+<p>不安全状态（Unsafe state）是指在当前系统状态下，至少存在一种进程请求资源的顺序，可以导致死锁的发生。也就是说，如果当前系统状态是不安全状态，那么就存在一定的概率会发生死锁。</p>
+<p>死锁状态（Deadlock state）是指在多个进程或线程之间，由于彼此互相等待对方释放资源而无法继续执行的一种状态。在死锁状态下，所有的进程或线程都被阻塞，无法进行任何操作，从而导致系统的停滞和崩溃。</p>
+<p>在多进程或多线程并发执行的情况下，系统状态可能会从安全状态变为不安全状态，从不安全状态变为死锁状态。因此，为了避免死锁的发生，需要在系统运行中及时检测和处理不安全状态，并尽可能地保持系统在安全状态下运行。</p>
+<h2 id="内存保护">内存保护<a hidden class="anchor" aria-hidden="true" href="#内存保护">#</a></h2>
+<p>内存保护是一种操作系统提供的重要机制，用于保护不同进程之间以及进程与操作系统内核之间的内存空间，防止它们相互干扰或者非法访问。</p>
+<p>在现代操作系统中，通常采用以下几种方式实现内存保护：</p>
+<ol>
+<li>
+<p>虚拟内存机制：虚拟内存机制将物理内存空间映射到虚拟地址空间上，从而使每个进程拥有独立的虚拟地址空间。通过使用页表等数据结构，操作系统可以控制进程对虚拟地址空间的访问权限，以保护进程之间的内存空间。</p>
+</li>
+<li>
+<p>进程间通信（IPC）机制：进程间通信机制允许不同进程之间进行数据交换和共享，但是必须保证数据传输的安全性。常见的进程间通信机制包括共享内存、消息队列、管道等，这些机制通常由操作系统提供，并且通过各种权限和访问控制机制来保证通信的安全性。</p>
+</li>
+<li>
+<p>用户模式和内核模式：现代操作系统通常将内核和用户空间分离，通过硬件机制（如特权级别）来区分用户模式和内核模式。在用户模式下，进程只能访问自己的虚拟地址空间；而在内核模式下，操作系统可以访问所有进程的虚拟地址空间，从而保护进程和内核之间的内存空间。</p>
+</li>
+</ol>
+<p>总之，内存保护是操作系统中非常重要的机制之一，它可以保护不同进程之间以及进程与操作系统内核之间的内存空间，防止它们相互干扰或者非法访问，保证系统的稳定和安全。</p>
+<h2 id="内存地址绑定">内存地址绑定<a hidden class="anchor" aria-hidden="true" href="#内存地址绑定">#</a></h2>
+<p>内存地址绑定是指将程序中的符号地址绑定到内存中的实际物理地址的过程。在传统的操作系统中，内存地址绑定通常分为三个阶段：编译时间绑定、加载时间绑定和运行时绑定，而这些阶段的耗时也不同：</p>
+<ol>
+<li>
+<p>编译时间绑定：在编译程序时，将程序中的符号地址转换为相应的绝对地址。这种绑定方法的优点是程序运行时不需要进行地址转换，因此可以提高程序运行的效率。但是缺点是程序运行时只能在固定的内存地址上运行，无法适应不同的内存布局和动态加载的情况。</p>
+</li>
+<li>
+<p>加载时间绑定：程序在加载到内存时，将程序中的符号地址转换为相应的内存地址。这种绑定方法的优点是可以适应不同的内存布局和动态加载的情况，但是缺点是程序运行时需要进行地址转换，会影响程序的运行效率。</p>
+</li>
+<li>
+<p>运行时绑定：程序在运行时，动态地将符号地址绑定到相应的内存地址。这种绑定方法的优点是可以适应动态加载和动态链接的情况，但是缺点是需要在程序运行时进行地址转换，会影响程序的运行效率。</p>
+</li>
+</ol>
+<p>总的来说，编译时间绑定是最快的，但是缺乏灵活性；运行时绑定最灵活，但是速度最慢；加载时间绑定则是一种折中的方案，可以在灵活性和速度之间做出平衡。在实际应用中，应该选择合适的绑定方法，以满足程序的需求。</p>
+<h2 id="空闲存储分配首次适应最佳适应最差适应">空闲存储分配，首次适应，最佳适应，最差适应<a hidden class="anchor" aria-hidden="true" href="#空闲存储分配首次适应最佳适应最差适应">#</a></h2>
+<p>空闲存储分配是指在操作系统中，为进程分配内存空间时，从系统中的空闲内存区域中选择一个合适的内存块分配给进程。常见的空闲存储分配算法包括首次适应算法、最佳适应算法和最差适应算法。</p>
+<ol>
+<li>
+<p>首次适应算法（First Fit）：首次适应算法是一种简单的空闲存储分配算法。它从内存空闲区域的开始处开始查找，找到第一个能够满足进程需要的空闲块，并将其分配给进程。由于首次适应算法的查找速度较快，因此在空闲块较少的情况下，它的性能比较好。</p>
+</li>
+<li>
+<p>最佳适应算法（Best Fit）：最佳适应算法是一种选择最小合适内存块的空闲存储分配算法。它从所有空闲块中找到大小最合适的那个块，将其分配给进程。由于最佳适应算法需要遍历所有空闲块，因此它的性能比较低，但是它能够有效地利用存储空间。</p>
+</li>
+<li>
+<p>最差适应算法（Worst Fit）：最差适应算法是一种选择最大合适内存块的空闲存储分配算法。它从所有空闲块中找到大小最大的那个块，将其分配给进程。由于最差适应算法分配的块通常比较大，因此它能够减少外部碎片的产生。但是，最差适应算法也需要遍历所有空闲块，因此它的性能也比较低。</p>
+</li>
+</ol>
+<p>综上所述，不同的空闲存储分配算法各有优缺点，应根据实际情况选择合适的算法。如果系统中的空闲内存块较少，首次适应算法的性能比较好；如果要减少外部碎片的产生，可以选择最差适应算法；如果要有效地利用存储空间，可以选择最佳适应算法。</p>
+<h2 id="内部碎片外部碎片">内部碎片，外部碎片<a hidden class="anchor" aria-hidden="true" href="#内部碎片外部碎片">#</a></h2>
+<p>在操作系统中，内部碎片和外部碎片都是指在内存管理中出现的空闲内存块浪费的情况。</p>
+<p>内部碎片是指在分配内存时，由于内存块大小不是恰好满足进程的需求，而导致内存块中存在未被利用的空间。例如，如果一个进程需要申请10KB的内存空间，但是系统只有一块12KB的空闲内存，那么如果将这个12KB的内存分配给该进程，就会有2KB的空间无法被利用，这就是内部碎片。</p>
+<p>外部碎片是指在内存管理中，由于内存中的空闲内存块大小不连续或者不足以满足进程的需求，而导致无法分配所需要的连续内存空间的情况。例如，如果有两个空闲内存块分别为4KB和6KB，而进程需要申请8KB的连续内存空间，那么无论如何，都无法满足进程的要求。这就是外部碎片。</p>
+<p>内部碎片和外部碎片都会导致内存空间的浪费，但是它们的产生原因和解决方法不同。对于内部碎片，可以采用动态分区分配的方法，即在内存中分配刚好满足进程需求的内存块，从而减少内部碎片的产生。而对于外部碎片，可以采用紧凑操作的方法，即将内存中的空闲内存块进行整理和合并，从而获得足够的连续空间，以满足进程的需求。</p>
+<h2 id="内存交换标准交换">内存交换，标准交换<a hidden class="anchor" aria-hidden="true" href="#内存交换标准交换">#</a></h2>
+<p>内存交换是指将内存中的一部分数据暂时保存到磁盘中，以便腾出内存空间供其他程序使用。常见的内存交换技术包括页面交换和页面抖动。</p>
+<p>页面交换是指将内存中的一页数据保存到磁盘中，以便在需要时再将其加载回内存。页面交换通常是由操作系统自动完成的，当内存紧张时，操作系统会将一部分页面换出到磁盘中，以便为其他程序腾出空间。当需要访问被换出的页面时，操作系统会将其从磁盘中加载回内存。</p>
+<p>页面抖动是指当系统内存空间不足时，操作系统反复地将某些页面从内存中换出到磁盘中，然后又将其换入内存，这种过程会反复循环，导致系统的响应速度变慢。为了避免页面抖动，可以通过增加内存或者减少系统负载来缓解内存压力。</p>
+<p>标准交换是一种在早期的操作系统中使用的内存交换技术。它将整个进程从内存中移出，然后再将其移回内存。标准交换的缺点是它需要移动整个进程，因此速度较慢，而且需要处理大量的磁盘I/O操作。由于现代操作系统已经采用了更加先进的页面交换技术，因此标准交换已经很少被使用。</p>
+<p>总之，内存交换是一种重要的内存管理技术，它可以在内存空间不足时，将部分数据暂时保存到磁盘中，以便为其他程序腾出空间。在实际应用中，应该根据系统的实际情况选择合适的内存交换技术，以满足系统的需求。</p>
+<h2 id="内存性能-页表扩展">内存性能 页表扩展<a hidden class="anchor" aria-hidden="true" href="#内存性能-页表扩展">#</a></h2>
+<p>内存性能是指在计算机系统中访问内存的速度和效率。TLB和页表扩展是提高内存访问性能的两种技术。</p>
+<p>TLB（Translation Lookaside Buffer）是一种高速缓存，用于加速虚拟地址到物理地址的转换。在计算机系统中，CPU通过虚拟地址来访问内存，而虚拟地址需要通过页表进行转换才能得到物理地址。由于页表通常比较大，因此每次访问都需要遍历整个页表，这会导致访问速度变慢。TLB作为一种高速缓存，用于保存最近访问的页表项，从而加速虚拟地址到物理地址的转换。当CPU访问一个虚拟地址时，首先会在TLB中查找对应的页表项，如果找到了，就可以直接得到物理地址。如果没有找到，则需要遍历整个页表来查找对应的页表项。TLB的命中率越高，访问速度就越快。</p>
+<p>页表扩展是一种将物理地址分配给多个虚拟地址的技术。在传统的页表中，每个虚拟地址对应一个物理地址，因此当物理内存不足时，就必须使用内存交换技术来腾出空间。而页表扩展技术可以将多个虚拟地址映射到同一个物理地址上，从而减少物理内存的使用量。当物理内存不足时，系统可以将某些页表项换出到磁盘中，从而腾出更多的空间。页表扩展技术可以有效地提高内存的使用效率和性能。</p>
+<p>综上所述，TLB和页表扩展都是提高内存访问性能的重要技术。TLB通过加速虚拟地址到物理地址的转换，提高了内存访问的速度；而页表扩展通过减少物理内存的使用量，提高了内存的使用效率。在实际应用中，应该根据系统的实际情况选择合适的技术，以满足系统的需求。</p>
+<p>页表扩展是一种将物理地址分配给多个虚拟地址的技术，它可以有效地提高内存的使用效率和性能。</p>
+<p>在页表扩展中，每个页表项通常包含以下几个字段：</p>
+<ol>
+<li>
+<p>物理地址：用于指定虚拟地址对应的物理地址。</p>
+</li>
+<li>
+<p>权限位：用于指定虚拟地址对应的物理地址的访问权限，包括读、写、执行等权限。</p>
+</li>
+<li>
+<p>有效位：用于指示该页表项是否有效。如果有效位为1，则说明该页表项对应的虚拟地址是有效的，否则为无效的。</p>
+</li>
+<li>
+<p>其他字段：不同的操作系统可能会在页表项中加入一些其他的字段，用于实现不同的功能，例如存储缓存标记等。</p>
+</li>
+</ol>
+<p>在实际应用中，操作系统通常会使用页表长度寄存器来记录页表的长度。页表长度寄存器是一个特殊的寄存器，用于存储页表的长度。当CPU访问虚拟地址时，它会根据页表长度寄存器来确定页表的大小，从而确定需要遍历的页表项的数量。如果页表长度寄存器的值发生改变，操作系统需要重新构建页表。</p>
+<p>总之，页表扩展是一种重要的内存管理技术，它可以将物理地址分配给多个虚拟地址，从而提高了内存的使用效率和性能。在实现页表扩展时，需要使用权限位和有效位来保证内存访问的正确性，并使用页表长度寄存器来记录页表的长度，以便CPU能够正确地访问内存。</p>
+<h2 id="页表实现">页表实现<a hidden class="anchor" aria-hidden="true" href="#页表实现">#</a></h2>
+<p>页表是一种数据结构，用于将虚拟地址映射到物理地址。在计算机系统中，页表的实现方式可以分为分层分页、哈希页表和反置页表三种。</p>
+<ol>
+<li>
+<p>分层分页：分层分页是一种将页表分为多个层次的技术。在分层分页中，页表被分为多个层次，每个层次包含多个页表项。当CPU访问一个虚拟地址时，系统会按照层次结构遍历页表，直到找到对应的物理地址。分层分页的优点是可以减少页表的大小，从而提高访问速度，但是也会增加访问的复杂度。</p>
+</li>
+<li>
+<p>哈希页表：哈希页表是一种使用哈希表实现的页表。在哈希页表中，虚拟地址被映射到哈希表的某个位置上，而每个哈希表项则包含一个虚拟地址和对应的物理地址。当CPU访问一个虚拟地址时，系统会使用哈希函数计算该虚拟地址对应的哈希表项的位置，从而得到对应的物理地址。哈希页表的优点是可以减少页表的大小，从而提高访问速度，但是也会增加哈希冲突的可能性。</p>
+</li>
+<li>
+<p>反置页表：反置页表是一种将物理地址映射到虚拟地址的页表。在反置页表中，每个页表项包含一个物理地址和对应的虚拟地址。当CPU访问一个虚拟地址时，系统会在反置页表中查找对应的物理地址。反置页表的优点是可以减少页表的大小，从而提高访问速度，但是也会增加访问物理地址的复杂度。</p>
+</li>
+</ol>
+<p>总之，页表是一种重要的内存管理技术，它可以将虚拟地址映射到物理地址，从而实现内存的管理和访问。在实现页表时，可以采用不同的实现方式，例如分层分页、哈希页表和反置页表等，以满足系统的需求。</p>
+<h2 id="虚拟内存-程序局部性原则">虚拟内存 程序局部性原则<a hidden class="anchor" aria-hidden="true" href="#虚拟内存-程序局部性原则">#</a></h2>
+<p>虚拟内存是一种计算机系统中的内存管理技术，它允许将物理内存和磁盘空间组合使用，从而扩展了内存的容量。在虚拟内存中，操作系统将进程的虚拟地址空间映射到物理内存或磁盘空间中，从而实现了动态内存分配和地址空间隔离等功能。</p>
+<p>程序局部性原则是指程序在执行过程中，会倾向于重复访问一些特定的内存区域。程序局部性原则分为时间局部性和空间局部性两种：</p>
+<ol>
+<li>
+<p>时间局部性：当程序访问一个内存地址时，它很可能在短时间内再次访问该地址，因此操作系统可以将该地址所在的页表项保留在高速缓存中，从而提高内存访问速度。</p>
+</li>
+<li>
+<p>空间局部性：当程序访问一个内存地址时，它很可能在短时间内访问该地址附近的其他地址，因此操作系统可以将该地址附近的页表项也保留在高速缓存中，从而进一步提高内存访问速度。</p>
+</li>
+</ol>
+<p>程序局部性原则是虚拟内存实现的重要基础。虚拟内存可以将程序常用的内存页保留在物理内存中，而将不常用的内存页置换到磁盘中，从而充分利用程序局部性原则，提高内存访问速度和效率。</p>
+<p>总之，虚拟内存是一种重要的内存管理技术，它可以扩展内存的容量，提高内存的使用效率。程序局部性原则是虚拟内存实现的重要基础，它可以充分利用程序的访问规律，提高内存访问速度和效率。</p>
+<h2 id="缺页中断与其处理方式">缺页中断与其处理方式<a hidden class="anchor" aria-hidden="true" href="#缺页中断与其处理方式">#</a></h2>
+<p>缺页中断是指当CPU访问一个虚拟地址时，发现相应的页表项不在物理内存中时产生的中断。当缺页中断发生时，操作系统需要将相应的页从磁盘中读入到物理内存中，从而满足CPU对该虚拟地址的访问请求。缺页中断的处理过程如下：</p>
+<ol>
+<li>
+<p>操作系统首先检查虚拟地址对应的页表项是否有效。如果页表项无效，则表示该虚拟地址没有分配物理内存，操作系统将向用户程序发出错误消息。</p>
+</li>
+<li>
+<p>如果页表项有效但不在物理内存中，操作系统会将相应的页从磁盘中读取到物理内存中。这个过程称为页面调度或页面置换。</p>
+</li>
+<li>
+<p>当页面调度完成后，操作系统会更新页表项中的物理地址，并重新执行CPU的访问请求。</p>
+</li>
+</ol>
+<p>缺页中断的处理过程涉及到磁盘的读写、页表的更新等多个操作，因此其开销比较大。主要的开销包括：</p>
+<ol>
+<li>
+<p>磁盘I/O开销：当缺页中断发生时，操作系统需要将相应的页从磁盘中读取到物理内存中。这个过程需要进行磁盘I/O操作，因此会产生较大的开销。</p>
+</li>
+<li>
+<p>页面调度开销：当缺页中断发生时，操作系统需要进行页面调度或页面置换，将新的页调入物理内存。这个过程涉及到页表的更新、物理内存的分配等操作，因此会产生较大的开销。</p>
+</li>
+<li>
+<p>CPU上下文切换开销：当缺页中断发生时，CPU需要从用户程序的执行状态切换到内核态，执行操作系统的中断处理程序。这个过程涉及到CPU上下文的切换，因此也会产生一定的开销。</p>
+</li>
+</ol>
+<p>总之，缺页中断是一种重要的内存管理技术，它可以将数据从磁盘中读取到物理内存中，从而满足CPU对该数据的访问请求。缺页中断的处理过程涉及到磁盘I/O、页面调度、CPU上下文切换等多个操作，因此其开销比较大。</p>
+<h2 id="虚拟内存性能-颠簸抖动-页面置换全局置换局部置换-工作集模型及其原理">虚拟内存性能 颠簸/抖动 页面置换（全局置换，局部置换） 工作集模型及其原理<a hidden class="anchor" aria-hidden="true" href="#虚拟内存性能-颠簸抖动-页面置换全局置换局部置换-工作集模型及其原理">#</a></h2>
+<p>虚拟内存是一种计算机内存管理技术，它允许将物理内存和磁盘空间组合使用，从而扩展了内存的容量。虚拟内存的性能受到多个因素的影响，包括颠簸/抖动、页面置换等因素。</p>
+<ol>
+<li>
+<p>颠簸/抖动：颠簸/抖动是指在虚拟内存中，程序频繁地将页调入和调出物理内存，从而导致内存使用效率的下降。颠簸/抖动的主要原因是物理内存的容量不足，导致操作系统无法同时将所有需要访问的页保留在物理内存中。为了减少颠簸/抖动的影响，可以增加物理内存的容量，或者使用更智能的页面置换算法。</p>
+</li>
+<li>
+<p>页面置换：页面置换是指在虚拟内存中，当物理内存中的页数量不足时，操作系统需要将某些页从物理内存中置换到磁盘中，以便为新的页腾出空间。页面置换算法可以分为全局置换和局部置换两种。</p>
+</li>
+</ol>
+<ul>
+<li>
+<p>全局置换：全局置换算法是指在所有进程的页中选择最优的一页进行置换。最常用的全局置换算法是最优页面置换算法，它选择要置换的页中，将来最长时间不再使用的页进行置换。</p>
+</li>
+<li>
+<p>局部置换：局部置换算法是指在当前进程的页中选择最优的一页进行置换。最常用的局部置换算法是最近最少使用页面置换算法，它选择最近最少使用的页进行置换。</p>
+</li>
+</ul>
+<ol start="3">
+<li>工作集模型及其原理：工作集模型是一种用于描述进程内存需求的模型。在工作集模型中，每个进程被分为多个工作集，每个工作集包含进程当前正在使用的页。工作集模型的原理是基于程序局部性原则，即程序倾向于访问一些特定的内存区域。操作系统可以利用工作集模型来优化内存管理，例如在进程切换时，只需保留当前工作集中的页，而将其他页置换到磁盘中，从而提高内存的使用效率。</li>
+</ol>
+<p>总之，虚拟内存的性能受到多个因素的影响，包括颠簸/抖动、页面置换等因素。为了提高虚拟内存的性能，可以采用增加物理内存、使用更智能的页面置换算法、利用工作集模型等技术。</p>
+<h2 id="大容量存储系统-磁盘组成-磁盘平均接入时间-磁盘平均io时间">大容量存储系统 磁盘组成 磁盘平均接入时间 磁盘平均I/O时间<a hidden class="anchor" aria-hidden="true" href="#大容量存储系统-磁盘组成-磁盘平均接入时间-磁盘平均io时间">#</a></h2>
+<p>大容量存储系统通常由多个磁盘组成。每个磁盘是一个独立的物理设备，用于存储数据。这些磁盘可以组合成磁盘阵列或磁盘组，以提供更高的容量和性能。</p>
+<p>磁盘平均接入时间是指从请求一个数据块到能够开始传输该数据块的时间。这个时间包括磁头寻道时间、旋转延迟和数据传输时间等。磁头寻道时间是磁头从当前位置移动到目标数据的时间，旋转延迟是磁盘旋转到目标数据位置的时间，数据传输时间是将数据从磁盘传输到内存或从内存传输到磁盘的时间。磁盘平均接入时间取决于磁盘的性能指标，如转速、磁头移动速度等。</p>
+<p>磁盘平均I/O时间是指完成一个输入/输出操作所需的平均时间。这个时间包括磁盘平均接入时间以及其他可能的延迟，如处理器调度延迟、操作系统调度延迟和数据传输延迟等。磁盘平均I/O时间是一个更全面的性能指标，反映了整个I/O操作的时间开销。</p>
+<p>需要注意的是，磁盘平均接入时间和磁盘平均I/O时间是基于特定的硬件和软件环境进行评估的，不同的系统配置和负载情况下可能会有所差异。</p>
+<h2 id="文件系统接口-文件概念-文件操作-文件锁定-协同锁强制锁">文件系统接口 文件概念 文件操作 文件锁定 协同锁，强制锁<a hidden class="anchor" aria-hidden="true" href="#文件系统接口-文件概念-文件操作-文件锁定-协同锁强制锁">#</a></h2>
+<p>文件系统接口是操作系统提供给应用程序或用户的一组函数或命令，用于管理文件和目录。它允许应用程序创建、读取、写入、删除和重命名文件，以及在文件系统中进行导航和查询。</p>
+<p>文件是计算机系统中存储数据的基本单位。它是一组有序的字节或字符序列，可以包含文本、图像、音频、视频或其他类型的数据。文件通常由文件名和扩展名（可选）来标识，并存储在文件系统的目录结构中。</p>
+<p>文件操作是指对文件进行的各种操作，包括创建文件、打开文件、读取文件内容、写入文件内容、关闭文件和删除文件等。这些操作可以通过文件系统接口提供的函数或命令来执行。</p>
+<p>文件锁定是一种机制，用于在多个进程或线程同时访问同一个文件时确保数据的一致性和完整性。当一个进程或线程锁定文件时，其他进程或线程无法对该文件进行写入或删除操作，只能进行读取操作。文件锁定可以避免多个进程或线程同时修改同一个文件而引发的数据冲突和竞争条件。</p>
+<p>协同锁是一种文件锁定机制，也称为共享锁或读锁。它允许多个进程或线程同时对同一个文件进行读取操作，但不允许写入操作。当一个进程或线程获得协同锁时，其他进程或线程也可以获得相同的协同锁进行读取操作，但无法获得写入锁。</p>
+<p>强制锁是一种文件锁定机制，也称为排他锁或写锁。它在一个进程或线程对文件进行写入操作时阻止其他进程或线程对该文件进行任何读取或写入操作。只有在强制锁被释放后，其他进程或线程才能获得该文件的读取或写入权限。</p>
+<p>这些文件锁定机制在多进程或多线程的环境中非常重要，可以确保对文件的并发访问的正确性和安全性。不同的操作系统和编程语言提供不同的文件锁定机制和接口来实现这些功能。</p>
+<h2 id="文件访问方法-顺序访问与直接访问">文件访问方法 顺序访问与直接访问<a hidden class="anchor" aria-hidden="true" href="#文件访问方法-顺序访问与直接访问">#</a></h2>
+<p>文件访问方法指的是应用程序在读取或写入文件时所采用的方式。主要有两种文件访问方法：顺序访问和直接访问。</p>
+<ol>
+<li>顺序访问（Sequential Access）：
+顺序访问是按照文件中数据的顺序进行读取或写入的方式。应用程序必须按照文件中数据的顺序逐个访问数据。当需要读取或写入文件中的某个数据时，必须先读取或写入前面的数据，直到达到目标数据。因此，在顺序访问方法下，无法直接跳到文件中的任意位置进行访问。</li>
+</ol>
+<p>顺序访问适用于对文件进行一次性完整处理的情况，比如按行读取文本文件或按帧读取视频文件。顺序访问通常效率较低，因为如果需要访问文件中的某个特定数据，必须遍历前面的数据。</p>
+<ol start="2">
+<li>直接访问（Direct Access）：
+直接访问是可以直接跳到文件中任意位置进行读取或写入的方式。每个数据块在文件中都有一个唯一的地址或偏移量，应用程序可以根据需要直接定位到目标数据的位置。这种方式允许随机访问文件中的任何数据块，而不需要按顺序逐个访问。</li>
+</ol>
+<p>直接访问适用于需要随机访问文件中的数据的情况，比如数据库系统或索引文件。通过直接访问，应用程序可以快速定位和读取所需的数据，而无需遍历整个文件。</p>
+<p>需要注意的是，文件访问方法取决于文件系统的支持和应用程序的实现。有些文件系统支持直接访问，而有些则只支持顺序访问。此外，某些文件系统可能还提供其他高级的访问方式，如索引访问或哈希访问，以提高对文件的检索效率。</p>
+<h2 id="文件分配方法连续分配链接分配索引分配">文件分配方法，连续分配，链接分配，索引分配<a hidden class="anchor" aria-hidden="true" href="#文件分配方法连续分配链接分配索引分配">#</a></h2>
+<p>文件分配方法是指在文件系统中为文件分配存储空间的方式。主要的文件分配方法包括连续分配、链接分配和索引分配。</p>
+<ol>
+<li>
+<p>连续分配（Contiguous Allocation）：
+连续分配是将文件存储在一片连续的存储空间中。当文件被创建时，操作系统会为该文件分配一块连续的存储空间。文件的大小和存储空间的起始位置都会记录在文件的元数据中。顺序访问文件的性能较好，因为数据在物理上是连续存储的。然而，连续分配的缺点是容易产生外部碎片，当文件删除或大小调整时，可能会导致存储空间被分割成不连续的小块，难以有效利用。</p>
+</li>
+<li>
+<p>链接分配（Linked Allocation）：
+链接分配是通过链表的方式为文件分配存储空间。每个文件块存储数据以及指向下一个文件块的指针。文件的元数据中记录了第一个块的地址。这种方式可以克服外部碎片问题，因为存储空间可以随意分配，但可能会带来内部碎片，因为每个文件块的大小通常是固定的，如果文件大小不是块大小的倍数，最后一个块可能会浪费部分空间。链表的遍历可能会带来一些额外的开销，因此顺序访问的性能较差。</p>
+</li>
+<li>
+<p>索引分配（Indexed Allocation）：
+索引分配是通过使用索引表来管理文件的存储空间。索引表包含了指向文件块的索引项，每个索引项存储了对应块的地址或偏移量。文件的元数据中记录了索引表的地址。通过索引表，可以快速定位和访问文件的任意块，无论文件的大小。索引分配克服了链接分配的性能问题，但会占用额外的存储空间来存储索引表，对于小文件可能会浪费空间。</p>
+</li>
+</ol>
+<p>需要注意的是，不同的文件系统可能采用不同的文件分配方法，或者结合使用多种分配方法。选择适当的文件分配方法取决于文件系统的设计目标、文件大小和访问模式等因素。</p>
+<h2 id="io指令控制方式轮询中断dma">IO指令控制方式（轮询，中断，DMA）<a hidden class="anchor" aria-hidden="true" href="#io指令控制方式轮询中断dma">#</a></h2>
+<p>IO指令控制方式指的是在计算机系统中，用于控制输入/输出（IO）设备的方式。主要的IO指令控制方式包括轮询（Polling）、中断（Interrupt）和直接内存访问（Direct Memory Access，DMA）。</p>
+<ol>
+<li>
+<p>轮询（Polling）：
+在轮询方式中，CPU通过不断查询IO设备的状态来确定IO操作是否完成。CPU会周期性地发送查询指令，检查IO设备的状态寄存器或标志位，以了解IO操作是否完成或是否需要CPU的进一步处理。如果IO设备完成了请求的操作，CPU将获取IO设备的数据并继续执行后续的指令。轮询方式简单直观，但会占用大量的CPU时间和资源，因为CPU需要不断查询IO设备的状态。</p>
+</li>
+<li>
+<p>中断（Interrupt）：
+在中断方式中，IO设备通过发送中断请求（Interrupt Request，IRQ）信号来通知CPU需要处理的事件。当IO设备需要CPU的处理时，它会发送中断信号，将CPU从当前执行的任务中打断，转而执行与中断相关的处理程序（中断处理程序）。中断处理程序将处理IO设备的请求并获取IO数据。中断方式可以提高CPU的利用率，因为CPU只在需要处理IO设备时才会被打断。</p>
+</li>
+<li>
+<p>直接内存访问（DMA）：
+DMA是一种特殊的IO指令控制方式，用于在IO设备和主存之间直接进行数据传输，而不需要CPU的直接参与。在DMA方式下，IO设备可以直接访问主存，通过DMA控制器将数据直接传输到指定的内存位置，或从内存中直接读取数据并发送到IO设备。这样可以减少CPU的负担，提高数据传输速率。DMA方式适用于大量数据的高速传输，如磁盘IO、网络IO等。</p>
+</li>
+</ol>
+<p>需要注意的是，不同的IO设备和系统架构可能对IO指令控制方式的支持程度有所差异。有些设备可能只支持特定的控制方式，而其他设备则可以支持多种方式。系统设计人员需要根据具体的需求和硬件条件选择合适的IO指令控制方式。</p>
+<h2 id="应用-io接口">应用-IO接口<a hidden class="anchor" aria-hidden="true" href="#应用-io接口">#</a></h2>
+<p>应用用IO接口</p>
+<ul>
+<li>
+<p>﻿使IO设备能够以标准，统一的方式进行处理
+以文件形式查看设备</p>
+</li>
+<li>
+<p>﻿IO系统调用将设备行为封装在通用类中
+将设备的行为封装在几个通用类中，这些类隐藏了应用程序的硬件差异。</p>
+</li>
+<li>
+<p>﻿内核的IO子系统中的设备驱动层隐藏了设备控制器之间的差异，为上层提供统一的接口。</p>
+</li>
+</ul>
+<h2 id="同步io与异步io">同步IO与异步IO<a hidden class="anchor" aria-hidden="true" href="#同步io与异步io">#</a></h2>
+<p>两种常见的IO方法是同步IO（Synchronous IO）和异步IO（Asynchronous IO）。</p>
+<ol>
+<li>
+<p>同步IO（Synchronous IO）：
+同步IO是一种阻塞式的IO方法，它在进行IO操作时会阻塞调用者的进程或线程，直到IO操作完成并返回结果。在同步IO中，应用程序发起一个IO请求后，它会等待IO操作完成，并在收到结果后继续执行后续的代码。同步IO操作是按照顺序进行的，一个IO操作完成后才能开始下一个IO操作。如果IO操作的执行时间较长，它将会阻塞整个进程或线程，导致资源浪费和性能下降。同步IO适用于简单的IO场景，代码编写相对简单，但会导致资源的低效利用。</p>
+</li>
+<li>
+<p>异步IO（Asynchronous IO）：
+异步IO是一种非阻塞式的IO方法，它允许应用程序在IO操作进行的同时继续执行其他任务，而不必等待IO操作的完成。在异步IO中，应用程序发起一个IO请求后，不会阻塞进程或线程，而是继续执行后续的代码。当IO操作完成时，系统会通知应用程序，并提供相应的结果。异步IO操作可以同时进行多个IO操作，并通过回调函数或轮询方式获取IO操作的结果。异步IO可以提高系统的并发性和响应性能，特别适用于需要处理大量并发IO请求或需要等待时间较长的IO操作。</p>
+</li>
+</ol>
+<p>需要注意的是，同步IO和异步IO并不是绝对的二选一，它们可以在不同的场景中混合使用。例如，可以使用同步IO进行简单的IO操作，而使用异步IO处理更复杂的IO任务，以提高系统的整体性能。选择适当的IO方法取决于应用程序的需求、系统的性能要求和开发者的偏好。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">zeroy的网络小窝</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script></body>
+
+</html>

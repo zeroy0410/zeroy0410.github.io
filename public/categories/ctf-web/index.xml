@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>CTF-WEB on zeroy的网络小窝</title>
+    <link>http://localhost:1313/categories/ctf-web/</link>
+    <description>Recent content in CTF-WEB on zeroy的网络小窝</description>
+    <image>
+      <url>http://localhost:1313/ava.jpeg</url>
+      <link>http://localhost:1313/ava.jpeg</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+    <webMaster>zeroy0410@gmail.com (zeroy)</webMaster>
+    <lastBuildDate>Tue, 18 Jan 2022 11:26:31 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/ctf-web/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>攻防世界web前11题WP</title>
+      <link>http://localhost:1313/articles/XCTF-WEB-1/</link>
+      <pubDate>Tue, 18 Jan 2022 11:26:31 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/XCTF-WEB-1/</guid>
+      <description>baby_web 进去之后发现是/1.php,根据提示“初始页面”，用burpsuite截获index.php，获得flag。 知识点：网页初始页面的文件名一</description>
+    </item>
+    
+  </channel>
+</rss>

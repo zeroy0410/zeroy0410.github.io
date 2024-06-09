@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>CTF on zeroy的网络小窝</title>
+    <link>http://localhost:1313/categories/ctf/</link>
+    <description>Recent content in CTF on zeroy的网络小窝</description>
+    <image>
+      <url>http://localhost:1313/ava.jpeg</url>
+      <link>http://localhost:1313/ava.jpeg</link>
+    </image>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <managingEditor>zeroy0410@gmail.com (zeroy)</managingEditor>
+    <webMaster>zeroy0410@gmail.com (zeroy)</webMaster>
+    <lastBuildDate>Tue, 19 Apr 2022 08:36:18 +0800</lastBuildDate><atom:link href="http://localhost:1313/categories/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>攻防世界reverse练习区WP</title>
+      <link>http://localhost:1313/articles/reverse-exercise-area/</link>
+      <pubDate>Tue, 19 Apr 2022 08:36:18 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/reverse-exercise-area/</guid>
+      <description>0x00. simple-unpack 使用exeinfope脱壳，拖进IDA shift+F12搜索字符串。 0x01. logmein 反编译得到如下代码： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22</description>
+    </item>
+    
+    <item>
+      <title>RSA算法详解</title>
+      <link>http://localhost:1313/articles/basic_RSA/</link>
+      <pubDate>Thu, 31 Mar 2022 23:09:02 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/basic_RSA/</guid>
+      <description>前置知识：欧拉定理 进阶知识：Miller Rabin算法（用于生成大素数），蒙哥马利算法（用于加快大数相乘再取模运算） 引入 历史上常规的密码加解</description>
+    </item>
+    
+    <item>
+      <title>[PWN.0x01]canary|partial overwrite|ret2libc</title>
+      <link>http://localhost:1313/articles/CTFpwn2/</link>
+      <pubDate>Mon, 07 Mar 2022 22:25:31 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/CTFpwn2/</guid>
+      <description>canary绕过 什么是canary？ canary是一种防止栈溢出的保护机制，可以在终端中使用checksec命令检查ELF文件是否开启了ca</description>
+    </item>
+    
+    <item>
+      <title>[PWN.0x00]函数调用栈结构与栈迁移</title>
+      <link>http://localhost:1313/articles/CTFpwn1/</link>
+      <pubDate>Sat, 05 Mar 2022 20:30:31 +0800</pubDate>
+      <author>zeroy0410@gmail.com (zeroy)</author>
+      <guid>http://localhost:1313/articles/CTFpwn1/</guid>
+      <description>前置知识：汇编语言（第4版）前半本 注：本文适用于32位程序，示意图中上为高地址区，下为低地址区。若方框中字体为蓝色表示此处内存的地址，为黑色</description>
+    </item>
+    
+  </channel>
+</rss>

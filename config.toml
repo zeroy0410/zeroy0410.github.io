@@ -9,7 +9,7 @@ hasCJKLanguage = true
 title = "zeroy的网络小窝"
 
 # 更改使用 Hugo 构建网站时使用的默认主题
-theme = "DoIt"
+theme = "PaperMod"
 [params]
   #  DoIt 主题版本
   version = "0.3.X"
